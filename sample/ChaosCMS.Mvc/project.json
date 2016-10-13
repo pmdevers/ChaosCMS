@@ -13,6 +13,7 @@
     "define": [
       "DEMO"
     ],
+    "debugType": "portable",
     "emitEntryPoint": true,
     "preserveCompilationContext": true,
     "warningsAsErrors": true
