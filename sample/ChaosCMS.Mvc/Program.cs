@@ -2,15 +2,24 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
-namespace ConsoleApplication
+using ChaosCMS.Managers;
+using ChaosCMS.Stores;
+using ChaosCMS.EntityFramework;
+using ChaosCMS.Mvc.Models;
+
+namespace ChaosCMS.Mvc
 {
     public class Program
     {
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.TryAddScoped<IPageStore<Page>, PageStore<Page>>();
+            services.TryAddScoped<PageManager<Page>, PageManager<Page>>();
+            
             services.AddMvc();
         }
 
