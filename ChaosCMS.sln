@@ -1,0 +1,70 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8625FF44-479B-4263-9A34-6073D3516209}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ChaosCMS", "src\ChaosCMS\ChaosCMS.xproj", "{0994F0D9-73DE-4866-9A28-3A328F61D803}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ChaosCMS.Entityframework", "src\ChaosCMS.EntityFramework\ChaosCMS.Entityframework.xproj", "{5EBA1471-6432-4363-A103-A4D62CBB0EBF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{5990BA9A-13D4-42BF-941B-4588C963EFBE}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ChaosCMS.Test", "test\ChaosCMS.Test\ChaosCMS.Test.xproj", "{80F183CC-E02C-4E13-B3DB-B619FC7AB38E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{34B85C6A-00DC-4AB1-A74F-7FCEDC8F78A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{5BC73008-02CC-4081-884C-EDE0D7ED748A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CBE6AD3C-91F5-4C6D-BB8B-C4985A760E3A}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		global.json = global.json
+		NuGet.config = NuGet.config
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ChaosCMS.Json", "src\ChaosCMS.Json\ChaosCMS.Json.xproj", "{A6D5060C-AD2C-446D-AC16-E61FA9405C15}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SampleSite", "sample\SampleSite\SampleSite.xproj", "{F2C63166-7176-4F41-B807-6FCA3A1F3FF6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0994F0D9-73DE-4866-9A28-3A328F61D803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0994F0D9-73DE-4866-9A28-3A328F61D803}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0994F0D9-73DE-4866-9A28-3A328F61D803}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0994F0D9-73DE-4866-9A28-3A328F61D803}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EBA1471-6432-4363-A103-A4D62CBB0EBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EBA1471-6432-4363-A103-A4D62CBB0EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EBA1471-6432-4363-A103-A4D62CBB0EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EBA1471-6432-4363-A103-A4D62CBB0EBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80F183CC-E02C-4E13-B3DB-B619FC7AB38E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80F183CC-E02C-4E13-B3DB-B619FC7AB38E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80F183CC-E02C-4E13-B3DB-B619FC7AB38E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80F183CC-E02C-4E13-B3DB-B619FC7AB38E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6D5060C-AD2C-446D-AC16-E61FA9405C15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6D5060C-AD2C-446D-AC16-E61FA9405C15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6D5060C-AD2C-446D-AC16-E61FA9405C15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6D5060C-AD2C-446D-AC16-E61FA9405C15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2C63166-7176-4F41-B807-6FCA3A1F3FF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2C63166-7176-4F41-B807-6FCA3A1F3FF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2C63166-7176-4F41-B807-6FCA3A1F3FF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2C63166-7176-4F41-B807-6FCA3A1F3FF6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0994F0D9-73DE-4866-9A28-3A328F61D803} = {8625FF44-479B-4263-9A34-6073D3516209}
+		{5EBA1471-6432-4363-A103-A4D62CBB0EBF} = {8625FF44-479B-4263-9A34-6073D3516209}
+		{80F183CC-E02C-4E13-B3DB-B619FC7AB38E} = {5990BA9A-13D4-42BF-941B-4588C963EFBE}
+		{A6D5060C-AD2C-446D-AC16-E61FA9405C15} = {8625FF44-479B-4263-9A34-6073D3516209}
+		{F2C63166-7176-4F41-B807-6FCA3A1F3FF6} = {34B85C6A-00DC-4AB1-A74F-7FCEDC8F78A5}
+	EndGlobalSection
+EndGlobal
