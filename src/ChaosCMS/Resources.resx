@@ -121,8 +121,16 @@
     <value>An unknown failure has occurred.</value>
     <comment>Default chaos result error message</comment>
   </data>
+  <data name="InvalidManagerType" xml:space="preserve">
+    <value>Type {0} must be derived from {1}&amp;lt;{2}&amp;gt;.</value>
+    <comment>Error when the manager type is not derived correctly</comment>
+  </data>
   <data name="MustCallAddChaos" xml:space="preserve">
     <value>AddChaos must be called on the service collection.</value>
     <comment>Error when AddChaos is not called</comment>
+  </data>
+  <data name="PageNotFound" xml:space="preserve">
+    <value>There is not page found at '{0}'.</value>
+    <comment>Error when a page is not found</comment>
   </data>
 </root>

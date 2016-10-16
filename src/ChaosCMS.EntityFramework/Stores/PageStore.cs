@@ -1,6 +1,8 @@
 using ChaosCMS.Stores;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ChaosCMS.EntityFramework
 {
@@ -15,6 +17,42 @@ namespace ChaosCMS.EntityFramework
         where TContext : DbContext
         where TKey : IEquatable<TKey>
     {
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="urlPath"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task<TPage> FindByUrlAsync(string urlPath, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task<string> GetNameAsync(TPage page, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task<string> GetUrlAsync(TPage page, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

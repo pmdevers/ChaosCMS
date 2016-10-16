@@ -36,9 +36,10 @@ namespace Microsoft.AspNetCore.Builder
             var options = app.ApplicationServices.GetRequiredService<IOptions<ChaosOptions>>().Value;
             var builder = app.ApplicationServices.GetService<ChaosBuilder>();
             var middleware = typeof(ChaosMiddleware<>).MakeGenericType(builder.PageType);
-
+            var exceptionMiddleWare = typeof(ChaosExceptionMiddleware);
+            app.UseMiddleware(exceptionMiddleWare);
             app.UseMiddleware(middleware);
-
+            
             return app;
         }
     }

@@ -1,10 +1,14 @@
 ﻿using System;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Razor;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using ChaosCMS;
 using ChaosCMS.Managers;
+using ChaosCMS.Razor;
+using System.IO;
+using ChaosCMS.Rendering;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -13,6 +17,18 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public static class ChaosServiceCollectionExtensions
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TPage"></typeparam>
+        /// <param name="service"></param>
+        /// <returns></returns>
+        public static ChaosBuilder AddChaos<TPage>(this IServiceCollection service)
+            where TPage : class
+        {
+            return service.AddChaos<TPage>(options: null);
+        }
+
         /// <summary>
         /// Adds and configures the chaos system for specific Page types
         /// </summary>
@@ -24,6 +40,12 @@ namespace Microsoft.Extensions.DependencyInjection
             where TPage : class
         {
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            var location = Directory.GetCurrentDirectory();
+            var engine = EngineFactory.CreatePhysical(location + "/templates");
+            services.TryAddSingleton<IChaosRazorEngine>(engine);
+
+            services.TryAddScoped(typeof(IChaosHelper<>), typeof(ChaosHelper<>));
 
             // Chaos services
             services.TryAddSingleton<ChaosMarkerService>();

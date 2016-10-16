@@ -1,6 +1,8 @@
-﻿using ChaosCMS.Stores;
+﻿using ChaosCMS.Managers;
+using ChaosCMS.Stores;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Reflection;
 
 namespace ChaosCMS
 {
@@ -19,6 +21,7 @@ namespace ChaosCMS
             this.Services = services;
             this.PageType = pageType;
         }
+
         /// <summary>
         /// Gets the <see cref="IServiceCollection"/> services are attached to.
         /// </summary>
@@ -49,6 +52,24 @@ namespace ChaosCMS
             Services.AddScoped<ChaosErrorDescriber, TDescriber>();
             return this;
         }
+
+        /// <summary>
+        /// Adds a <see cref="PageManager{TPage}"/> for the <seealso cref="PageType"/>.
+        /// </summary>
+        /// <typeparam name="TPageManager">The type of the page manager to add.</typeparam>
+        /// <returns>The current <see cref="ChaosBuilder"/> instance.</returns>
+        public virtual ChaosBuilder AddPageManager<TPageManager>() where TPageManager : class
+        {
+            var pageManagerType = typeof(PageManager<>).MakeGenericType(PageType);
+            var customType = typeof(TPageManager);
+            if(pageManagerType == customType ||
+                !pageManagerType.GetTypeInfo().IsAssignableFrom(customType.GetTypeInfo()))
+            {
+                throw new InvalidOperationException(Resources.FormatInvalidManagerType(customType.Name, "PageManager", this.PageType));
+            }
+            return this;
+        }
+        
 
         /// <summary>
         /// Adds an <see cref="IPageStore{TPage}"/> for the <seealso cref="PageType"/>.

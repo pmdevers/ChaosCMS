@@ -1,6 +1,6 @@
 {
   "description": "ChaosCMS ",
-  "version": "1.0.0-*",
+  "version": "1.0.0",
   "buildOptions": {
     "warningsAsErrors": true,
     //"keyFile": "../../tools/Key.snk",
@@ -12,20 +12,17 @@
       "url": "git://github.com/pmdevers/ChaosCMS"
     },
     "tags": [
-      "ChaosCMS",
+      "ChaosCMS", 
       "cms"
     ]
   },
   "dependencies": {
-    "ChaosCMS": "1.0.0",
-    "Microsoft.EntityFrameworkCore.Relational": "1.0.1",
-    "NETStandard.Library": "1.6.0"
+    "ChaosCMS": "1.0.0-*",
+    "Microsoft.EntityFrameworkCore.Relational": "1.1.0-*",
+    "NETStandard.Library": "1.6.1-*"
   },
   "frameworks": {
-    "netstandard1.6": {
-      "dependencies": {},
-      "imports": "dnxcore50"
-    }
-    
+    "net451": {},
+    "netstandard1.6": {}
   }
 }

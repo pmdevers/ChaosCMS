@@ -1,8 +1,6 @@
 ﻿using ChaosCMS.Managers;
+using ChaosCMS.Razor;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ChaosCMS
@@ -15,15 +13,19 @@ namespace ChaosCMS
     {
         private readonly RequestDelegate _next;
         private readonly PageManager<TPage> pageManager;
+        private readonly IChaosRazorEngine engine;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ChaosMiddleware{TPage}"/>
         /// </summary>
         /// <param name="next">The next middleware in the pipeline.</param>
         /// <param name="pageManager">The chaos <see cref="PageManager{TPage}"/>.</param>
-        public ChaosMiddleware(RequestDelegate next, PageManager<TPage> pageManager)
+        /// <param name="engine">The <see cref="IChaosRazorEngine"/> used to generate the template</param>
+        public ChaosMiddleware(RequestDelegate next, PageManager<TPage> pageManager, IChaosRazorEngine engine)
         {
             _next = next;
             this.pageManager = pageManager;
+            this.engine = engine;
         }
 
         /// <summary>
@@ -34,8 +36,17 @@ namespace ChaosCMS
         public async Task Invoke(HttpContext httpContext)
         {
             var page = await pageManager.FindByUrlAsync(httpContext.Request.Path.Value);
+            if(page == null)
+            {
+                throw ChaosHttpExeption.PageNotFound(httpContext.Request.Path.Value);
+            }
+
             var name = await pageManager.GetNameAsync(page);
-            await httpContext.Response.WriteAsync(name);
+            var results = engine.Parse(name + ".cshtml", page);
+
+            httpContext.Response.ContentType = "text/html";
+                                   
+            await httpContext.Response.WriteAsync(results);
 
             await _next(httpContext);
         }

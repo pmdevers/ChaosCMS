@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using ChaosCMS.Json;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -14,11 +16,24 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public static class ChaosJsonBuilderExtensions
     {
-        public static ChaosBuilder AddJsonStores(this ChaosBuilder builder)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public static ChaosBuilder AddJsonStores(this ChaosBuilder builder, Action<ChaosJsonStoreOptions> options = null)
         {
             builder.Services.TryAdd(GetDefaultServices(builder.PageType));
+
+            if (options != null)
+            {
+                builder.Services.Configure(options);
+            }
+
             return builder;
         }
+
 
         private static IServiceCollection GetDefaultServices(Type pageType)
         {

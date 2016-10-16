@@ -75,7 +75,7 @@ namespace ChaosCMS.Managers
         protected internal ChaosErrorDescriber ErrorDescriber { get; set; }
 
         /// <summary>
-        /// The <see cref="ChaosOptions"/> used to configure Identity.
+        /// The <see cref="ChaosOptions"/> used to configure Chaos.
         /// </summary>
         protected internal ChaosOptions Options { get; set; }
 
@@ -96,9 +96,9 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
-        /// 
+        /// Gets the name of the page.
         /// </summary>
-        /// <param name="page"></param>
+        /// <param name="page">The page to get the name from.</param>
         /// <returns></returns>
         public virtual Task<string> GetNameAsync(TPage page)
         {
@@ -109,6 +109,23 @@ namespace ChaosCMS.Managers
             }
 
             return this.Store.GetNameAsync(page, CancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the url of the page.
+        /// </summary>
+        /// <param name="page">The page to get the url from.</param>
+        /// <returns></returns>
+        public virtual Task<string> GetUrlAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return this.Store.GetUrlAsync(page, CancellationToken);
         }
 
         #region IDisposable Support
