@@ -128,6 +128,22 @@ namespace ChaosCMS.Managers
             return this.Store.GetUrlAsync(page, CancellationToken);
         }
 
+        /// <summary>
+        /// Gets the template of the Page
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public virtual Task<string> GetTemplateAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return this.Store.GetTemplateAsync(page, CancellationToken);
+        }
+
         #region IDisposable Support
         private bool isDisposed = false; // To detect redundant calls
 

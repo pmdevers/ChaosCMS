@@ -2,11 +2,13 @@
   {
     "Id": "5807cab2-fabc-42df-b59f-0d30f506765f",
     "Name": "HomePage",
+    "Template" : "index",
     "Url": "/"
   },
   {
     "Id": "5807cab3-fabc-42df-b59f-0d30f506765f",
     "Name": "SubPage",
+    "Template": "index",
     "Url": "/subpage"
   }
 ]

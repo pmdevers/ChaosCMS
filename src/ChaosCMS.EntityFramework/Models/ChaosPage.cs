@@ -35,5 +35,10 @@ namespace ChaosCMS.Entityframework
         /// The url of the page.
         /// </summary>
         public string Url { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Template { get; set; }
     }
 }

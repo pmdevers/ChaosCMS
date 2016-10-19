@@ -32,5 +32,13 @@ namespace ChaosCMS.Stores
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<string> GetUrlAsync(TPage page, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<string> GetTemplateAsync(TPage page, CancellationToken cancellationToken);
     }
 }

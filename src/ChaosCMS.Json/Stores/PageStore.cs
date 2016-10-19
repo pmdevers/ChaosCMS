@@ -50,7 +50,7 @@ namespace ChaosCMS.Json.Stores
             return Task.FromResult(item);
         }
 
-        private List<TPage> ReadFile()
+        private IEnumerable<TPage> ReadFile()
         {
             List<TPage> collection;
             lock (lockObject)
@@ -118,6 +118,23 @@ namespace ChaosCMS.Json.Stores
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="page"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task<string> GetTemplateAsync(TPage page, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return Task.FromResult(page.Template);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void Dispose()
         {
             isDisposed = true;
@@ -133,7 +150,5 @@ namespace ChaosCMS.Json.Stores
                 throw new ObjectDisposedException(GetType().Name);
             }
         }
-
-        
     }
 }

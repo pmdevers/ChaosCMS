@@ -41,8 +41,8 @@ namespace ChaosCMS
                 throw ChaosHttpExeption.PageNotFound(httpContext.Request.Path.Value);
             }
 
-            var name = await pageManager.GetNameAsync(page);
-            var results = engine.Parse(name + ".cshtml", page);
+            var templateName = await pageManager.GetTemplateAsync(page);
+            var results = engine.Parse(templateName + ".cshtml", page);
 
             httpContext.Response.ContentType = "text/html";
                                    

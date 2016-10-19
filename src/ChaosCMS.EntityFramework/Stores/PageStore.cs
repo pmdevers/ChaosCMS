@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using ChaosCMS.Entityframework;
 
 namespace ChaosCMS.EntityFramework
 {
@@ -13,7 +14,7 @@ namespace ChaosCMS.EntityFramework
     /// <typeparam name="TContext">The type of the data context class used to access the store.</typeparam>
     /// <typeparam name="TKey">The type of the primary key for a page</typeparam>
     public class PageStore<TPage, TContext, TKey> : IPageStore<TPage>
-        where TPage : class
+        where TPage : ChaosPage<TKey>
         where TContext : DbContext
         where TKey : IEquatable<TKey>
     {
@@ -53,6 +54,23 @@ namespace ChaosCMS.EntityFramework
         public Task<string> GetUrlAsync(TPage page, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task<string> GetTemplateAsync(TPage page, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return Task.FromResult(page.Template);
         }
     }
 }
