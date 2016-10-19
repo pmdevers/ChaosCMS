@@ -3,6 +3,8 @@ using ChaosCMS.Razor.Caching;
 using ChaosCMS.Razor.Compilation;
 using ChaosCMS.Razor.Host;
 using ChaosCMS.Razor.Templating;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ChaosCMS.Razor
 {
@@ -15,27 +17,31 @@ namespace ChaosCMS.Razor
 		/// <param name="configuration">Engine configuration options</param>
 		public EngineCore(
 			ITemplateManager templateManager,
-			IEngineConfiguration configuration)
+            IRazorTemplateCompiler templateCompiler,
+            ICompilerService compilerservice,
+            IActivator activator,
+            IOptions<RazorConfiguration> configuration)
 		{
-			if (configuration == null)
-			{
-				throw new ArgumentNullException(nameof(configuration));
-			}
-
-			this.TemplateManager = templateManager;
-			this.Configuration = configuration;
+			this.templateCompiler = templateCompiler;
+            this.compilerService = compilerservice;
+			this.templateManager = templateManager;
+            this.activator = activator;
+            this.configuration = configuration.Value;
 		}
 
-		public IEngineConfiguration Configuration { get; }
-		public ITemplateManager TemplateManager { get; }
+        private readonly ITemplateManager templateManager;
+        private readonly IRazorTemplateCompiler templateCompiler;
+        private readonly ICompilerService compilerService;
+        private readonly IActivator activator;
+        private readonly RazorConfiguration configuration;
 
-		/// <summary>
-		/// Generates razor template by parsing given <param name="templateSource" />
-		/// </summary>
-		/// <param name="templateSource"></param>
-		/// <param name="modelTypeInfo"></param>
-		/// <returns></returns>
-		public string GenerateRazorTemplate(ITemplateSource templateSource, ModelTypeInfo modelTypeInfo)
+        /// <summary>
+        /// Generates razor template by parsing given <param name="templateSource" />
+        /// </summary>
+        /// <param name="templateSource"></param>
+        /// <param name="modelTypeInfo"></param>
+        /// <returns></returns>
+        public string GenerateRazorTemplate(ITemplateSource templateSource, ModelTypeInfo modelTypeInfo)
 		{
 			var host = new ChaosRazorHost(null);
 
@@ -44,7 +50,7 @@ namespace ChaosCMS.Razor
 				host.DefaultModel = modelTypeInfo.TemplateTypeName;
 			}
 
-			return Configuration.RazorTemplateCompiler.CompileTemplate(host, templateSource);
+			return templateCompiler.CompileTemplate(host, templateSource);
 		}
 
 		/// <summary>
@@ -61,9 +67,9 @@ namespace ChaosCMS.Razor
 			}
 
 			string razorTemplate = GenerateRazorTemplate(templateSource, modelTypeInfo);
-			var context = new CompilationContext(razorTemplate, Configuration.Namespaces);
+			var context = new CompilationContext(razorTemplate, configuration.Namespaces);
 
-			CompilationResult compilationResult = Configuration.CompilerService.Compile(context);
+			CompilationResult compilationResult = compilerService.Compile(context);
 
 			return compilationResult;
 		}
@@ -75,7 +81,7 @@ namespace ChaosCMS.Razor
 		/// <returns>Compiled type in succeded. Compilation errors on fail</returns>
 		public CompilationResult KeyCompile(string key)
 		{
-			ITemplateSource source = TemplateManager.Resolve(key);
+			ITemplateSource source = templateManager.Resolve(key);
 
 			return CompileSource(source, null);
 		}
@@ -87,7 +93,7 @@ namespace ChaosCMS.Razor
 		/// <returns></returns>
 		public TemplatePage Activate(Type compiledType)
 		{
-			return (TemplatePage)Configuration.Activator.CreateInstance(compiledType);
+			return (TemplatePage)activator.CreateInstance(compiledType);
 		}
 	}
 }

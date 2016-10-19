@@ -7,6 +7,8 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Primitives;
 using ChaosCMS.Razor.Compilation;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ChaosCMS.Razor.Caching
 {
@@ -21,14 +23,9 @@ namespace ChaosCMS.Razor.Caching
 
 		public string Root { get; }
 
-		public TrackingCompilerCache(string root)
+		public TrackingCompilerCache(IOptions<RazorConfiguration> config)
 		{
-			if (string.IsNullOrEmpty(root))
-			{
-				throw new ArgumentNullException(nameof(root));
-			}
-
-			Root = root;
+			Root = config.Value.Root;
 			_fileProvider = new PhysicalFileProvider(Root);
 			_cache = new MemoryCache(new MemoryCacheOptions() { CompactOnMemoryPressure = false });
 		}

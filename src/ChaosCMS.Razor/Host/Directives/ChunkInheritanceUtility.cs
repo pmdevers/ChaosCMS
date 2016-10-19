@@ -151,7 +151,8 @@ namespace ChaosCMS.Razor.Host.Directives
 			return new IChunkMerger[]
 			{
 				new UsingChunkMerger(),
-				new SetBaseTypeChunkMerger(modelType)
+                new InjectChunkMerger(modelType),
+                new SetBaseTypeChunkMerger(modelType)
 			};
 		}
 

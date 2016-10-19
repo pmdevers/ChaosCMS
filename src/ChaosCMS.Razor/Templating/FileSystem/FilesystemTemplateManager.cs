@@ -1,22 +1,21 @@
 ﻿using System;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ChaosCMS.Razor.Templating.FileSystem
 {
 	public class FilesystemTemplateManager : ITemplateManager, IDisposable
 	{
 		private readonly PhysicalFileProvider fileProvider;
+        private RazorConfiguration config;
 
-		public FilesystemTemplateManager(string root)
+        public FilesystemTemplateManager(IOptions<RazorConfiguration> options)
 		{
-			if (string.IsNullOrEmpty(root))
-			{
-				throw new ArgumentNullException(nameof(root));
-			}
-
-			this.Root = root;
-			this.fileProvider = new PhysicalFileProvider(root);
+            this.config = options.Value;
+			this.Root = config.Root;
+			this.fileProvider = new PhysicalFileProvider(config.Root);
 		}
 
 		public string Root { get; }

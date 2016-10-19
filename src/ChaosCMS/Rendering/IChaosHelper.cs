@@ -16,5 +16,11 @@ namespace ChaosCMS.Rendering
         /// </summary>
         /// <returns></returns>
         IHtmlContent Raw(string test);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        IHtmlContent Test();
     }
 }

@@ -5,8 +5,8 @@ using System;
 
 namespace ChaosCMS.Razor.Host
 {
-	public abstract class ChaosRazorCSharpCodeVisitor : CodeVisitor<CSharpCodeWriter>
-	{
+	public abstract class ChaosRazorCSharpCodeVisitor : ChoasRazorCSharpChunkVisitor
+    {
 		public ChaosRazorCSharpCodeVisitor(
 			CSharpCodeWriter writer,
 			CodeGeneratorContext context)
@@ -22,18 +22,9 @@ namespace ChaosCMS.Razor.Host
 			}
 		}
 
-		public override void Accept(Chunk chunk)
-		{
-			if (chunk is InjectChunk)
-			{
-				Visit((InjectChunk)chunk);
-			}
-			else
-			{
-				base.Accept(chunk);
-			}
-		}
+		protected override void Visit(InjectChunk chunk)
+        {
 
-		protected abstract void Visit(InjectChunk chunk);
+        }
 	}
 }

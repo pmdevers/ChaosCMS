@@ -6,11 +6,9 @@ namespace ChaosCMS.Razor
 {
 	public interface IChaosRazorEngine
     {
-		IEngineConfiguration Configuration { get; }
+        IEngineCore Core { get; }
 
-		IEngineCore Core { get; }
-
-		/// <summary>
+        /// <summary>
 		/// Parses a template with a given <paramref name="key" />
 		/// </summary>
 		/// <typeparam name="T">Type of the Model</typeparam>

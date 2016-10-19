@@ -39,7 +39,7 @@ namespace ChaosCMS.Razor.Host
 		private static readonly Chunk[] _defaultInheritedChunks = new Chunk[]
 		{
             //ChaosCMS.Rendering.IChaosHelper
-            new InjectChunk("ChaosCMS.Rendering.ChaosHelper<TModel>", HtmlHelperPropertyName),
+            new InjectChunk("ChaosCMS.Rendering.IChaosHelper<TModel>", HtmlHelperPropertyName),
             new SetBaseTypeChunk
 			{
 				TypeName = $"{BaseType}<{ChunkHelper.TModelToken}>",
@@ -188,7 +188,7 @@ namespace ChaosCMS.Razor.Host
             return base.DecorateChunkGenerator(incomingChunkGenerator);
         }
 
-        /// <inheritdoc />
+                /// <inheritdoc />
         public override CodeGenerator DecorateCodeGenerator(
 			CodeGenerator incomingGenerator,
 			CodeGeneratorContext context)

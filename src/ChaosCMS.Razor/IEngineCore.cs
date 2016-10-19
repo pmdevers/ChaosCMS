@@ -6,8 +6,6 @@ namespace ChaosCMS.Razor
 {
 	public interface IEngineCore
 	{
-		IEngineConfiguration Configuration { get; }
-
 		/// <summary>
 		/// Generates razor template by parsing given <param name="templateSource" />
 		/// </summary>

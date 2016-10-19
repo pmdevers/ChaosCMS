@@ -42,8 +42,10 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             var location = Directory.GetCurrentDirectory();
-            var engine = EngineFactory.CreatePhysical(location + "/templates");
-            services.TryAddSingleton<IChaosRazorEngine>(engine);
+
+            services.AddRazor(razor => {
+                razor.Root = Path.Combine(Directory.GetCurrentDirectory(), "templates");
+            });
 
             services.TryAddScoped(typeof(IChaosHelper<>), typeof(ChaosHelper<>));
 

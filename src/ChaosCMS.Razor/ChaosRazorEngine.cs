@@ -3,15 +3,19 @@ using System.Dynamic;
 using System.IO;
 using ChaosCMS.Razor.Rendering;
 using ChaosCMS.Razor.Templating;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ChaosCMS.Razor
 {
 	public class ChaosRazorEngine : IChaosRazorEngine
 	{
-		private readonly IEngineCore core;
+		
 		private readonly IPageLookup pageLookup;
+        private readonly IActivator activator;
+        private RazorConfiguration configuration;
 
-		public ChaosRazorEngine(IEngineCore core, IPageLookup pagelookup)
+        public ChaosRazorEngine(IEngineCore core, IPageLookup pagelookup, IActivator activator, IOptions<RazorConfiguration> options)
 		{
 			if (core == null)
 			{
@@ -23,23 +27,22 @@ namespace ChaosCMS.Razor
 				throw new ArgumentNullException();
 			}
 
-			this.core = core;
+			this.Core = core;
 			this.pageLookup = pagelookup;
-			this.Configuration = core.Configuration;
+            this.activator = activator;
+            this.configuration = options.Value;
 		}
 
-		public IEngineConfiguration Configuration { get; }
+        public IEngineCore Core { get; }
 
-		public IEngineCore Core => core;
-		
-		/// <summary>
-		/// Parses a template with a given <paramref name="key" />
-		/// </summary>
-		/// <typeparam name="T">Type of the Model</typeparam>
-		/// <param name="key">Key used to resolve a template</param>
-		/// <param name="model">Template model</param>
-		/// <returns>Returns parsed string</returns>
-		public string Parse<T>(string key, T model)
+        /// <summary>
+        /// Parses a template with a given <paramref name="key" />
+        /// </summary>
+        /// <typeparam name="T">Type of the Model</typeparam>
+        /// <param name="key">Key used to resolve a template</param>
+        /// <param name="model">Template model</param>
+        /// <returns>Returns parsed string</returns>
+        public string Parse<T>(string key, T model)
 		{
 			return Parse(key, model, typeof(T), viewBag: null);
 		}
@@ -94,7 +97,7 @@ namespace ChaosCMS.Razor
 		/// <returns>Template page</returns>
 		public TemplatePage Activate(Type compiledType)
 		{
-			return (TemplatePage)Configuration.Activator.CreateInstance(compiledType);
+			return (TemplatePage)activator.CreateInstance(compiledType);
 		}
 
 		/// <summary>
@@ -115,7 +118,7 @@ namespace ChaosCMS.Razor
 				using (var renderer = new PageRenderer(page, pageLookup))
 				{
 					renderer.ViewStartPages.AddRange(page.PageContext.ViewStartPages);
-					renderer.PreRenderCallbacks.AddRange(Configuration.PreRenderCallbacks);
+					renderer.PreRenderCallbacks.AddRange(configuration.PreRenderCallbacks);
 					renderer.RenderAsync(page.PageContext).GetAwaiter().GetResult();
 					return writer.ToString();
 				}
