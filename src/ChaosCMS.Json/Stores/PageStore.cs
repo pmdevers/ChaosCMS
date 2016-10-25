@@ -34,8 +34,16 @@ namespace ChaosCMS.Json.Stores
         /// The <see cref="ChaosJsonStoreOptions"/> used to configure Chaos Json Store.
         /// </summary>
         protected internal ChaosJsonStoreOptions Options { get; }
-        
-                
+
+        /// <inheritdoc />
+        public Task<TPage> FindByIdAsync(string pageId, CancellationToken cancelationToken)
+        {
+            cancelationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            var item = ReadFile().FirstOrDefault(x => x.Id.Equals(ConvertIdFromString(pageId)));
+            return Task.FromResult(item);
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -138,6 +146,18 @@ namespace ChaosCMS.Json.Stores
         public void Dispose()
         {
             isDisposed = true;
+        }
+
+
+        private Guid ConvertIdFromString(string pageId)
+        {
+            Guid id;
+            if (!Guid.TryParse(pageId, out id))
+            {
+                id = Guid.Empty;
+            }
+
+            return id;
         }
 
         /// <summary>

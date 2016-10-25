@@ -80,6 +80,22 @@ namespace ChaosCMS.Managers
         protected internal ChaosOptions Options { get; set; }
 
         /// <summary>
+        /// Finds the page with the pageId
+        /// </summary>
+        /// <param name="pageId">The id of the page.</param>
+        /// <returns></returns>
+        public Task<TPage> FindByIdAsync(string pageId)
+        {
+            this.ThrowIfDisposed();
+            if (pageId == null)
+            {
+                throw new ArgumentNullException(nameof(pageId));
+            }
+
+            return this.Store.FindByIdAsync(pageId, CancellationToken);
+        }
+
+        /// <summary>
         /// Finds the assosiated page with the urlPath.
         /// </summary>
         /// <param name="urlPath">The url of the page.</param>

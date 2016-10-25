@@ -11,6 +11,14 @@ namespace ChaosCMS.Stores
     public interface IPageStore<TPage> : IDisposable
         where TPage : class
     {
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageId"></param>
+        /// <param name="cancelationToken"></param>
+        /// <returns></returns>
+        Task<TPage> FindByIdAsync(string pageId, CancellationToken cancelationToken);
         /// <summary>
         /// 
         /// </summary>

@@ -4,7 +4,7 @@
   "language": "en",
   "version": "1.0.0",
   "dependencies": {
-    "System.Buffers": "4.0.0",
+    "System.Buffers": "4.3.0-*",
     "System.Text.Encodings.Web": "4.0.0",
     "Microsoft.AspNetCore.Razor": "1.0.0",
     "Microsoft.AspNetCore.Razor.Runtime": "1.0.0",

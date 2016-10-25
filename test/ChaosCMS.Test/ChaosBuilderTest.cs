@@ -61,6 +61,11 @@ namespace ChaosCMS.Test
                 throw new NotImplementedException();
             }
 
+            public Task<TestPage> FindByIdAsync(string pageId, CancellationToken cancelationToken)
+            {
+                throw new NotImplementedException();
+            }
+
             public Task<TestPage> FindByUrlAsync(string urlPath, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
@@ -72,6 +77,11 @@ namespace ChaosCMS.Test
             }
 
             public Task<string> GetUrlAsync(TestPage page, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<string> GetTemplateAsync(TestPage page, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }

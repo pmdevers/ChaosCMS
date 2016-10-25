@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -7,8 +7,16 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using ChaosCMS;
 using ChaosCMS.Managers;
 using ChaosCMS.Razor;
+using ChaosCMS.Controllers;
 using System.IO;
 using ChaosCMS.Rendering;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.CodeAnalysis;
+using Newtonsoft.Json.Serialization;
+using System.Linq;
+using TypeInfo = System.Reflection.TypeInfo;
+using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -41,7 +49,18 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            var location = Directory.GetCurrentDirectory();
+            services.AddMvc()
+                .AddJsonOptions(a=>a.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
+                .ConfigureApplicationPartManager(manager =>
+                {
+                    //manager.ApplicationParts.Clear();
+                    manager.ApplicationParts.Add(
+                        new TypesPart(
+                                typeof(PageController<TPage>)
+                            )
+                        );
+                })
+                .AddControllersAsServices();
 
             services.AddRazor(razor => {
                 razor.Root = Path.Combine(Directory.GetCurrentDirectory(), "templates");
@@ -53,7 +72,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<ChaosMarkerService>();
             services.TryAddScoped<ChaosErrorDescriber>();
             services.TryAddScoped<PageManager<TPage>, PageManager<TPage>>();
-                       
+            
             if(options != null)
             {
                 services.Configure(options);
@@ -66,6 +85,17 @@ namespace Microsoft.Extensions.DependencyInjection
             return builder;
         }
 
+        private class TypesPart : ApplicationPart, IApplicationPartTypeProvider
+        {
+            public TypesPart(params Type[] types)
+            {
+                Types = types.Select(t => t.GetTypeInfo());
+            }
+
+            public override string Name => string.Join(", ", Types.Select(t => t.FullName));
+
+            public IEnumerable<TypeInfo> Types { get; }
+        }
 
     }
 }

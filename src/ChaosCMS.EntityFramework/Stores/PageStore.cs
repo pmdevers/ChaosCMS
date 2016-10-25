@@ -25,6 +25,18 @@ namespace ChaosCMS.EntityFramework
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageId"></param>
+        /// <param name="cancelationToken"></param>
+        /// <returns></returns>
+        public Task<TPage> FindByIdAsync(string pageId, CancellationToken cancelationToken)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 
         /// </summary>
