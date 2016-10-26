@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor;
@@ -17,6 +18,10 @@ using Newtonsoft.Json.Serialization;
 using System.Linq;
 using TypeInfo = System.Reflection.TypeInfo;
 using System.Reflection;
+using ChaosCMS.Formatters;
+using ChaosCMS.Validators;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Newtonsoft.Json;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -49,11 +54,16 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddMvc()
-                .AddJsonOptions(a=>a.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
+            services.AddMvc(o =>
+                {
+                    o.OutputFormatters.Add(new JsonHalOutputFormatter(new[] { "application/hal+json", "application/vnd.example.hal+json", "application/vnd.example.hal.v1+json"}));  
+                })
+                .AddJsonOptions(a =>
+                {
+                    a.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                })
                 .ConfigureApplicationPartManager(manager =>
                 {
-                    //manager.ApplicationParts.Clear();
                     manager.ApplicationParts.Add(
                         new TypesPart(
                                 typeof(PageController<TPage>)
@@ -61,6 +71,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         );
                 })
                 .AddControllersAsServices();
+            
 
             services.AddRazor(razor => {
                 razor.Root = Path.Combine(Directory.GetCurrentDirectory(), "templates");
@@ -72,6 +83,10 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<ChaosMarkerService>();
             services.TryAddScoped<ChaosErrorDescriber>();
             services.TryAddScoped<PageManager<TPage>, PageManager<TPage>>();
+
+            // Validators
+            services.TryAddScoped<IPageValidator<TPage>, DefaultPageValidator<TPage>>();
+
             
             if(options != null)
             {

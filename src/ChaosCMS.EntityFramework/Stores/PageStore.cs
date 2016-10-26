@@ -26,54 +26,48 @@ namespace ChaosCMS.EntityFramework
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pageId"></param>
-        /// <param name="cancelationToken"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
+        public Task<ChaosPaged<TPage>> FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public Task<ChaosResult> UpdateAsync(TPage page, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
         public Task<TPage> FindByIdAsync(string pageId, CancellationToken cancelationToken)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="urlPath"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public Task<TPage> FindByUrlAsync(string urlPath, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+
+        /// <inheritdoc />
+        public Task<string> GetIdAsync(TPage page, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
         public Task<string> GetNameAsync(TPage page, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public Task<string> GetUrlAsync(TPage page, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public Task<string> GetTemplateAsync(TPage page, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -84,5 +78,7 @@ namespace ChaosCMS.EntityFramework
             }
             return Task.FromResult(page.Template);
         }
+
+        
     }
 }

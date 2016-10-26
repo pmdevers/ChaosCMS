@@ -25,5 +25,60 @@ namespace ChaosCMS
                 Description = Resources.DefaultError
             };
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual ChaosError NegativePage()
+        {
+            return new ChaosError
+            {
+                Code = nameof(NegativePage),
+                Description = Resources.NegativePage
+            };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public ChaosError PageNameIsInvalid(string name)
+        {
+            return new ChaosError
+            {
+                Code = nameof(PageNameIsInvalid),
+                Description = Resources.FormatPageNameIsInvalid(name)
+            };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public ChaosError PageUrlIsInvalid(string url)
+        {
+            return new ChaosError
+            {
+                Code = nameof(PageUrlIsInvalid),
+                Description = Resources.FormatPageUrlIsInvalid(url)
+            };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="template"></param>
+        /// <returns></returns>
+        public ChaosError PageTemplateIsInvalid(string template)
+        {
+            return new ChaosError
+            {
+                Code = nameof(PageTemplateIsInvalid),
+                Description = Resources.FormatPageTemplateIsInvalid(template)
+            };
+        }
     }
 }

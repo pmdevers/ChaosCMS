@@ -36,26 +36,128 @@ namespace ChaosCMS.Json.Stores
         protected internal ChaosJsonStoreOptions Options { get; }
 
         /// <inheritdoc />
-        public Task<TPage> FindByIdAsync(string pageId, CancellationToken cancelationToken)
+        public Task<ChaosPaged<TPage>> FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken)
         {
-            cancelationToken.ThrowIfCancellationRequested();
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            var allItems = ReadFile();
+            var items = allItems.Skip((page - 1)*itemsPerPage).Take(itemsPerPage);
+
+            return Task.FromResult(new ChaosPaged<TPage>
+            {
+                CurrentPage = page,
+                ItemsPerPage = itemsPerPage,
+                TotalItems = allItems.Count(),
+                Items = items
+            });
+
+        }
+
+        /// <inheritdoc />
+        public Task<ChaosResult> UpdateAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            var items = ReadFile().ToList();
+            items.RemoveAll(x=>x.Id.Equals(page.Id));
+            items.Add(page);
+            WriteFile(items);
+            return Task.FromResult(ChaosResult.Success);
+        }
+
+        /// <inheritdoc />
+        public Task<TPage> FindByIdAsync(string pageId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
             var item = ReadFile().FirstOrDefault(x => x.Id.Equals(ConvertIdFromString(pageId)));
             return Task.FromResult(item);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="urlPath"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public virtual Task<TPage> FindByUrlAsync(string urlPath, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
             var item = ReadFile().FirstOrDefault(x => x.Url.Equals(urlPath, StringComparison.CurrentCultureIgnoreCase));
             return Task.FromResult(item);
+        }
+        
+        /// <inheritdoc />
+        public Task<string> GetIdAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return Task.FromResult(ConvertIdToString(page.Id));
+        }
+
+        /// <inheritdoc />
+        public virtual Task<string> GetNameAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return Task.FromResult(page.Name);
+        }
+
+        /// <inheritdoc />
+        public virtual Task<string> GetUrlAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return Task.FromResult(page.Url);
+        }
+
+        /// <inheritdoc />
+        public Task<string> GetTemplateAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return Task.FromResult(page.Template);
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Dispose()
+        {
+            isDisposed = true;
+        }
+
+
+        private Guid ConvertIdFromString(string pageId)
+        {
+            Guid id;
+            if (!Guid.TryParse(pageId, out id))
+            {
+                id = Guid.Empty;
+            }
+
+            return id;
+        }
+
+        private string ConvertIdToString(Guid id)
+        {
+            if (Guid.Equals(id, default(Guid)))
+            {
+                return null;
+            }
+            return id.ToString();
         }
 
         private IEnumerable<TPage> ReadFile()
@@ -87,77 +189,6 @@ namespace ChaosCMS.Json.Stores
                 }
                 File.WriteAllText(filename, JsonConvert.SerializeObject(objects, Formatting.Indented));
             }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public virtual Task<string> GetNameAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
-            if (page == null)
-            {
-                throw new ArgumentNullException(nameof(page));
-            }
-            return Task.FromResult(page.Name);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public virtual Task<string> GetUrlAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
-            if(page == null)
-            {
-                throw new ArgumentNullException(nameof(page));
-            }
-            return Task.FromResult(page.Url);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public Task<string> GetTemplateAsync(TPage page, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
-            if (page == null)
-            {
-                throw new ArgumentNullException(nameof(page));
-            }
-            return Task.FromResult(page.Template);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Dispose()
-        {
-            isDisposed = true;
-        }
-
-
-        private Guid ConvertIdFromString(string pageId)
-        {
-            Guid id;
-            if (!Guid.TryParse(pageId, out id))
-            {
-                id = Guid.Empty;
-            }
-
-            return id;
         }
 
         /// <summary>

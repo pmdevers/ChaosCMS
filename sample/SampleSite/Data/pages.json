@@ -2,13 +2,25 @@
   {
     "Id": "5807cab2-fabc-42df-b59f-0d30f506765f",
     "Name": "HomePage",
-    "Template" : "index",
-    "Url": "/"
+    "Url": "/",
+    "Template": "index"
   },
   {
     "Id": "5807cab3-fabc-42df-b59f-0d30f506765f",
     "Name": "SubPage",
-    "Template": "index",
-    "Url": "/subpage"
+    "Url": "/subpage",
+    "Template": "index"
+  },
+  {
+    "Id": "5807cab4-fabc-42df-b59f-0d30f506765f",
+    "Name": "SubPage-1",
+    "Url": "/subpage-1",
+    "Template": "index"
+  },
+  {
+    "Id": "5807cab5-fabc-42df-b59f-0d30f506765f",
+    "Name": "test",
+    "Url": "/subpage-2",
+    "Template": "index"
   }
 ]

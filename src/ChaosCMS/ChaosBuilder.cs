@@ -3,6 +3,7 @@ using ChaosCMS.Stores;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
+using ChaosCMS.Validators;
 
 namespace ChaosCMS
 {
@@ -81,5 +82,14 @@ namespace ChaosCMS
             return AddScoped(typeof(IPageStore<>).MakeGenericType(PageType), typeof(T));
         }
 
+        /// <summary>
+        /// Adds an <see cref="IPageValidator{TPage}"/> for the <seealso cref="PageType"/>.
+        /// </summary>
+        /// <typeparam name="T">The page validator.</typeparam>
+        /// <returns>The current <see cref="ChaosBuilder"/> instance.</returns>
+        public virtual ChaosBuilder AddPageValidator<T>() where T : class 
+        {
+            return AddScoped(typeof(IPageValidator<>).MakeGenericType(PageType), typeof(T));
+        }
     }
 }

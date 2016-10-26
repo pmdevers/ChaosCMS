@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using ChaosCMS.Stores;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -6,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading;
+using ChaosCMS.Validators;
 
 namespace ChaosCMS.Managers
 {
@@ -29,11 +32,13 @@ namespace ChaosCMS.Managers
         /// <param name="store">The persistence store the manager will operate over.</param>
         /// <param name="optionsAccessor"></param>
         /// <param name="errors"></param>
+        /// <param name="validators"></param>
         /// <param name="services"></param>
         /// <param name="logger"></param>
         public PageManager(IPageStore<TPage> store,
             IOptions<ChaosOptions> optionsAccessor,
             ChaosErrorDescriber errors,
+            IEnumerable<IPageValidator<TPage>> validators,
             IServiceProvider services,
             ILogger<PageManager<TPage>> logger)
         {
@@ -46,6 +51,14 @@ namespace ChaosCMS.Managers
             this.Options = optionsAccessor?.Value ?? new ChaosOptions();
             this.ErrorDescriber = errors;
             this.Logger = logger;
+
+            if (validators != null)
+            {
+                foreach (var validator in validators)
+                {
+                    this.PageValidators.Add(validator);
+                }
+            }
 
             if (services != null)
             {
@@ -70,6 +83,11 @@ namespace ChaosCMS.Managers
         protected internal virtual ILogger Logger { get; set; }
 
         /// <summary>
+        /// The <see cref="IPageValidator{TPage}"/> used to validate pages.
+        /// </summary>
+        protected internal IList<IPageValidator<TPage>> PageValidators { get; } = new List<IPageValidator<TPage>>();
+
+        /// <summary>
         /// The <see cref="ChaosErrorDescriber"/> used to generate error messages.
         /// </summary>
         protected internal ChaosErrorDescriber ErrorDescriber { get; set; }
@@ -79,13 +97,80 @@ namespace ChaosCMS.Managers
         /// </summary>
         protected internal ChaosOptions Options { get; set; }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public virtual async Task<ChaosResult> UpdateAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            var result = await ValidateInternal(page);
+
+            if (!result.Succeeded)
+            {
+                return result;
+            }
+
+            return await this.Store.UpdateAsync(page, CancellationToken);
+        }
+
+        private async Task<ChaosResult> ValidateInternal(TPage page)
+        {
+            var error = new List<ChaosError>();
+            foreach (var validator in PageValidators)
+            {
+                var result = await validator.ValidateAsync(this, page);
+                if (!result.Succeeded)
+                {
+                    error.AddRange(result.Errors);
+                }
+            }
+
+            if (error.Count > 0)
+            {
+                return ChaosResult.Failed(error.ToArray());
+            }
+
+            return ChaosResult.Success;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="itemsPerPage"></param>
+        /// <returns></returns>
+        public Task<ChaosPaged<TPage>> FindPagedAsync(int page = 1, int itemsPerPage = 25)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page < 1)
+            {
+                throw new InvalidOperationException(Resources.NegativePage);
+            }
+            if (itemsPerPage > Options.MaxItemsPerPage)
+            {
+                throw new InvalidOperationException(Resources.FormatMaxItemsPerPage(Options.MaxItemsPerPage));
+            }
+            return this.Store.FindPagedAsync(page, itemsPerPage, CancellationToken);
+        }
+
         /// <summary>
         /// Finds the page with the pageId
         /// </summary>
         /// <param name="pageId">The id of the page.</param>
         /// <returns></returns>
-        public Task<TPage> FindByIdAsync(string pageId)
+        public virtual Task<TPage> FindByIdAsync(string pageId)
         {
+            CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
             if (pageId == null)
             {
@@ -102,6 +187,7 @@ namespace ChaosCMS.Managers
         /// <returns></returns>
         public virtual Task<TPage> FindByUrlAsync(string urlPath)
         {
+            CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
             if(urlPath == null)
             {
@@ -112,12 +198,30 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public virtual Task<string> GetIdAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return this.Store.GetIdAsync(page, CancellationToken);
+        }
+
+        /// <summary>
         /// Gets the name of the page.
         /// </summary>
         /// <param name="page">The page to get the name from.</param>
         /// <returns></returns>
         public virtual Task<string> GetNameAsync(TPage page)
         {
+            CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
             if(page == null)
             {

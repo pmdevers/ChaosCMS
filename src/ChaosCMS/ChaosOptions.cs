@@ -5,6 +5,9 @@ namespace ChaosCMS
     /// </summary>
     public class ChaosOptions
     {
-        
+        /// <summary>
+        /// Gets or sets the maximum items per page.
+        /// </summary>
+        public int MaxItemsPerPage { get; set; } = 128;
     }
 }

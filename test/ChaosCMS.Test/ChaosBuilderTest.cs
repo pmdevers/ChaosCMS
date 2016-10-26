@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using ChaosCMS.Stores;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using ChaosCMS.Managers;
+using ChaosCMS.Validators;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -50,7 +52,7 @@ namespace ChaosCMS.Test
 
         private class UberPageManager : PageManager<TestPage>
         {
-            public UberPageManager(IPageStore<TestPage> store, IOptions<ChaosOptions> optionsAccessor, ChaosErrorDescriber errors, IServiceProvider services, ILogger<PageManager<TestPage>> logger) : base(store, optionsAccessor, errors, services, logger)
+            public UberPageManager(IPageStore<TestPage> store, IOptions<ChaosOptions> optionsAccessor, ChaosErrorDescriber errors, IEnumerable<IPageValidator<TestPage>> validators, IServiceProvider services, ILogger<PageManager<TestPage>> logger) : base(store, optionsAccessor, errors, validators, services, logger)
             {
             }
         }
@@ -71,6 +73,11 @@ namespace ChaosCMS.Test
                 throw new NotImplementedException();
             }
 
+            public Task<string> GetIdAsync(TestPage page, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+
             public Task<string> GetNameAsync(TestPage page, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
@@ -82,6 +89,16 @@ namespace ChaosCMS.Test
             }
 
             public Task<string> GetTemplateAsync(TestPage page, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ChaosPaged<TestPage>> FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ChaosResult> UpdateAsync(TestPage page, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }

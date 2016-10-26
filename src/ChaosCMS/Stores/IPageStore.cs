@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,6 +33,13 @@ namespace ChaosCMS.Stores
         /// <param name="page"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        Task<string> GetIdAsync(TPage page, CancellationToken cancellationToken);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         Task<string> GetNameAsync(TPage page, CancellationToken cancellationToken);
         /// <summary>
         /// 
@@ -48,5 +56,19 @@ namespace ChaosCMS.Stores
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<string> GetTemplateAsync(TPage page, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        Task<ChaosPaged<TPage>> FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ChaosResult> UpdateAsync(TPage page, CancellationToken cancellationToken);
     }
 }

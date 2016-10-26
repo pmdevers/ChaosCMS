@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "ChaosCMS.Razor": "1.0.0",
+    "Tavis.UriTemplates": "1.1.0-*",
     "Microsoft.AspNetCore.Mvc": "1.0.1-*",
     "Microsoft.AspNetCore.Routing": "1.0.1-*",
     "Microsoft.AspNetCore.Hosting.Abstractions": "1.1.0-*",

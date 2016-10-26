@@ -51,6 +51,78 @@ namespace ChaosCMS
         }
 
         /// <summary>
+        /// Page must be larger then 1.
+        /// </summary>
+        internal static string NegativePage
+        {
+            get { return GetString("NegativePage"); }
+        }
+
+        /// <summary>
+        /// ItemsPerPage exceeds the maximum of '{0}' items per page.
+        /// </summary>
+        internal static string MaxItemsPerPage
+        {
+            get { return GetString("MaxItemsPerPage"); }
+        }
+
+        /// <summary>
+        /// The template '{0}' is not a valid.
+        /// </summary>
+        internal static string PageTemplateIsInvalid
+        {
+            get { return GetString("PageTemplateIsInvalid"); }
+        }
+
+        /// <summary>
+        /// The template '{0}' is not a valid.
+        /// </summary>
+        internal static string FormatPageTemplateIsInvalid(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("PageTemplateIsInvalid"), p0);
+        }
+
+        /// <summary>
+        /// The url '{0}' is not a valid page name.
+        /// </summary>
+        internal static string PageUrlIsInvalid
+        {
+            get { return GetString("PageUrlIsInvalid"); }
+        }
+
+        /// <summary>
+        /// The url '{0}' is not a valid page name.
+        /// </summary>
+        internal static string FormatPageUrlIsInvalid(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("PageUrlIsInvalid"), p0);
+        }
+
+        /// <summary>
+        /// The name '{0}' is not a valid page name.
+        /// </summary>
+        internal static string PageNameIsInvalid
+        {
+            get { return GetString("PageNameIsInvalid"); }
+        }
+
+        /// <summary>
+        /// The name '{0}' is not a valid page name.
+        /// </summary>
+        internal static string FormatPageNameIsInvalid(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("PageNameIsInvalid"), p0);
+        }
+
+        /// <summary>
+        /// ItemsPerPage exceeds the maximum of '{0}' items per page.
+        /// </summary>
+        internal static string FormatMaxItemsPerPage(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("MaxItemsPerPage"), p0);
+        }
+
+        /// <summary>
         /// Type {0} must derive from {1}&lt;{2}&gt;.
         /// </summary>
         internal static string FormatInvalidManagerType(object p0, object p1, object p2)
