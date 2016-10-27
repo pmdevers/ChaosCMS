@@ -13,7 +13,7 @@ namespace ChaosCMS.Controllers
     /// <summary>
     /// A controller for handling a page
     /// </summary>
-    [Route("api/page")]
+    [Route("api/pages")]
     public class PageController<TPage> : Controller where TPage : class
     {
         private readonly PageManager<TPage> manager;
