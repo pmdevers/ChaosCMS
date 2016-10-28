@@ -1,9 +1,12 @@
 ﻿"use strict";
+var path = require('path');
 
 module.exports = {
-    entry: "./src/index.js",
+    entry: path.join(__dirname, "src/index.js"),
     output: {
-        filename: "./dist/bundle.js"
+        path: path.join(__dirname, "../SampleSite/admin"),
+        publicPath: "",
+        filename: "index.js"
     },
     devServer: {
         contentBase: ".",
@@ -14,7 +17,14 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx?$/,
-                loader: "babel-loader"
+                exclude: /(node_modules|bower_components)/,
+                loader: "babel-loader",
+                query: {
+                    presets: ['react', 'es2015', 'stage-0'],
+                    //plugins: [
+                    //  ["transform-decorators-legacy"]
+                    //]
+                }
             }
         ]
     }

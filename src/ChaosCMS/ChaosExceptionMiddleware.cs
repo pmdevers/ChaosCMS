@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Logging;
+
 namespace ChaosCMS
 {
     /// <summary>
@@ -13,13 +15,17 @@ namespace ChaosCMS
     {
         private readonly RequestDelegate _next;
 
+        private readonly ILogger<ChaosExceptionMiddleware> logger;
+
         /// <summary>
         /// Initilizes a niew instance of the <see cref="ChaosExceptionMiddleware"/>
         /// </summary>
         /// <param name="next">The next middleware in the pipeline</param>
-        public ChaosExceptionMiddleware(RequestDelegate next)
+        /// <param name="logger"></param>
+        public ChaosExceptionMiddleware(RequestDelegate next, ILogger<ChaosExceptionMiddleware> logger)
         {
             _next = next;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -38,8 +44,8 @@ namespace ChaosCMS
                 await httpContext.Response.WriteAsync(ex.Message);
             }
             catch (Exception ex)
-            {                
-                await httpContext.Response.WriteAsync(ex.Message);
+            {
+                this.logger.LogError("-1", ex);
             }
         }
     }

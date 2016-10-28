@@ -9,28 +9,31 @@
     "prod": "webpack -p --config webpack.prod.config.js --progress --colors"
   },
   "dependencies": {
-    "classnames": "2.2.5",
-    "isomorphic-fetch": "2.2.1",
     "react": "15.3.2",
     "react-dom": "15.3.2",
     "react-hot-loader": "3.0.0-beta.6",
     "react-redux": "4.4.5",
     "redux": "3.6.0",
+    "redux-logger": "2.7.0",
     "redux-thunk": "2.1.0"
   },
   "devDependencies": {
-    "babel-cli": "6.18.0",
     "babel-core": "6.18.0",
     "babel-loader": "6.2.7",
-    "babel-preset-es2015-loose": "8.0.0",
+    "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "6.16.0",
     "babel-preset-stage-0": "6.16.0",
     "html-webpack-plugin": "2.24.0",
     "node-libs-browser": "1.0.0",
-    "raw-loader": "0.5.1",
+    "file-loader": "^0.9.0",
+    "postcss-loader": "^1.1.0",
+    "strip-loader": "^0.1.2",
+    "style-loader": "^0.13.1",
+    "react-css-modules": "^3.7.10",
     "redux-devtools": "3.3.1",
     "redux-devtools-dock-monitor": "1.1.1",
     "redux-devtools-log-monitor": "1.1.1",
-    "style-loader": "0.13.1"
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2"
   }
 }
