@@ -1,35 +1,40 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ChaosCMS.Json.Models
 {
     /// <summary>
     /// 
     /// </summary>
-    public class JsonPage : IEntity
+    public class JsonContent : IEntity
     {
         /// <summary>
         /// 
         /// </summary>
-        public JsonPage()
+        public JsonContent()
         {
             this.Id = Guid.NewGuid();
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Guid Id { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Name { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Url { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string Template { get; set; }
-    }
+        public Guid Id { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Type { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Value { get; set; }}
 }

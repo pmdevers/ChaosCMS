@@ -16,11 +16,13 @@ namespace ChaosCMS
         /// Creates a new instance of <see cref="ChaosBuilder"/>.
         /// </summary>
         /// <param name="pageType">The <see cref="Type"/> to use for the pages.</param>
+        /// <param name="contentType">The <see cref="Type"/> to use for the content.</param>
         /// <param name="services">The <see cref="IServiceCollection"/> to attach to.</param>
-        public ChaosBuilder(Type pageType, IServiceCollection services)
+        public ChaosBuilder(Type pageType, Type contentType, IServiceCollection services)
         {
             this.Services = services;
             this.PageType = pageType;
+            this.ContentType = contentType;
         }
 
         /// <summary>
@@ -35,6 +37,11 @@ namespace ChaosCMS
         /// Gets the <see cref="Type"/> used for pages
         /// </summary>
         public Type PageType { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="Type"/> used for content
+        /// </summary>
+        public Type ContentType { get; private set; }
 
 
         private ChaosBuilder AddScoped(Type serviceType, Type concreteType)
@@ -70,7 +77,23 @@ namespace ChaosCMS
             }
             return this;
         }
-        
+
+        /// <summary>
+        /// Adds a <see cref="ContentManager{TContent}"/> for the <seealso cref="ContentType"/>.
+        /// </summary>
+        /// <typeparam name="TContentManager">The type of the page manager to add.</typeparam>
+        /// <returns>The current <see cref="ChaosBuilder"/> instance.</returns>
+        public virtual ChaosBuilder AddContentManager<TContentManager>() where TContentManager : class
+        {
+            var contentManagerType = typeof(ContentManager<>).MakeGenericType(ContentType);
+            var customType = typeof(TContentManager);
+            if (contentManagerType == customType ||
+                !contentManagerType.GetTypeInfo().IsAssignableFrom(customType.GetTypeInfo()))
+            {
+                throw new InvalidOperationException(Resources.FormatInvalidManagerType(customType.Name, "ContentManager", this.ContentType));
+            }
+            return this;
+        }
 
         /// <summary>
         /// Adds an <see cref="IPageStore{TPage}"/> for the <seealso cref="PageType"/>.
@@ -83,6 +106,16 @@ namespace ChaosCMS
         }
 
         /// <summary>
+        /// Adds an <see cref="IContentStore{TContent}"/> for the <seealso cref="ContentType"/>.
+        /// </summary>
+        /// <typeparam name="T">The content store.</typeparam>
+        /// <returns>The current <see cref="ChaosBuilder"/> instance.</returns>
+        public virtual ChaosBuilder AddContentStore<T>() where T : class
+        {
+            return AddScoped(typeof(IContentStore<>).MakeGenericType(ContentType), typeof(T));
+        }
+
+        /// <summary>
         /// Adds an <see cref="IPageValidator{TPage}"/> for the <seealso cref="PageType"/>.
         /// </summary>
         /// <typeparam name="T">The page validator.</typeparam>
@@ -90,6 +123,16 @@ namespace ChaosCMS
         public virtual ChaosBuilder AddPageValidator<T>() where T : class 
         {
             return AddScoped(typeof(IPageValidator<>).MakeGenericType(PageType), typeof(T));
+        }
+
+        /// <summary>
+        /// Adds an <see cref="IContentValidator{TPage}"/> for the <seealso cref="PageType"/>.
+        /// </summary>
+        /// <typeparam name="T">The content validator.</typeparam>
+        /// <returns>The current <see cref="ChaosBuilder"/> instance.</returns>
+        public virtual ChaosBuilder AddContentValidator<T>() where T : class
+        {
+            return AddScoped(typeof(IContentValidator<>).MakeGenericType(ContentType), typeof(T));
         }
     }
 }

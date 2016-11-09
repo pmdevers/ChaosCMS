@@ -80,5 +80,47 @@ namespace ChaosCMS
                 Description = Resources.FormatPageTemplateIsInvalid(template)
             };
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public ChaosError ContentNameIsInvalid(string name)
+        {
+            return new ChaosError
+            {
+                Code = nameof(ContentNameIsInvalid),
+                Description = Resources.FormatContentNameIsInvalid(name)
+            };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public ChaosError ContentTypeIsInvalid(string type)
+        {
+            return new ChaosError
+            {
+                Code = nameof(ContentTypeIsInvalid),
+                Description = Resources.FormatContentTypeIsInvalid(type)
+            };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public ChaosError ContentValueIsInvalid(string value)
+        {
+            return new ChaosError
+            {
+                Code = nameof(ContentValueIsInvalid),
+                Description = Resources.FormatContentValueIsInvalid(value)
+            };
+        }
     }
 }

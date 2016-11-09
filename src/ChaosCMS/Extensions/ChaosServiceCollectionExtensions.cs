@@ -34,23 +34,26 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 
         /// </summary>
         /// <typeparam name="TPage"></typeparam>
+        /// <typeparam name="TContent"></typeparam>
         /// <param name="service"></param>
         /// <returns></returns>
-        public static ChaosBuilder AddChaos<TPage>(this IServiceCollection service)
-            where TPage : class
+        public static ChaosBuilder AddChaos<TPage, TContent>(this IServiceCollection service)
+            where TPage : class 
+            where TContent : class
         {
-            return service.AddChaos<TPage>(options: null);
+            return service.AddChaos<TPage, TContent>(options: null);
         }
 
         /// <summary>
         /// Adds and configures the chaos system for specific Page types
         /// </summary>
         /// <typeparam name="TPage"></typeparam>
+        /// <typeparam name="TContent"></typeparam>
         /// <param name="services"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static ChaosBuilder AddChaos<TPage>(this IServiceCollection services, Action<ChaosOptions> options)
-            where TPage : class
+        public static ChaosBuilder AddChaos<TPage, TContent>(this IServiceCollection services, Action<ChaosOptions> options)
+            where TPage : class where TContent : class
         {
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -83,17 +86,19 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<ChaosMarkerService>();
             services.TryAddScoped<ChaosErrorDescriber>();
             services.TryAddScoped<PageManager<TPage>, PageManager<TPage>>();
+            services.TryAddScoped<ContentManager<TContent>, ContentManager<TContent>>();
 
             // Validators
             services.TryAddScoped<IPageValidator<TPage>, DefaultPageValidator<TPage>>();
+            services.TryAddScoped<IContentValidator<TContent>, DefaultContentValidator<TContent>>();
 
-            
-            if(options != null)
+
+            if (options != null)
             {
                 services.Configure(options);
             }
 
-            var builder = new ChaosBuilder(typeof(TPage), services);
+            var builder = new ChaosBuilder(typeof(TPage), typeof(TContent), services);
 
             services.TryAddSingleton(builder);
 

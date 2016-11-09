@@ -1,10 +1,4 @@
-﻿import React from 'react';
-import { render } from 'react-dom';
-import { AppContainer } from 'react-hot-loader';
-
-
-render(
-    <AppContainer>
-    </AppContainer>,
-    document.getElementById('root');
-);
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from '.containers/app';
+ReactDOM.render(<App />, document.getElementById('app'))

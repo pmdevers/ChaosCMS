@@ -33,6 +33,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{6A0BB037-E861-4595-A93A-B6140738001A}"
 	ProjectSection(SolutionItems) = preProject
 		test\Shared\MockHelper.cs = test\Shared\MockHelper.cs
+		test\Shared\TestContent.cs = test\Shared\TestContent.cs
 		test\Shared\TestPage.cs = test\Shared\TestPage.cs
 	EndProjectSection
 EndProject

@@ -1,4 +1,6 @@
 {
+  "description": "ChaosCMS",
+  "version": "1.0.0",
   "buildOptions": {
     "compile": {
       "include": "../Shared/*.cs"
@@ -16,7 +18,7 @@
       "dependencies": {
         "Microsoft.NETCore.App": {
           "version": "1.0.0",
-          "type": "platform" 
+          "type": "platform"
         }
       }
     }

@@ -24,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static ChaosBuilder AddJsonStores(this ChaosBuilder builder, Action<ChaosJsonStoreOptions> options = null)
         {
-            builder.Services.TryAdd(GetDefaultServices(builder.PageType));
+            builder.Services.TryAdd(GetDefaultServices(builder.PageType, builder.ContentType));
 
             if (options != null)
             {
@@ -35,7 +35,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
 
-        private static IServiceCollection GetDefaultServices(Type pageType)
+        private static IServiceCollection GetDefaultServices(Type pageType, Type contentType)
         {
             var pageStoreType = typeof(PageStore<>).MakeGenericType(pageType);
 
@@ -43,6 +43,10 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddScoped(
                 typeof(IPageStore<>).MakeGenericType(pageType),
+                pageStoreType);
+
+            services.AddScoped(
+                typeof(IContentStore<>).MakeGenericType(contentType),
                 pageStoreType);
 
             return services;

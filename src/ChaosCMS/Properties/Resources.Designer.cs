@@ -83,6 +83,54 @@ namespace ChaosCMS
         }
 
         /// <summary>
+        /// The content name '{0}' is not a valid.
+        /// </summary>
+        internal static string ContentNameIsInvalid
+        {
+            get { return GetString("ContentNameIsInvalid"); }
+        }
+
+        /// <summary>
+        /// The content name '{0}' is not a valid.
+        /// </summary>
+        internal static string FormatContentNameIsInvalid(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("ContentNameIsInvalid"), p0);
+        }
+
+        /// <summary>
+        /// The content type '{0}' is not a valid.
+        /// </summary>
+        internal static string ContentTypeIsInvalid
+        {
+            get { return GetString("ContentTypeIsInvalid"); }
+        }
+
+        /// <summary>
+        /// The content type '{0}' is not a valid.
+        /// </summary>
+        internal static string FormatContentTypeIsInvalid(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("ContentTypeIsInvalid"), p0);
+        }
+
+        /// <summary>
+        /// The content value '{0}' is not a valid.
+        /// </summary>
+        internal static string ContentValueIsInvalid
+        {
+            get { return GetString("ContentValueIsInvalid"); }
+        }
+
+        /// <summary>
+        /// The content value '{0}' is not a valid.
+        /// </summary>
+        internal static string FormatContentValueIsInvalid(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("ContentValueIsInvalid"), p0);
+        }
+
+        /// <summary>
         /// The url '{0}' is not a valid page name.
         /// </summary>
         internal static string PageUrlIsInvalid

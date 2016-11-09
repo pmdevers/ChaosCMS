@@ -8,16 +8,11 @@ namespace ChaosCMS.Json
     /// <summary>
     /// 
     /// </summary>
-    public class ChaosJsonStoreOptions
+    public interface IEntity 
     {
         /// <summary>
         /// 
         /// </summary>
-        public string Extension { get; set; } = ".json";
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string StoreDirectoryName { get; set; } = "data";
+        Guid Id { get; set; }
     }
 }
