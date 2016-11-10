@@ -104,6 +104,11 @@ namespace ChaosCMS.Test
                 throw new NotImplementedException();
             }
 
+            public Task<ChaosResult> CreateAsync(TestContent content, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+
             public Task<ChaosResult> UpdateAsync(TestContent content, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
