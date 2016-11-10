@@ -13,7 +13,7 @@ namespace ChaosCMS.Controllers
     /// <summary>
     /// A controller for handling a page
     /// </summary>
-    [Route("api/pages")]
+    [Route("api/pages", Name = "pages")]
     public class PageController<TPage> : Controller where TPage : class
     {
         private readonly PageManager<TPage> manager;
@@ -31,7 +31,6 @@ namespace ChaosCMS.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        [Route(template: "", Name = "pages")]
         [HttpGet]
         public IActionResult Get(int page = 1, int itemsPerPage = 25)
         {
@@ -76,13 +75,7 @@ namespace ChaosCMS.Controllers
             }
             var result = this.manager.UpdateAsync(page).Result;
 
-            if (!result.Succeeded)
-            {
-                this.AddErrors(result);
-                return BadRequest(ModelState);
-            }
-
-            return Ok(result);
+            return this.ChaosResult(result);
         }
     }
 }

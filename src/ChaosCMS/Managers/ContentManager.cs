@@ -103,6 +103,30 @@ namespace ChaosCMS.Managers
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public virtual async Task<ChaosResult> CreateAsync(TContent content)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            if (content == null)
+            {
+                throw new ArgumentNullException(nameof(content));
+            }
+
+            var result = await this.ValidateInternal(content);
+            if (!result.Succeeded)
+            {
+                return result;
+            }
+
+            return await this.Store.CreateAsync(content, CancellationToken);
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
         public virtual async Task<ChaosResult> UpdateAsync(TContent content)
         {
             CancellationToken.ThrowIfCancellationRequested();
@@ -288,5 +312,7 @@ namespace ChaosCMS.Managers
                 throw new ObjectDisposedException(GetType().Name);
             }
         }
+
+        
     }
 }

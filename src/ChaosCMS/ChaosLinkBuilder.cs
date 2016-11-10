@@ -23,6 +23,19 @@ namespace ChaosCMS
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="manager"></param>
+        /// <param name="content"></param>
+        /// <typeparam name="TContent"></typeparam>
+        /// <returns></returns>
+        public static Link SelfLink<TContent>(this ControllerBase controller, ContentManager<TContent> manager, TContent content) where TContent : class
+        {
+            return new Link("self", controller.Url.RouteUrl("content", new { id = manager.GetIdAsync(content).Result }));
+        }
+
+        /// <summary>
         /// /
         /// </summary>
         /// <typeparam name="TPage"></typeparam>

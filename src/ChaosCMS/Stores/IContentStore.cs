@@ -27,6 +27,14 @@ namespace ChaosCMS.Stores
         /// <param name="content"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        Task<ChaosResult> CreateAsync(TContent content, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         Task<ChaosResult> UpdateAsync(TContent content, CancellationToken cancellationToken);
 
         /// <summary>
@@ -68,6 +76,6 @@ namespace ChaosCMS.Stores
         /// <param name="content"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<string> GetValueAsync(TContent content, CancellationToken cancellationToken);
+        Task<string> GetValueAsync(TContent content, CancellationToken cancellationToken);        
     }
 }

@@ -29,6 +29,23 @@ namespace ChaosCMS.Extensions
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static IActionResult ChaosResult(this ControllerBase controller, ChaosResult result)
+        {
+            if (!result.Succeeded)
+            {
+                controller.AddErrors(result);
+                return controller.BadRequest(controller.ModelState);
+            }
+
+            return controller.Ok(result);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="controller"></param>
         /// <param name="model"></param>

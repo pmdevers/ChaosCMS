@@ -52,6 +52,17 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <inheritdoc />
+        public Task<ChaosResult> CreateAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            var items = ReadFile().ToList();
+            items.Add(entity);
+            WriteFile(items);
+            return Task.FromResult(ChaosResult.Success);
+        }
+
+        /// <inheritdoc />
         public Task<ChaosResult> UpdateAsync(TEntity page, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();

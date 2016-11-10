@@ -38,6 +38,7 @@ namespace Microsoft.Extensions.DependencyInjection
         private static IServiceCollection GetDefaultServices(Type pageType, Type contentType)
         {
             var pageStoreType = typeof(PageStore<>).MakeGenericType(pageType);
+            var contentStoreType = typeof(ContentStore<>).MakeGenericType(contentType);
 
             var services = new ServiceCollection();
 
@@ -47,7 +48,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddScoped(
                 typeof(IContentStore<>).MakeGenericType(contentType),
-                pageStoreType);
+                contentStoreType);
 
             return services;
         }

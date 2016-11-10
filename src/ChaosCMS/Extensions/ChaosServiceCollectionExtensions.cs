@@ -68,8 +68,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 .ConfigureApplicationPartManager(manager =>
                 {
                     manager.ApplicationParts.Add(
-                        new TypesPart(
-                                typeof(PageController<TPage>)
+                        new ChaosTypesPart(
+                                typeof(PageController<TPage>),
+                                typeof(ContentController<TContent>)
                             )
                         );
                 })
@@ -104,18 +105,5 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return builder;
         }
-
-        private class TypesPart : ApplicationPart, IApplicationPartTypeProvider
-        {
-            public TypesPart(params Type[] types)
-            {
-                Types = types.Select(t => t.GetTypeInfo());
-            }
-
-            public override string Name => string.Join(", ", Types.Select(t => t.FullName));
-
-            public IEnumerable<TypeInfo> Types { get; }
-        }
-
     }
 }
