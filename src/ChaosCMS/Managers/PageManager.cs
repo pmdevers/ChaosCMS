@@ -150,17 +150,17 @@ namespace ChaosCMS.Managers
         /// <returns></returns>
         public Task<ChaosPaged<TPage>> FindPagedAsync(int page = 1, int itemsPerPage = 25)
         {
-            CancellationToken.ThrowIfCancellationRequested();
+            this.CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
             if (page < 1)
             {
                 throw new InvalidOperationException(Resources.NegativePage);
             }
-            if (itemsPerPage > Options.MaxItemsPerPage)
+            if (itemsPerPage > this.Options.MaxItemsPerPage)
             {
-                throw new InvalidOperationException(Resources.FormatMaxItemsPerPage(Options.MaxItemsPerPage));
+                throw new InvalidOperationException(Resources.FormatMaxItemsPerPage(this.Options.MaxItemsPerPage));
             }
-            return this.Store.FindPagedAsync(page, itemsPerPage, CancellationToken);
+            return this.Store.FindPagedAsync(page, itemsPerPage, this.CancellationToken);
         }
 
         /// <summary>

@@ -42,7 +42,7 @@ namespace ChaosCMS
             }
 
             var templateName = await pageManager.GetTemplateAsync(page);
-            var results = engine.Parse(templateName + ".cshtml", page);
+            var results = engine.Parse(templateName + ".cshtml", new object());
 
             httpContext.Response.ContentType = "text/html";
                                    

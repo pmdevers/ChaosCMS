@@ -75,6 +75,12 @@ namespace ChaosCMS.Validators
             {
                 errors.Add(errorDescriber.ContentNameIsInvalid(name));
             }
+
+            var item = await manager.FindByNameAsync(name);
+            if (item != null)
+            {
+                errors.Add(this.errorDescriber.ContentNameIsNotUnique(name));
+            }
         }
     }
 }

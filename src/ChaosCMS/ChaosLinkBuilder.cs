@@ -55,5 +55,30 @@ namespace ChaosCMS
             response.AddLinks(new[] { controller.SelfLink(manager, page) });
             return response;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TContent"></typeparam>
+        /// <param name="controller"></param>
+        /// <param name="manager"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public static HalResponse CreateEmbeddedResponse<TContent>(this ControllerBase controller, ContentManager<TContent> manager, TContent content) where TContent : class
+        {
+            var response =
+                new HalResponse(
+                    new
+                    {
+                        id = manager.GetIdAsync(content).Result,
+                        name = manager.GetNameAsync(content).Result
+                    });
+            response.AddLinks(new[]
+                                  {
+                                      controller.SelfLink(manager, content),
+                                      new Link("children", controller.Url.RouteUrl("children", new { id = manager.GetIdAsync(content).Result }))
+                                  });
+            return response;
+        }
     }
 }

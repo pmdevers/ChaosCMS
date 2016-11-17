@@ -87,7 +87,7 @@ namespace ChaosCMS.Razor
 			TemplatePage page = result.ViewEntry.PageFactory();
 			page.PageContext = pageContext;
 
-			return RunTemplate(page, model);
+            return RunTemplate(page, model);
 		}
 
 		/// <summary>
@@ -110,6 +110,8 @@ namespace ChaosCMS.Razor
 			object pageModel = page.PageContext.ModelTypeInfo.CreateTemplateModel(model);
 			page.SetModel(pageModel);
 			page.Path = page.PageContext.ExecutingFilePath;
+
+		    this.activator.ActivatePage(page);
 
 			using (var writer = new StringWriter())
 			{

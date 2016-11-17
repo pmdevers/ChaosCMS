@@ -129,21 +129,21 @@ namespace ChaosCMS.Managers
         /// <returns></returns>
         public virtual async Task<ChaosResult> UpdateAsync(TContent content)
         {
-            CancellationToken.ThrowIfCancellationRequested();
+            this.CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
             if (content == null)
             {
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var result = await ValidateInternal(content);
+            var result = await this.ValidateInternal(content);
 
             if (!result.Succeeded)
             {
                 return result;
             }
 
-            return await this.Store.UpdateAsync(content, CancellationToken);
+            return await this.Store.UpdateAsync(content, this.CancellationToken);
         }
 
         /// <summary>
@@ -154,17 +154,17 @@ namespace ChaosCMS.Managers
         /// <returns></returns>
         public Task<ChaosPaged<TContent>> FindPagedAsync(int page = 1, int itemsPerPage = 25)
         {
-            CancellationToken.ThrowIfCancellationRequested();
+            this.CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
             if (page < 1)
             {
-                throw new InvalidOperationException(Resources.NegativePage);
+                page = 1;
             }
-            if (itemsPerPage > Options.MaxItemsPerPage)
+            if (itemsPerPage > this.Options.MaxItemsPerPage)
             {
-                throw new InvalidOperationException(Resources.FormatMaxItemsPerPage(Options.MaxItemsPerPage));
+                itemsPerPage = this.Options.MaxItemsPerPage;
             }
-            return this.Store.FindPagedAsync(page, itemsPerPage, CancellationToken);
+            return this.Store.FindPagedAsync(page, itemsPerPage, this.CancellationToken);
         }
 
         /// <summary>
@@ -182,6 +182,23 @@ namespace ChaosCMS.Managers
             }
 
             return this.Store.FindByIdAsync(contentId, CancellationToken);
+        }
+
+        /// <summary>
+        /// Finds the content with the contentId
+        /// </summary>
+        /// <param name="name">The id of the content.</param>
+        /// <returns></returns>
+        public virtual Task<TContent> FindByNameAsync(string name)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            return this.Store.FindByNameAsync(name, CancellationToken);
         }
 
         /// <summary>
@@ -252,6 +269,47 @@ namespace ChaosCMS.Managers
             return this.Store.GetValueAsync(content, CancellationToken);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public virtual Task<IList<TContent>> GetChildrenAsync(TContent content)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (content == null)
+            {
+                throw new ArgumentNullException(nameof(content));
+            }
+
+            return this.Store.GetChildrenAsync(content, this.CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="child"></param>
+        /// <returns></returns>
+        public virtual Task AddChildAsync(TContent parent, TContent child)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+
+            if (parent == null)
+            {
+                throw new ArgumentNullException(nameof(parent));
+            }
+
+            if (child == null)
+            {
+                throw new ArgumentNullException(nameof(child));
+            }
+
+            return this.Store.AddChildAsync(parent, child, CancellationToken);
+        }
+
         #region IDisposable Support
         private bool isDisposed = false; // To detect redundant calls
 
@@ -312,7 +370,5 @@ namespace ChaosCMS.Managers
                 throw new ObjectDisposedException(GetType().Name);
             }
         }
-
-        
     }
 }

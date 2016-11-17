@@ -99,6 +99,22 @@ namespace ChaosCMS
         }
 
         /// <summary>
+        /// The content name '{0}' is already taken.
+        /// </summary>
+        internal static string ContentNameIsNotUnique
+        {
+            get { return GetString("ContentNameIsNotUnique"); }
+        }
+
+        /// <summary>
+        /// The content name '{0}' is already taken.
+        /// </summary>
+        internal static string FormatContentNameIsNotUnique(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("ContentNameIsNotUnique"), p0);
+        }
+
+        /// <summary>
         /// The content type '{0}' is not a valid.
         /// </summary>
         internal static string ContentTypeIsInvalid

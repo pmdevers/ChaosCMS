@@ -27,6 +27,11 @@ namespace ChaosCMS.Json.Models
         /// 
         /// </summary>
         public string Name { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public Guid ParentId { get; set; }
 
         /// <summary>
         /// 
@@ -36,5 +41,6 @@ namespace ChaosCMS.Json.Models
         /// <summary>
         /// 
         /// </summary>
-        public string Value { get; set; }}
+        public string Value { get; set; }
+    }
 }

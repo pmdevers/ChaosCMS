@@ -85,6 +85,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             // Chaos services
             services.TryAddSingleton<ChaosMarkerService>();
+            services.TryAddScoped<IChaosContext<TPage>, ChaosContext<TPage>>();
             services.TryAddScoped<ChaosErrorDescriber>();
             services.TryAddScoped<PageManager<TPage>, PageManager<TPage>>();
             services.TryAddScoped<ContentManager<TContent>, ContentManager<TContent>>();
@@ -92,7 +93,6 @@ namespace Microsoft.Extensions.DependencyInjection
             // Validators
             services.TryAddScoped<IPageValidator<TPage>, DefaultPageValidator<TPage>>();
             services.TryAddScoped<IContentValidator<TContent>, DefaultContentValidator<TContent>>();
-
 
             if (options != null)
             {

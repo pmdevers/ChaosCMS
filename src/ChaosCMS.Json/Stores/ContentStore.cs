@@ -25,6 +25,37 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <inheritdoc />
+        public Task<ChaosPaged<TContent>> FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            var allItems = ReadFile();
+            var items = allItems.Where(x=> x.ParentId.Equals(default(Guid))).Skip((page - 1) * itemsPerPage).Take(itemsPerPage);
+
+            return Task.FromResult(new ChaosPaged<TContent>
+            {
+                CurrentPage = page,
+                ItemsPerPage = itemsPerPage,
+                TotalItems = allItems.Count(),
+                Items = items
+            });
+
+        }
+
+        /// <inheritdoc />
+        public Task<TContent> FindByNameAsync(string name, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+            var item = this.ReadFile().FirstOrDefault(x => x.Name.Equals(name));
+            return Task.FromResult(item);
+        }
+
+        /// <inheritdoc />
         public Task<string> GetNameAsync(TContent content, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -56,6 +87,40 @@ namespace ChaosCMS.Json.Stores
                 throw new ArgumentNullException(nameof(content));
             }
             return Task.FromResult(content.Value);
+        }
+
+        /// <inheritdoc />
+        public Task<IList<TContent>> GetChildrenAsync(TContent content, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            if (content == null)
+            {
+                throw new ArgumentNullException(nameof(content));
+            }
+
+            var items = this.ReadFile().Where(x=>x.ParentId.Equals(content.Id)).ToList();
+
+            return Task.FromResult<IList<TContent>>(items);
+        }
+
+        /// <inheritdoc />
+        public Task AddChildAsync(TContent parent, TContent child, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            if (parent == null)
+            {
+                throw new ArgumentNullException(nameof(parent));
+            }
+            if (child == null)
+            {
+                throw new ArgumentNullException(nameof(child));
+            }
+
+            child.ParentId = parent.Id;
+
+            return Task.FromResult(0);
         }
     }
 }

@@ -122,5 +122,18 @@ namespace ChaosCMS
                 Description = Resources.FormatContentValueIsInvalid(value)
             };
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public ChaosError ContentNameIsNotUnique(string name)
+        {
+            return new ChaosError
+            {
+                Code = nameof(ContentNameIsNotUnique),
+                Description = Resources.FormatContentNameIsNotUnique(name)
+            };
+        }
     }
 }

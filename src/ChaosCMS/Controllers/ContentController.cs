@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using ChaosCMS.Extensions;
 using ChaosCMS.Managers;
 using ChaosCMS;
+using ChaosCMS.Hal;
+
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace ChaosCMS.Controllers
@@ -31,6 +33,18 @@ namespace ChaosCMS.Controllers
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="page"></param>
+        /// <param name="itemsPerPage"></param>
+        /// <returns></returns>
+        public IActionResult Get(int page = 1, int itemsPerPage = 25)
+        {
+            var content = this.manager.FindPagedAsync(page, itemsPerPage).Result;
+            return this.PagedHal(content, item => this.CreateEmbeddedResponse(this.manager, item) , "contents");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [Route("{id}", Name = "content")]
@@ -41,8 +55,50 @@ namespace ChaosCMS.Controllers
 
             return this.Hal(content, new[]
             {
-                this.SelfLink(this.manager, content)
+                this.SelfLink(this.manager, content),
+                new Link("children", this.Url.RouteUrl("children", new { id = this.manager.GetIdAsync(content).Result})), 
             });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Route("{id}/children", Name = "children")]
+        [HttpGet]
+        public IActionResult GetChildren(string id)
+        {
+            var content = this.manager.FindByIdAsync(id).Result;
+            var children = this.manager.GetChildrenAsync(content).Result;
+
+            var response = new HalResponse(content);
+
+            response.AddEmbeddedCollection("children", children);
+
+            return this.Hal(response);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="child"></param>
+        /// <returns></returns>
+        [Route("{id}/children")]
+        [HttpPost]
+        public IActionResult PostChildren(string id, [FromBody] TContent child)
+        {
+            var parent = this.manager.FindByIdAsync(id).Result;
+
+            if (parent == null)
+            {
+                return this.BadRequest();
+            }
+
+            this.manager.AddChildAsync(parent, child);
+            var result = this.manager.UpdateAsync(parent).Result;
+            return this.ChaosResult(result);
         }
 
         /// <summary>
@@ -54,14 +110,14 @@ namespace ChaosCMS.Controllers
         [HttpPatch("{id}")]
         public IActionResult Patch(string id, [FromBody] JsonPatchDocument<TContent> model)
         {
-            var page = this.manager.FindByIdAsync(id).Result;
+            var content = this.manager.FindByIdAsync(id).Result;
 
-            model.ApplyTo(page, ModelState);
-            if (!ModelState.IsValid)
+            model.ApplyTo(content, this.ModelState);
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
-            var result = this.manager.UpdateAsync(page).Result;
+            var result = this.manager.UpdateAsync(content).Result;
 
             return this.ChaosResult(result);
         }
@@ -76,7 +132,7 @@ namespace ChaosCMS.Controllers
         {
             if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(ModelState);
             }
 
             var result = this.manager.CreateAsync(content).Result;

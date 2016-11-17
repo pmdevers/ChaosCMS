@@ -27,6 +27,23 @@ namespace ChaosCMS.Json.Stores
         {
             
         }
+        /// <inheritdoc />
+        public Task<ChaosPaged<TPage>> FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            var allItems = ReadFile();
+            var items = allItems.Skip((page - 1) * itemsPerPage).Take(itemsPerPage);
+
+            return Task.FromResult(new ChaosPaged<TPage>
+            {
+                CurrentPage = page,
+                ItemsPerPage = itemsPerPage,
+                TotalItems = allItems.Count(),
+                Items = items
+            });
+
+        }
 
         /// <inheritdoc />
         public virtual Task<TPage> FindByUrlAsync(string urlPath, CancellationToken cancellationToken = default(CancellationToken))

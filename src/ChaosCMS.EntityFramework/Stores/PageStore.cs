@@ -78,7 +78,5 @@ namespace ChaosCMS.EntityFramework
             }
             return Task.FromResult(page.Template);
         }
-
-        
     }
 }

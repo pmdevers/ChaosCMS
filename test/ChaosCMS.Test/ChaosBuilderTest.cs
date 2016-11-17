@@ -99,7 +99,12 @@ namespace ChaosCMS.Test
                 throw new NotImplementedException();
             }
 
-            public Task<TestPage> FindByIdAsync(string pageId, CancellationToken cancelationToken)
+            public Task<TestPage> FindByIdAsync(string contentId, CancellationToken cancelationToken)
+            {
+                throw new NotImplementedException();
+            }
+
+            Task<TestContent> IContentStore<TestContent>.FindByIdAsync(string contentId, CancellationToken cancelationToken)
             {
                 throw new NotImplementedException();
             }
@@ -115,6 +120,11 @@ namespace ChaosCMS.Test
             }
 
             Task<ChaosPaged<TestContent>> IContentStore<TestContent>.FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<TestContent> FindByNameAsync(string name, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
@@ -135,6 +145,16 @@ namespace ChaosCMS.Test
             }
 
             public Task<string> GetValueAsync(TestContent content, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<IList<TestContent>> GetChildrenAsync(TestContent content, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task AddChildAsync(TestContent parent, TestContent child, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
@@ -160,11 +180,6 @@ namespace ChaosCMS.Test
             }
 
             public Task<string> GetTemplateAsync(TestPage page, CancellationToken cancellationToken)
-            {
-                throw new NotImplementedException();
-            }
-
-            Task<TestContent> IContentStore<TestContent>.FindByIdAsync(string contentId, CancellationToken cancelationToken)
             {
                 throw new NotImplementedException();
             }

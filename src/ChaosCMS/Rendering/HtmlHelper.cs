@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 
 namespace ChaosCMS.Rendering
@@ -9,7 +6,9 @@ namespace ChaosCMS.Rendering
     /// <summary>
     /// 
     /// </summary>
-    public class ChaosHelper : ChaosHelper<dynamic> { }
+    public class ChaosHelper : ChaosHelper<dynamic>
+    {
+    }
 
     /// <summary>
     /// 
@@ -17,6 +16,7 @@ namespace ChaosCMS.Rendering
     /// <typeparam name="TModel"></typeparam>
     public class ChaosHelper<TModel> : IChaosHelper<TModel>
     {
+        
         /// <summary>
         /// 
         /// </summary>
@@ -24,7 +24,7 @@ namespace ChaosCMS.Rendering
         /// <returns></returns>
         public IHtmlContent Raw(string test)
         {
-            throw new NotImplementedException();
+            throw new ArgumentNullException();
         }
 
         /// <summary>

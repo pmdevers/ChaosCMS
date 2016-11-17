@@ -45,11 +45,12 @@ namespace ChaosCMS.Razor
 		/// <returns>Template page</returns>
 		TemplatePage Activate(Type compiledType);
 
-		/// <summary>
-		/// Runs a template, renders a Layout pages and sections.
-		/// </summary>
-		/// <param name="page">Page to run</param>
-		/// <param name="model">Mode of the page</param>
-		string RunTemplate(TemplatePage page, object model);
+        /// <summary>
+        /// Runs a template, renders a Layout pages and sections.
+        /// </summary>
+        /// <param name="page">Page to run</param>
+        /// <param name="model">Mode of the page</param>
+        /// <param name="activator"></param>
+        string RunTemplate(TemplatePage page, object model);
 	}
 }

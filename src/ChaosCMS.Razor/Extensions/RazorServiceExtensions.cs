@@ -27,6 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var core = serviceProvider.GetRequiredService<IEngineCore>();
                 var compilerCache = serviceProvider.GetRequiredService<ICompilerCache>();
                 return new CachingPageFactory(core.KeyCompile, compilerCache);
+                //return new DefaultPageFactory(core.KeyCompile);
             }));
             services.TryAddSingleton<IPageLookup, FilesystemPageLookup>();
             services.TryAddSingleton<IRazorTemplateCompiler, DefaultRazorTemplateCompiler>();

@@ -35,7 +35,7 @@ namespace ChaosCMS.Controllers
         public IActionResult Get(int page = 1, int itemsPerPage = 25)
         {
             var pages = this.manager.FindPagedAsync(page, itemsPerPage).Result;
-            return this.PagedHal(pages, item => this.CreateEmbeddedResponse(manager, item) ,"pages");
+            return this.PagedHal(pages, item => this.CreateEmbeddedResponse(this.manager, item) ,"pages");
         }
 
         
