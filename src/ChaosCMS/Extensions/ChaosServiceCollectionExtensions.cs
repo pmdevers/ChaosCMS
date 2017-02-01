@@ -57,6 +57,10 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            var opt = new ChaosOptions();
+
+            options?.Invoke(opt);
+
             services.AddMvc(o =>
                 {
                     o.OutputFormatters.Add(new JsonHalOutputFormatter(new[] { "application/hal+json", "application/vnd.example.hal+json", "application/vnd.example.hal.v1+json"}));  
@@ -78,10 +82,10 @@ namespace Microsoft.Extensions.DependencyInjection
             
 
             services.AddRazor(razor => {
-                razor.Root = Path.Combine(Directory.GetCurrentDirectory(), "templates");
+                razor.Root = Path.Combine(Directory.GetCurrentDirectory(), opt.TempateDirectory);
             });
 
-            services.TryAddScoped(typeof(IChaosHelper<>), typeof(ChaosHelper<>));
+            services.TryAddScoped(typeof(IChaosHelper<,>), typeof(ChaosHelper<,>));
 
             // Chaos services
             services.TryAddSingleton<ChaosMarkerService>();

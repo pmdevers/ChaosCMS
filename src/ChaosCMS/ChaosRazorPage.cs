@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ChaosCMS.Managers;
 using ChaosCMS.Razor;
 using ChaosCMS.Razor.Host.Internal;
-
+using ChaosCMS.Rendering;
 using Microsoft.AspNetCore.Http;
 
 namespace ChaosCMS
@@ -15,13 +15,20 @@ namespace ChaosCMS
     /// 
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
-    public class ChaosRazorPage<TModel> : TemplatePage<TModel>
+    /// <typeparam name="TPage"></typeparam>
+    public class ChaosRazorPage<TModel, TPage> : TemplatePage<TModel>
     {
         /// <summary>
         /// 
         /// </summary>
         [RazorInject]
         public IHttpContextAccessor ContextAccessor { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [RazorInject]
+        public IChaosHelper<TModel, TPage> Chaos { get; set; }
         
         #region Overrides of TemplatePage
 

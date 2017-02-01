@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace SampleSite
 {
@@ -11,13 +12,22 @@ namespace SampleSite
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseStartup<Startup>()
+            Console.WriteLine($"Working Directory: '{Directory.GetCurrentDirectory()}'");
+
+            // read configuration values from command line and environment
+            // variables
+            var config = new ConfigurationBuilder()
+                .AddCommandLine(args)
+                .AddEnvironmentVariables()
                 .Build();
 
+            // use Kestrel server with cwd content root
+            var host = new WebHostBuilder()
+                .UseConfiguration(config)
+                .UseKestrel()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseStartup<Startup>()
+                .Build();
             host.Run();
         }
     }

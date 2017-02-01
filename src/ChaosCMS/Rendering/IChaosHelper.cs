@@ -9,7 +9,7 @@ namespace ChaosCMS.Rendering
     /// <summary>
     /// 
     /// </summary>
-    public interface IChaosHelper
+    public interface IChaosHelper<TPage>
     {
         /// <summary>
         /// 
@@ -22,5 +22,11 @@ namespace ChaosCMS.Rendering
         /// </summary>
         /// <returns></returns>
         IHtmlContent Test();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        TPage CurrentPage();
     }
 }

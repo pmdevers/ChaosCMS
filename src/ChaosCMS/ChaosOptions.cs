@@ -9,5 +9,10 @@ namespace ChaosCMS
         /// Gets or sets the maximum items per page.
         /// </summary>
         public int MaxItemsPerPage { get; set; } = 128;
+
+        /// <summary>
+        /// Gets or set the template directory.
+        /// </summary>
+        public string TempateDirectory { get; set; } = "Templates";
     }
 }

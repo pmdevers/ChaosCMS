@@ -9,7 +9,8 @@ namespace ChaosCMS.Rendering
     /// 
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
-    public interface IChaosHelper<TModel> : IChaosHelper
+    /// <typeparam name="TPage"></typeparam>
+    public interface IChaosHelper<TModel, TPage> : IChaosHelper<TPage>
     {
     }
 }
