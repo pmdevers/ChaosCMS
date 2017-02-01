@@ -1,4 +1,5 @@
-﻿using ChaosCMS.Managers;
+﻿using System;
+using ChaosCMS.Managers;
 using ChaosCMS.Razor;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
@@ -35,14 +36,22 @@ namespace ChaosCMS
         /// <returns></returns>
         public async Task Invoke(HttpContext httpContext)
         {
+            Console.WriteLine($"incoming request : '{httpContext.Request.Path.Value}'");
+
             var page = await pageManager.FindByUrlAsync(httpContext.Request.Path.Value);
             if(page == null)
             {
                 throw ChaosHttpExeption.PageNotFound(httpContext.Request.Path.Value);
             }
 
+            Console.WriteLine($"Page Found : '{await pageManager.GetIdAsync(page)}'");
+
             var templateName = await pageManager.GetTemplateAsync(page);
+            Console.WriteLine($"template : '{templateName}'");
+
             var results = engine.Parse(templateName + ".cshtml", new object());
+
+            Console.WriteLine($"Serve : '{results}'");
 
             httpContext.Response.ContentType = "text/html";
                                    
