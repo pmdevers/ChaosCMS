@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>ChaosCMS </Description>
+    <TargetFrameworks>net451;netstandard1.6</TargetFrameworks>
+    <WarningsAsErrors>true</WarningsAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>ChaosCMS.EntityFramework</AssemblyName>
+    <PackageId>ChaosCMS.EntityFramework</PackageId>
+    <PackageTags>ChaosCMS;cms</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>git://github.com/pmdevers/ChaosCMS</RepositoryUrl>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChaosCMS\ChaosCMS.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="1.1.0-*" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+</Project>

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server;
 using Microsoft.Extensions.Configuration;
 
 namespace SampleSite
@@ -24,6 +25,7 @@ namespace SampleSite
             // use Kestrel server with cwd content root
             var host = new WebHostBuilder()
                 .UseConfiguration(config)
+                .UseIISIntegration()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()

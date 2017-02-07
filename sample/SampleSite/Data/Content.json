@@ -3,13 +3,13 @@
     "Id": "65e7029e-4076-46df-b17a-7f09f4a8e579",
     "ParentId": "00000000-0000-0000-0000-000000000000",
     "Name": "Test",
-    "Type": "string",
-    "Value": "Test value"
+    "Type": "html",
+    "Value": "<h1>Test value</h1>"
   },
   {
     "Id": "a4ac9f0f-6c4e-416f-a7fc-c62bd060fc18",
-    "ParentId": "65e7029e-4076-46df-b17a-7f09f4a8e579",
-    "Name": "Test",
+    "ParentId": "00000000-0000-0000-0000-000000000000",
+    "Name": "Test2",
     "Type": "string",
     "Value": "est"
   }

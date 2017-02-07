@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ChaosCMS.Rendering
@@ -9,24 +10,19 @@ namespace ChaosCMS.Rendering
     /// <summary>
     /// 
     /// </summary>
-    public interface IChaosHelper<TPage>
+    /// <typeparam name="TContent"></typeparam>
+    public interface IRenderer<TContent>
     {
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
-        IHtmlContent Raw(string test);
-
+        string TypeName { get; }
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="chaos"></param>
+        /// <param name="content"></param>
         /// <returns></returns>
-        IHtmlContent Test();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        TPage CurrentPage();
+        Task<IHtmlContent> RenderAsync(IChaos chaos, TContent content);
     }
 }

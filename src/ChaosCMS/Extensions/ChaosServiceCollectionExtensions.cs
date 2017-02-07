@@ -1,27 +1,14 @@
 ﻿using System;
-using System.Buffers;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Razor;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-
 using ChaosCMS;
 using ChaosCMS.Managers;
-using ChaosCMS.Razor;
 using ChaosCMS.Controllers;
-using System.IO;
-using ChaosCMS.Rendering;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
-using Microsoft.CodeAnalysis;
 using Newtonsoft.Json.Serialization;
-using System.Linq;
-using TypeInfo = System.Reflection.TypeInfo;
-using System.Reflection;
 using ChaosCMS.Formatters;
 using ChaosCMS.Validators;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc.Razor;
+using ChaosCMS.Rendering;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -63,7 +50,10 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddMvc(o =>
                 {
-                    o.OutputFormatters.Add(new JsonHalOutputFormatter(new[] { "application/hal+json", "application/vnd.example.hal+json", "application/vnd.example.hal.v1+json"}));  
+                    o.OutputFormatters.Add(new JsonHalOutputFormatter(new[] { "application/hal+json", "application/vnd.example.hal+json", "application/vnd.example.hal.v1+json"}));
+                })
+                .AddRazorOptions(r=> {
+                    r.ViewLocationExpanders.Add(new ChaosViewLocationRemapper());
                 })
                 .AddJsonOptions(a =>
                 {
@@ -74,22 +64,17 @@ namespace Microsoft.Extensions.DependencyInjection
                     manager.ApplicationParts.Add(
                         new ChaosTypesPart(
                                 typeof(PageController<TPage>),
-                                typeof(ContentController<TContent>)
+                                typeof(ContentController<TContent>),
+                                typeof(RenderController<TPage>)
                             )
                         );
                 })
                 .AddControllersAsServices();
-            
 
-            services.AddRazor(razor => {
-                razor.Root = Path.Combine(Directory.GetCurrentDirectory(), opt.TempateDirectory);
-            });
-
-            services.TryAddScoped(typeof(IChaosHelper<,>), typeof(ChaosHelper<,>));
+            services.AddTransient<IChaos, DefaultChaosService<TPage, TContent>>();
 
             // Chaos services
             services.TryAddSingleton<ChaosMarkerService>();
-            services.TryAddScoped<IChaosContext<TPage>, ChaosContext<TPage>>();
             services.TryAddScoped<ChaosErrorDescriber>();
             services.TryAddScoped<PageManager<TPage>, PageManager<TPage>>();
             services.TryAddScoped<ContentManager<TContent>, ContentManager<TContent>>();
@@ -97,6 +82,9 @@ namespace Microsoft.Extensions.DependencyInjection
             // Validators
             services.TryAddScoped<IPageValidator<TPage>, DefaultPageValidator<TPage>>();
             services.TryAddScoped<IContentValidator<TContent>, DefaultContentValidator<TContent>>();
+
+            services.AddSingleton<IRenderer<TContent>, HtmlRenderer<TContent>>();
+            services.AddSingleton<IRenderer<TContent>, StringRenderer<TContent>>();
 
             if (options != null)
             {

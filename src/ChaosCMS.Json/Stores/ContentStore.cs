@@ -51,7 +51,7 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(name));
             }
-            var item = this.ReadFile().FirstOrDefault(x => x.Name.Equals(name));
+            var item = this.ReadFile().FirstOrDefault(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
             return Task.FromResult(item);
         }
 

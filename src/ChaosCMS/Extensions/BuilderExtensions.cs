@@ -35,12 +35,14 @@ namespace Microsoft.AspNetCore.Builder
 
             var options = app.ApplicationServices.GetRequiredService<IOptions<ChaosOptions>>().Value;
             var builder = app.ApplicationServices.GetService<ChaosBuilder>();
-            var middleware = typeof(ChaosMiddleware<>).MakeGenericType(builder.PageType);
             var exceptionMiddleWare = typeof(ChaosExceptionMiddleware);
 
+
+            app.UseStaticFiles(new StaticFileOptions() { ServeUnknownFileTypes = true } );
             app.UseMiddleware(exceptionMiddleWare);
             app.UseMvc();
-            app.UseMiddleware(middleware);
+
+            //app.UseMiddleware(middleware);
             
             return app;
         }
