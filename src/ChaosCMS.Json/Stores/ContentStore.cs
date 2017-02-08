@@ -43,6 +43,21 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <inheritdoc />
+        public Task<IEnumerable<TContent>> FindByPageIdAsync(string pageId, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            if (string.IsNullOrWhiteSpace(pageId))
+            {
+                throw new ArgumentNullException(nameof(pageId));
+            }
+            var id = Guid.Empty;
+            Guid.TryParse(pageId, out id);
+            var item = this.ReadFile().Where(x => x.PageId.Equals(id));
+            return Task.FromResult(item);
+        }
+
+        /// <inheritdoc />
         public Task<TContent> FindByNameAsync(string name, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();

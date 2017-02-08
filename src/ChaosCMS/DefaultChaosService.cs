@@ -8,6 +8,8 @@ using ChaosCMS.Extensions;
 using ChaosCMS.Rendering;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ChaosCMS
 {
@@ -16,7 +18,7 @@ namespace ChaosCMS
     /// </summary>
     /// <typeparam name="TPage"></typeparam>
     /// <typeparam name="TContent"></typeparam>
-    public class DefaultChaosService<TPage, TContent> : IChaos
+    public class DefaultChaosService<TPage, TContent> : IChaos<TContent>
         where TPage : class
         where TContent : class
     {
@@ -65,14 +67,42 @@ namespace ChaosCMS
         /// <summary>
         /// 
         /// </summary>
+        public IHtmlHelper Helper { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public async Task<IHtmlContent> RenderAsync(string name)
+        public IHtmlContent RenderAsync(string name)
         {
-            var content = await this.contentManager.FindByNameAsync(name);
-            var type = await this.contentManager.GetTypeAsync(content);
+            TContent content = Helper.ViewData.Model as TContent;
+            var pageId = this.pageManager.GetIdAsync(CurrentPage).GetAwaiter().GetResult();
+            if (content != null)
+            {
+                var children1 = this.contentManager.GetChildrenAsync(content).GetAwaiter().GetResult();
+                var child1 = children1.FirstOrDefault(x => this.contentManager.GetNameAsync(x).GetAwaiter().GetResult().Equals(name, StringComparison.CurrentCultureIgnoreCase));
+                return this.RenderAsync(child1);
+            }
+            var children = this.contentManager.FindByPageIdAsync(pageId).GetAwaiter().GetResult();
+            var child = children.FirstOrDefault(x => this.contentManager.GetNameAsync(x).GetAwaiter().GetResult().Equals(name, StringComparison.CurrentCultureIgnoreCase));
+            return this.RenderAsync(child);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public IHtmlContent RenderAsync(TContent content)
+        {
+            if(content == null)
+            {
+                return HtmlString.Empty;
+            }
+            var type = this.contentManager.GetTypeAsync(content).GetAwaiter().GetResult();
             var renderer = this.renderers.FirstOrDefault(x => x.TypeName.Equals(type));
-            return await renderer.RenderAsync(this, content);
+            return renderer.RenderAsync(this, content);
         }
     }
 }

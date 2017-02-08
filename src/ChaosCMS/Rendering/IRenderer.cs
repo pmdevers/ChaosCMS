@@ -12,6 +12,7 @@ namespace ChaosCMS.Rendering
     /// </summary>
     /// <typeparam name="TContent"></typeparam>
     public interface IRenderer<TContent>
+        where TContent : class
     {
         /// <summary>
         /// 
@@ -23,6 +24,6 @@ namespace ChaosCMS.Rendering
         /// <param name="chaos"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        Task<IHtmlContent> RenderAsync(IChaos chaos, TContent content);
+        IHtmlContent RenderAsync(IChaos<TContent> chaos, TContent content);
     }
 }

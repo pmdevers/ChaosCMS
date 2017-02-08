@@ -2,6 +2,7 @@
   {
     "Id": "65e7029e-4076-46df-b17a-7f09f4a8e579",
     "ParentId": "00000000-0000-0000-0000-000000000000",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
     "Name": "Test",
     "Type": "html",
     "Value": "<h1>Test value</h1>"
@@ -9,8 +10,49 @@
   {
     "Id": "a4ac9f0f-6c4e-416f-a7fc-c62bd060fc18",
     "ParentId": "00000000-0000-0000-0000-000000000000",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
     "Name": "Test2",
     "Type": "string",
     "Value": "est"
+  },
+  {
+    "Id": "a4ac9f0f-6c4e-416f-a7fc-c62bd060fc19",
+    "ParentId": "00000000-0000-0000-0000-000000000000",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "grid",
+    "Type": "div",
+    "Value": "{ \"CssClass\" : \"container\" }"
+  },
+  {
+    "Id": "a4ac9f0f-6c4e-416f-a7fc-c62bd060fc10",
+    "ParentId": "a4ac9f0f-6c4e-416f-a7fc-c62bd060fc19",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "row1",
+    "Type": "div",
+    "Value": "{ \"CssClass\" : \"row\" }"
+  },
+  {
+    "Id": "a4ac9f0f-6c4e-416f-a7fc-c62bd060fc11",
+    "ParentId": "a4ac9f0f-6c4e-416f-a7fc-c62bd060fc10",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "col1",
+    "Type": "div",
+    "Value": "{ \"CssClass\" : \"col-md-12\" }"
+  },
+  {
+    "Id": "a4ac9f0f-6c4e-416f-a7fc-c62bd060fc12",
+    "ParentId": "a4ac9f0f-6c4e-416f-a7fc-c62bd060fc11",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "inner",
+    "Type": "macro",
+    "Value": "{ \"ViewName\" : \"test\" }"
+  },
+  {
+    "Id": "a4ac9f0f-6c4e-416f-a7fc-c62bd060fc13",
+    "ParentId": "a4ac9f0f-6c4e-416f-a7fc-c62bd060fc12",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "body",
+    "Type": "html",
+    "Value": "<p>test <a href='/'>test</a></p>"
   }
 ]

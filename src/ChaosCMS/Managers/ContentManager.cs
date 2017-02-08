@@ -185,6 +185,23 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageId"></param>
+        /// <returns></returns>
+        public virtual Task<IEnumerable<TContent>> FindByPageIdAsync(string pageId)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (pageId == null)
+            {
+                throw new ArgumentNullException(nameof(pageId));
+            }
+
+            return this.Store.FindByPageIdAsync(pageId, CancellationToken);
+        }
+
+        /// <summary>
         /// Finds the content with the contentId
         /// </summary>
         /// <param name="name">The id of the content.</param>

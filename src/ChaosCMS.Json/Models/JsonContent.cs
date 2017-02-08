@@ -26,6 +26,11 @@ namespace ChaosCMS.Json.Models
         /// <summary>
         /// 
         /// </summary>
+        public Guid PageId { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string Name { get; set; }
         
         /// <summary>

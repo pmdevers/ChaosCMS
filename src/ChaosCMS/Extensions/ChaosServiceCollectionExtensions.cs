@@ -84,7 +84,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<IContentValidator<TContent>, DefaultContentValidator<TContent>>();
 
             services.AddSingleton<IRenderer<TContent>, HtmlRenderer<TContent>>();
+            services.AddSingleton<IRenderer<TContent>, DivRenderer<TContent>>();
             services.AddSingleton<IRenderer<TContent>, StringRenderer<TContent>>();
+            services.AddSingleton<IRenderer<TContent>, MacroRenderer<TContent>>();
 
             if (options != null)
             {

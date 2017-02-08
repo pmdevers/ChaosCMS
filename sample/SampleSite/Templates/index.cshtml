@@ -1,11 +1,7 @@
-﻿@inject IChaos Chaos;
-
-@{ 
+﻿@{ 
     Layout = "layout";
 }
 
-@Chaos.Name
+@Html.Chaos().Name
 
-@await Chaos.RenderAsync("test")
-
-@await Chaos.RenderAsync("test2")
+@Html.Chaos().RenderAsync("grid")

@@ -102,5 +102,12 @@ namespace ChaosCMS.Stores
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task AddChildAsync(TContent parent, TContent child, CancellationToken cancellationToken);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<IEnumerable<TContent>> FindByPageIdAsync(string pageId, CancellationToken cancellationToken);
     }
 }
