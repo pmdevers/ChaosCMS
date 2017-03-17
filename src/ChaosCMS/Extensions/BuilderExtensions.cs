@@ -38,7 +38,7 @@ namespace Microsoft.AspNetCore.Builder
             var exceptionMiddleWare = typeof(ChaosExceptionMiddleware);
 
 
-            //app.UseStaticFiles();
+            app.UseStaticFiles();
             app.UseMiddleware(exceptionMiddleWare);
             app.UseMvc();
 

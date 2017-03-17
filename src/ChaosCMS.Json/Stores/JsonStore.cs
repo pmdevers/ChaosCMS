@@ -26,33 +26,46 @@ namespace ChaosCMS.Json.Stores
         protected JsonStore(IOptions<ChaosJsonStoreOptions> optionsAccessor)
         {
             this.Options = optionsAccessor?.Value ?? new ChaosJsonStoreOptions();
+            this.ReadFile();
         }
 
         /// <summary>
         /// The <see cref="ChaosJsonStoreOptions"/> used to configure Chaos Json Store.
         /// </summary>
         protected internal ChaosJsonStoreOptions Options { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        protected internal List<TEntity> Collection { get; set; }
 
         /// <inheritdoc />
         public Task<ChaosResult> CreateAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
-            var items = ReadFile().ToList();
-            items.Add(entity);
-            WriteFile(items);
+            this.ThrowIfDisposed();
+            this.Collection.Add(entity);
+            this.WriteFile();
             return Task.FromResult(ChaosResult.Success);
         }
 
         /// <inheritdoc />
-        public Task<ChaosResult> UpdateAsync(TEntity page, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<ChaosResult> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
-            var items = ReadFile().ToList();
-            items.RemoveAll(x => x.Id.Equals(page.Id));
-            items.Add(page);
-            WriteFile(items);
+            this.ThrowIfDisposed();
+            this.Collection.RemoveAll(x => x.Id.Equals(entity.Id));
+            this.Collection.Add(entity);
+            this.WriteFile();
+            return Task.FromResult(ChaosResult.Success);
+        }
+
+        /// <inheritdoc />
+        public Task<ChaosResult> DeleteAsync(TEntity entity, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            this.Collection.Remove(entity);
+            this.WriteFile();
             return Task.FromResult(ChaosResult.Success);
         }
 
@@ -60,8 +73,8 @@ namespace ChaosCMS.Json.Stores
         public Task<TEntity> FindByIdAsync(string id, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
-            var item = ReadFile().FirstOrDefault(x => x.Id.Equals(ConvertIdFromString(id)));
+            this.ThrowIfDisposed();
+            var item = this.Collection.FirstOrDefault(x => x.Id.Equals(this.ConvertIdFromString(id)));
             return Task.FromResult(item);
         }
 
@@ -69,21 +82,21 @@ namespace ChaosCMS.Json.Stores
         public Task<string> GetIdAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
+            this.ThrowIfDisposed();
             if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity));
             }
-            return Task.FromResult(ConvertIdToString(entity.Id));
+            return Task.FromResult(this.ConvertIdToString(entity.Id));
         }
 
-
+        
         /// <summary>
         /// 
         /// </summary>
         public void Dispose()
         {
-            isDisposed = true;
+            this.isDisposed = true;
         }
 
         /// <summary>
@@ -93,8 +106,7 @@ namespace ChaosCMS.Json.Stores
         /// <returns></returns>
         protected Guid ConvertIdFromString(string pageId)
         {
-            Guid id;
-            if (!Guid.TryParse(pageId, out id))
+            if (!Guid.TryParse(pageId, out Guid id))
             {
                 id = Guid.Empty;
             }
@@ -120,38 +132,41 @@ namespace ChaosCMS.Json.Stores
         /// 
         /// </summary>
         /// <returns></returns>
-        protected IEnumerable<TEntity> ReadFile()
+        protected void ReadFile()
         {
-            List<TEntity> collection;
-            lock (lockObject)
+            if (this.Collection == null)
             {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), Options.StoreDirectoryName);
-                var filename = Path.Combine(path, typeof(TEntity).Name + Options.Extension);
-                if (!File.Exists(filename))
+                lock (lockObject)
                 {
-                    WriteFile(new List<TEntity>());
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), this.Options.StoreDirectoryName);
+                    var filename = Path.Combine(path, typeof(TEntity).Name + this.Options.Extension);
+                    if (!File.Exists(filename))
+                    {
+                        this.WriteFile();
+                    }
+                    var fileContents = File.ReadAllText(filename);
+                    this.Collection = JsonConvert.DeserializeObject<List<TEntity>>(fileContents);
                 }
-                collection = JsonConvert.DeserializeObject<List<TEntity>>(File.ReadAllText(filename));
             }
-
-            return collection;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="objects"></param>
-        protected void WriteFile(List<TEntity> objects)
+        protected void WriteFile()
         {
-            lock (lockObject)
+            if (this.Collection != null)
             {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), Options.StoreDirectoryName);
-                var filename = Path.Combine(path, typeof(TEntity).Name + Options.Extension);
-                if (!Directory.Exists(path))
+                lock (lockObject)
                 {
-                    Directory.CreateDirectory(path);
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), this.Options.StoreDirectoryName);
+                    var filename = Path.Combine(path, typeof(TEntity).Name + this.Options.Extension);
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    File.WriteAllText(filename, JsonConvert.SerializeObject(this.Collection, Formatting.Indented));
                 }
-                File.WriteAllText(filename, JsonConvert.SerializeObject(objects, Formatting.Indented));
             }
         }
 
@@ -160,9 +175,9 @@ namespace ChaosCMS.Json.Stores
         /// </summary>
         protected void ThrowIfDisposed()
         {
-            if (isDisposed)
+            if (this.isDisposed)
             {
-                throw new ObjectDisposedException(GetType().Name);
+                throw new ObjectDisposedException(this.GetType().Name);
             }
         }
     }

@@ -26,6 +26,7 @@ namespace ChaosCMS
         private readonly ContentManager<TContent> contentManager;
         private readonly HttpContext context;
         private readonly IEnumerable<IRenderer<TContent>> renderers;
+        private readonly IList<IHtmlContent> scripts = new List<IHtmlContent>();
 
         /// <summary>
         /// 
@@ -74,19 +75,21 @@ namespace ChaosCMS
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public IHtmlContent RenderAsync(string name)
+        public async Task<IHtmlContent> RenderAsync(string name)
         {
-            TContent content = Helper.ViewData.Model as TContent;
-            var pageId = this.pageManager.GetIdAsync(CurrentPage).GetAwaiter().GetResult();
+            var content = Helper.ViewData.Model as TContent;
+            
             if (content != null)
             {
-                var children1 = this.contentManager.GetChildrenAsync(content).GetAwaiter().GetResult();
-                var child1 = children1.FirstOrDefault(x => this.contentManager.GetNameAsync(x).GetAwaiter().GetResult().Equals(name, StringComparison.CurrentCultureIgnoreCase));
-                return this.RenderAsync(child1);
+                content = await this.contentManager.FindChildByNameAsync(content, name);
             }
-            var children = this.contentManager.FindByPageIdAsync(pageId).GetAwaiter().GetResult();
-            var child = children.FirstOrDefault(x => this.contentManager.GetNameAsync(x).GetAwaiter().GetResult().Equals(name, StringComparison.CurrentCultureIgnoreCase));
-            return this.RenderAsync(child);
+            else
+            {
+                var pageId = await this.pageManager.GetIdAsync(CurrentPage);
+                content = await this.contentManager.FindByPageIdAsync(pageId, name);
+            }
+            
+            return await this.RenderAsync(content);
         }
 
         /// <summary>
@@ -94,15 +97,49 @@ namespace ChaosCMS
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
-        public IHtmlContent RenderAsync(TContent content)
+        public async Task<IHtmlContent> RenderAsync(TContent content)
         {
             if(content == null)
             {
                 return HtmlString.Empty;
             }
-            var type = this.contentManager.GetTypeAsync(content).GetAwaiter().GetResult();
+            var type = await this.contentManager.GetTypeAsync(content);
+            var renderer1 = this.renderers.FirstOrDefault(x => x.TypeName.Equals("default"));
             var renderer = this.renderers.FirstOrDefault(x => x.TypeName.Equals(type));
-            return renderer.RenderAsync(this, content);
+
+            if (renderer == null)
+            {
+                renderer = renderer1;
+            }
+
+            return await renderer.RenderAsync(this, content);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Task<IHtmlContent> Scripts()
+        {
+            var script = new TagBuilder("script");
+
+            foreach(var row in scripts)
+            {
+                script.InnerHtml.AppendHtml(row);
+            }
+            
+            return Task.FromResult<IHtmlContent>(script);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public Task AddScript(IHtmlContent content)
+        {
+            scripts.Add(content);
+            return Task.FromResult(0);
         }
     }
 }

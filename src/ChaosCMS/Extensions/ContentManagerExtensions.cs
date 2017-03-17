@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using ChaosCMS.Managers;
 using Newtonsoft.Json;
 
@@ -19,10 +20,11 @@ namespace ChaosCMS.Extensions
         /// <returns></returns>
         public static async Task<TResult> GetValueAsync<TResult, TContent>(this ContentManager<TContent> manager, TContent content)
             where TContent : class
-            where TResult : class
+            where TResult : class , new()
         {
             var value = await manager.GetValueAsync(content);
-            return JsonConvert.DeserializeObject<TResult>(value);
+            var result = JsonConvert.DeserializeObject<TResult>(value);
+            return result;
         }
 
         /// <summary>

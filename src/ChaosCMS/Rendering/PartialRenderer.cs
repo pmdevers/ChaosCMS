@@ -38,16 +38,16 @@ namespace ChaosCMS.Rendering
         /// <param name="chaos"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public IHtmlContent RenderAsync(IChaos<TContent> chaos, TContent content)
+        public async Task<IHtmlContent> RenderAsync(IChaos<TContent> chaos, TContent content)
         {
-            var options = this.manager.GetValueAsync<MacroOptions, TContent>(content).GetAwaiter().GetResult();
-            return chaos.Helper.Partial(options.ViewName, content);
+            var options = await this.manager.GetValueAsync<MacroOptions, TContent>(content);
+            return await chaos.Helper.PartialAsync(options.ViewName, content);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public class MacroOptions
+        public class MacroOptions : RenderOptions
         {
             /// <summary>
             /// 

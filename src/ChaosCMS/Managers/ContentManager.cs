@@ -72,7 +72,7 @@ namespace ChaosCMS.Managers
         /// Gets or Sets the presistence store the manager operates over.
         /// </summary>
         protected internal IContentStore<TContent> Store { get; private set; }
-
+        
         /// <summary>
         /// The <see cref="ILogger"/> used to log messages from the manager.
         /// </summary>
@@ -188,8 +188,9 @@ namespace ChaosCMS.Managers
         /// 
         /// </summary>
         /// <param name="pageId"></param>
+        /// <param name="name"></param>
         /// <returns></returns>
-        public virtual Task<IEnumerable<TContent>> FindByPageIdAsync(string pageId)
+        public virtual Task<TContent> FindByPageIdAsync(string pageId, string name)
         {
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -198,7 +199,30 @@ namespace ChaosCMS.Managers
                 throw new ArgumentNullException(nameof(pageId));
             }
 
-            return this.Store.FindByPageIdAsync(pageId, CancellationToken);
+            return this.Store.FindByPageIdAsync(pageId, name, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public virtual Task<TContent> FindChildByNameAsync(TContent parent, string name)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (parent == null)
+            {
+                throw new ArgumentNullException(nameof(parent));
+            }
+
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            return this.Store.FindChildByNameAsync(parent, name, CancellationToken);
         }
 
         /// <summary>
@@ -269,6 +293,7 @@ namespace ChaosCMS.Managers
             return this.Store.GetTypeAsync(content, CancellationToken);
         }
 
+        
         /// <summary>
         /// Gets the value of the content.
         /// </summary>
@@ -287,11 +312,29 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
+        /// Gets the value of the content.
+        /// </summary>
+        /// <param name="content">The content to get the value from.</param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public virtual Task SetValueAsync(TContent content, string value)
+        {
+            this.CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (content == null)
+            {
+                throw new ArgumentNullException(nameof(content));
+            }
+
+            return this.Store.SetValueAsync(content, value, this.CancellationToken);
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
-        public virtual Task<IList<TContent>> GetChildrenAsync(TContent content)
+        public virtual Task<List<TContent>> GetChildrenAsync(TContent content)
         {
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();

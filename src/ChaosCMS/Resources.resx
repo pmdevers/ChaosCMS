@@ -169,4 +169,8 @@
     <value>The content name '{0}' is already taken.</value>
     <comment>Error when there is already content with the same name</comment>
   </data>
+  <data name="ConcurrencyFailure" xml:space="preserve">
+    <value>ConcurrencyFailure.</value>
+    <comment>Error when there is ConcurrencyFailure</comment>
+  </data>
 </root>

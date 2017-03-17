@@ -40,6 +40,14 @@ namespace ChaosCMS.Stores
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="content"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ChaosResult> DeleteAsync(TContent content, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="page"></param>
         /// <param name="itemsPerPage"></param>
         /// <param name="cancellationToken"></param>
@@ -92,7 +100,7 @@ namespace ChaosCMS.Stores
         /// <param name="content"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IList<TContent>> GetChildrenAsync(TContent content, CancellationToken cancellationToken);
+        Task<List<TContent>> GetChildrenAsync(TContent content, CancellationToken cancellationToken);
 
         /// <summary>
         /// 
@@ -106,8 +114,27 @@ namespace ChaosCMS.Stores
         /// 
         /// </summary>
         /// <param name="pageId"></param>
+        /// <param name="name"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IEnumerable<TContent>> FindByPageIdAsync(string pageId, CancellationToken cancellationToken);
+        Task<TContent> FindByPageIdAsync(string pageId, string name, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="name"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<TContent> FindChildByNameAsync(TContent parent, string name, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="value"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task SetValueAsync(TContent content, string value, CancellationToken cancellationToken);
     }
 }

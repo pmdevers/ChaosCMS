@@ -24,6 +24,6 @@ namespace ChaosCMS.Rendering
         /// <param name="chaos"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        IHtmlContent RenderAsync(IChaos<TContent> chaos, TContent content);
+        Task<IHtmlContent> RenderAsync(IChaos<TContent> chaos, TContent content);
     }
 }

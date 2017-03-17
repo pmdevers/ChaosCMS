@@ -12,25 +12,23 @@ namespace ChaosCMS.Rendering
     /// 
     /// </summary>
     /// <typeparam name="TContent"></typeparam>
-    public class StringRenderer<TContent> : IRenderer<TContent>
+    public class LinkContentRenderer<TContent> : IRenderer<TContent>
         where TContent : class
     {
         private readonly ContentManager<TContent> contentManager;
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="contentManager"></param>
-        public StringRenderer(ContentManager<TContent> contentManager)
+        public LinkContentRenderer(ContentManager<TContent> contentManager)
         {
             this.contentManager = contentManager;
         }
 
-
         /// <summary>
         /// 
         /// </summary>
-        public string TypeName => "string";
+        public string TypeName => "ContentLink";
 
         /// <summary>
         /// 
@@ -41,7 +39,8 @@ namespace ChaosCMS.Rendering
         public async Task<IHtmlContent> RenderAsync(IChaos<TContent> chaos, TContent content)
         {
             var value = await this.contentManager.GetValueAsync(content);
-            return new HtmlString(value);
+            var linkedContent = await this.contentManager.FindByIdAsync(value);
+            return await chaos.RenderAsync(linkedContent);
         }
     }
 }

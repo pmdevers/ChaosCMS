@@ -135,5 +135,18 @@ namespace ChaosCMS
                 Description = Resources.FormatContentNameIsNotUnique(name)
             };
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public ChaosError ConcurrencyFailure()
+        {
+            return new ChaosError
+            {
+                Code = nameof(ConcurrencyFailure),
+                Description = Resources.ConcurrencyFailure
+            };
+        }
     }
 }

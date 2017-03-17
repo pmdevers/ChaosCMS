@@ -25,7 +25,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static ChaosBuilder AddEntityFrameworkStores<TContext>(this ChaosBuilder builder)
             where TContext : DbContext
         {
-            builder.Services.TryAdd(GetDefaultServices(builder.PageType, typeof(TContext)));
+            builder.Services.TryAdd(GetDefaultServices(builder.PageType, builder.ContentType, typeof(TContext)));
             return builder;
         }
 
@@ -40,21 +40,26 @@ namespace Microsoft.Extensions.DependencyInjection
             where TContext : DbContext
             where TKey : IEquatable<TKey>
         {
-            builder.Services.TryAdd(GetDefaultServices(builder.PageType, typeof(TContext), typeof(TKey)));
+            builder.Services.TryAdd(GetDefaultServices(builder.PageType, builder.ContentType,  typeof(TContext), typeof(TKey)));
             return builder;
         }
 
-        private static IServiceCollection GetDefaultServices(Type pageType, Type contextType, Type keyType = null)
+        private static IServiceCollection GetDefaultServices(Type pageType, Type contentType, Type contextType, Type keyType = null)
         {
             Type pageStoreType;
+            Type contentStoreType;
             keyType = keyType ?? typeof(string);
             pageStoreType = typeof(PageStore<,,>).MakeGenericType(pageType, contextType, keyType);
+            contentStoreType = typeof(ContentStore<,,>).MakeGenericType(contentType, contextType, keyType);
 
 
             var services = new ServiceCollection();
             services.AddScoped(
                 typeof(IPageStore<>).MakeGenericType(pageType),
                 pageStoreType);
+            services.AddScoped(
+                typeof(IContentStore<>).MakeGenericType(contentType),
+                contentStoreType);
 
             return services;
         }

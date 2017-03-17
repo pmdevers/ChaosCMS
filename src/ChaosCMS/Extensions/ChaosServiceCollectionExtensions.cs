@@ -71,7 +71,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 })
                 .AddControllersAsServices();
 
-            services.AddTransient<IChaos, DefaultChaosService<TPage, TContent>>();
+            services.TryAddScoped<IChaos, DefaultChaosService<TPage, TContent>>();
 
             // Chaos services
             services.TryAddSingleton<ChaosMarkerService>();
@@ -83,10 +83,12 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<IPageValidator<TPage>, DefaultPageValidator<TPage>>();
             services.TryAddScoped<IContentValidator<TContent>, DefaultContentValidator<TContent>>();
 
+            services.AddSingleton<IRenderer<TContent>, DefaultRenderer<TContent>>();
             services.AddSingleton<IRenderer<TContent>, HtmlRenderer<TContent>>();
-            services.AddSingleton<IRenderer<TContent>, DivRenderer<TContent>>();
             services.AddSingleton<IRenderer<TContent>, StringRenderer<TContent>>();
             services.AddSingleton<IRenderer<TContent>, MacroRenderer<TContent>>();
+            services.AddSingleton<IRenderer<TContent>, CarouselRenderer<TContent>>();
+            services.AddSingleton<IRenderer<TContent>, LinkContentRenderer<TContent>>();
 
             if (options != null)
             {

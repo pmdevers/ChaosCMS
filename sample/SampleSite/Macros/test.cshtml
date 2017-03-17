@@ -1,3 +1,2 @@
-﻿<h1>Partial</h1>
-
-@Html.Chaos().RenderAsync("body")
+﻿<h1>@await Html.Chaos().RenderAsync("Title")</h1>
+@await Html.Chaos().RenderAsync("body")

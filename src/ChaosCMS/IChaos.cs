@@ -29,7 +29,18 @@ namespace ChaosCMS
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        IHtmlContent RenderAsync(string name);
+        Task<IHtmlContent> RenderAsync(string name);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        Task<IHtmlContent> Scripts();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        Task AddScript(IHtmlContent content);
     }
 
     /// <summary>
@@ -44,6 +55,6 @@ namespace ChaosCMS
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
-        IHtmlContent RenderAsync(TContent content);
+        Task<IHtmlContent> RenderAsync(TContent content);
     }
 }

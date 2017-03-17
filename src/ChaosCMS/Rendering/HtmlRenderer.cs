@@ -37,9 +37,9 @@ namespace ChaosCMS.Rendering
         /// <param name="chaos"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public IHtmlContent RenderAsync(IChaos<TContent> chaos, TContent content)
+        public async Task<IHtmlContent> RenderAsync(IChaos<TContent> chaos, TContent content)
         {
-            var value = this.contentManager.GetValueAsync(content).GetAwaiter().GetResult();
+            var value = await this.contentManager.GetValueAsync(content);
             return new HtmlString(value);
         }
     }

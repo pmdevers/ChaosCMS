@@ -194,6 +194,14 @@ namespace ChaosCMS
             return string.Format(CultureInfo.CurrentCulture, GetString("InvalidManagerType"), p0, p1, p2);
         }
 
+        /// <summary>
+        /// ConcurrencyFailure.
+        /// </summary>
+        internal static string ConcurrencyFailure
+        {
+            get { return GetString("ConcurrencyFailure"); }
+        }
+
         private static string GetString(string name, params string[] formatterNames)
         {
             var value = _resourceManager.GetString(name);

@@ -29,31 +29,34 @@ namespace ChaosCMS.Json.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
-            var allItems = ReadFile();
-            var items = allItems.Where(x=> x.ParentId.Equals(default(Guid))).Skip((page - 1) * itemsPerPage).Take(itemsPerPage);
+            var items = this.Collection.Where(x=> x.ParentId.Equals(default(Guid))).Skip((page - 1) * itemsPerPage).Take(itemsPerPage);
 
             return Task.FromResult(new ChaosPaged<TContent>
             {
                 CurrentPage = page,
                 ItemsPerPage = itemsPerPage,
-                TotalItems = allItems.Count(),
+                TotalItems = this.Collection.Count(),
                 Items = items
             });
 
         }
 
         /// <inheritdoc />
-        public Task<IEnumerable<TContent>> FindByPageIdAsync(string pageId, CancellationToken cancellationToken)
+        public Task<TContent> FindByPageIdAsync(string pageId, string name, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
+            this.ThrowIfDisposed();
             if (string.IsNullOrWhiteSpace(pageId))
             {
                 throw new ArgumentNullException(nameof(pageId));
             }
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
             var id = Guid.Empty;
             Guid.TryParse(pageId, out id);
-            var item = this.ReadFile().Where(x => x.PageId.Equals(id));
+            var item = this.Collection.FirstOrDefault(x => x.PageId.Equals(id) && x.ParentId.Equals(Guid.Empty) && x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
             return Task.FromResult(item);
         }
 
@@ -61,12 +64,12 @@ namespace ChaosCMS.Json.Stores
         public Task<TContent> FindByNameAsync(string name, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
+            this.ThrowIfDisposed();
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
-            var item = this.ReadFile().FirstOrDefault(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+            var item = this.Collection.FirstOrDefault(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
             return Task.FromResult(item);
         }
 
@@ -74,7 +77,7 @@ namespace ChaosCMS.Json.Stores
         public Task<string> GetNameAsync(TContent content, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
+            this.ThrowIfDisposed();
             if (content == null)
             {
                 throw new ArgumentNullException(nameof(content));
@@ -85,7 +88,7 @@ namespace ChaosCMS.Json.Stores
         public Task<string> GetTypeAsync(TContent content, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
+            this.ThrowIfDisposed();
             if (content == null)
             {
                 throw new ArgumentNullException(nameof(content));
@@ -96,7 +99,7 @@ namespace ChaosCMS.Json.Stores
         public Task<string> GetValueAsync(TContent content, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
+            this.ThrowIfDisposed();
             if (content == null)
             {
                 throw new ArgumentNullException(nameof(content));
@@ -105,25 +108,25 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <inheritdoc />
-        public Task<IList<TContent>> GetChildrenAsync(TContent content, CancellationToken cancellationToken)
+        public Task<List<TContent>> GetChildrenAsync(TContent content, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
+            this.ThrowIfDisposed();
             if (content == null)
             {
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var items = this.ReadFile().Where(x=>x.ParentId.Equals(content.Id)).ToList();
+            var items = this.Collection.Where(x=>x.ParentId.Equals(content.Id)).ToList();
 
-            return Task.FromResult<IList<TContent>>(items);
+            return Task.FromResult(items);
         }
 
         /// <inheritdoc />
         public Task AddChildAsync(TContent parent, TContent child, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
+            this.ThrowIfDisposed();
             if (parent == null)
             {
                 throw new ArgumentNullException(nameof(parent));
@@ -137,5 +140,40 @@ namespace ChaosCMS.Json.Stores
 
             return Task.FromResult(0);
         }
+        /// <inheritdoc />
+        public Task<TContent> FindChildByNameAsync(TContent parent, string name, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (parent == null)
+            {
+                throw new ArgumentNullException(nameof(parent));
+            }
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            var item = this.Collection.FirstOrDefault(x => x.ParentId.Equals(parent.Id) && x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+
+            return Task.FromResult(item);
+        }
+
+        #region Implementation of IContentStore<TContent>
+
+        /// <inheritdoc />
+        public Task SetValueAsync(TContent content, string value, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (content == null)
+            {
+                throw new ArgumentNullException(nameof(content));
+            }
+            content.Value = value;
+            return Task.FromResult(0);
+        }
+
+        #endregion
     }
 }

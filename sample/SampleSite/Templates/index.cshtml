@@ -2,6 +2,6 @@
     Layout = "layout";
 }
 
-@Html.Chaos().Name
+@await Html.Chaos().RenderAsync("slider")
 
-@Html.Chaos().RenderAsync("grid")
+@await Html.Chaos().RenderAsync("grid")
