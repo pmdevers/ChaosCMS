@@ -54,6 +54,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 })
                 .AddRazorOptions(r=> {
                     r.ViewLocationExpanders.Add(new ChaosViewLocationRemapper());
+                    r.FileProviders.Add(new ChaosFileProvider(new ResourceManager()));
                 })
                 .AddJsonOptions(a =>
                 {
@@ -65,7 +66,9 @@ namespace Microsoft.Extensions.DependencyInjection
                         new ChaosTypesPart(
                                 typeof(PageController<TPage>),
                                 typeof(ContentController<TContent>),
-                                typeof(RenderController<TPage>)
+                                typeof(RenderController<TPage>),
+                                typeof(ResourceController),
+                                typeof(AdminController)
                             )
                         );
                 })
@@ -78,6 +81,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<ChaosErrorDescriber>();
             services.TryAddScoped<PageManager<TPage>, PageManager<TPage>>();
             services.TryAddScoped<ContentManager<TContent>, ContentManager<TContent>>();
+            services.TryAddScoped<ResourceManager, ResourceManager>();
 
             // Validators
             services.TryAddScoped<IPageValidator<TPage>, DefaultPageValidator<TPage>>();

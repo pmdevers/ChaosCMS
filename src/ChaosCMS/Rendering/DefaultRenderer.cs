@@ -48,10 +48,11 @@ namespace ChaosCMS.Rendering
             tagBuilder.MergeAttributes(value.Attributes);
 
             var children = await this.contentManager.GetChildrenAsync(content);
+            var builder = tagBuilder.InnerHtml; 
             foreach(var child in children)
             {
                 var html = await chaos.RenderAsync(child);
-                tagBuilder.InnerHtml.AppendHtml(html);
+                builder = builder.AppendHtml(html);
             }
 
             return tagBuilder;

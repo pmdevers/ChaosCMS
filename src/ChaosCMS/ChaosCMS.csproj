@@ -15,6 +15,15 @@
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Content\css\admin.css" />
+    <None Remove="Content\js\admin.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\css\admin.css" />
+    <EmbeddedResource Include="Content\js\admin.js" />
+    <EmbeddedResource Include="Views\admin.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.0" />
     <PackageReference Include="Tavis.UriTemplates" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.1" />
@@ -26,5 +35,8 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web" />
   </ItemGroup>
 </Project>

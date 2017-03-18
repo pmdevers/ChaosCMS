@@ -77,7 +77,7 @@ namespace ChaosCMS
         /// <returns></returns>
         public async Task<IHtmlContent> RenderAsync(string name)
         {
-            var content = Helper.ViewData.Model as TContent;
+            var content = this.Helper.ViewData.Model as TContent;
             
             if (content != null)
             {
