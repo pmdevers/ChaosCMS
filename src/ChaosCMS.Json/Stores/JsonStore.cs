@@ -36,7 +36,7 @@ namespace ChaosCMS.Json.Stores
         /// <summary>
         /// 
         /// </summary>
-        protected internal List<TEntity> Collection { get; set; }
+        protected internal IList<TEntity> Collection { get; set; }
 
         /// <inheritdoc />
         public Task<ChaosResult> CreateAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
@@ -53,7 +53,7 @@ namespace ChaosCMS.Json.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            this.Collection.RemoveAll(x => x.Id.Equals(entity.Id));
+            this.Collection.Remove(entity);
             this.Collection.Add(entity);
             this.WriteFile();
             return Task.FromResult(ChaosResult.Success);

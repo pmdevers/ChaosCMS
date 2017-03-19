@@ -3,11 +3,8 @@ using ChaosCMS.Json.Stores;
 using ChaosCMS.Stores;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using ChaosCMS.Json;
+using Microsoft.AspNetCore.Identity;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -24,7 +21,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static ChaosBuilder AddJsonStores(this ChaosBuilder builder, Action<ChaosJsonStoreOptions> options = null)
         {
-            builder.Services.TryAdd(GetDefaultServices(builder.PageType, builder.ContentType));
+            builder.Services.TryAdd(GetDefaultServices(builder));
 
             if (options != null)
             {
@@ -35,20 +32,25 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
 
-        private static IServiceCollection GetDefaultServices(Type pageType, Type contentType)
+        private static IServiceCollection GetDefaultServices(ChaosBuilder builder)
         {
-            var pageStoreType = typeof(PageStore<>).MakeGenericType(pageType);
-            var contentStoreType = typeof(ContentStore<>).MakeGenericType(contentType);
+            var pageStoreType = typeof(PageStore<>).MakeGenericType(builder.PageType);
+            var contentStoreType = typeof(ContentStore<>).MakeGenericType(builder.ContentType);
+            var userStoreType = typeof(UserStore<>).MakeGenericType(builder.IdentityBuilder.UserType);
 
             var services = new ServiceCollection();
 
             services.AddScoped(
-                typeof(IPageStore<>).MakeGenericType(pageType),
+                typeof(IPageStore<>).MakeGenericType(builder.PageType),
                 pageStoreType);
 
             services.AddScoped(
-                typeof(IContentStore<>).MakeGenericType(contentType),
+                typeof(IContentStore<>).MakeGenericType(builder.PageType),
                 contentStoreType);
+
+            services.AddScoped(
+                typeof(IUserStore<>).MakeGenericType(builder.IdentityBuilder.UserType), 
+                userStoreType);
 
             return services;
         }

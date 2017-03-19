@@ -42,7 +42,13 @@ namespace ChaosCMS
             {".jpg", "image/jpeg"},
             {".xml", "application/xml"},
             {".txt", "text/plain"},
-            {".html", "text/html"}
+            {".html", "text/html"},
+            {".eot", "application/vnd.ms-fontobject" },
+            {".otf", "application/font-otf" },
+            {".svg", "image/svg+xml" },
+            {".ttf", "application/font-ttf" },
+            {".woff", "application/font-woff" },
+            {".woff2", "font/woff2" },
         };
     }
 }

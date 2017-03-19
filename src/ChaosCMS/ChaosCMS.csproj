@@ -13,23 +13,42 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <PreBuildEvent>::\admin\npm run build</PreBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Content\css\admin.css" />
+    <None Remove="Content\css\style.css" />
+    <None Remove="Content\fonts\fontawesome-webfont.eot" />
+    <None Remove="Content\fonts\fontawesome-webfont.svg" />
+    <None Remove="Content\fonts\fontawesome-webfont.ttf" />
+    <None Remove="Content\fonts\fontawesome-webfont.woff" />
+    <None Remove="Content\fonts\fontawesome-webfont.woff2" />
+    <None Remove="Content\fonts\FontAwesome.otf" />
     <None Remove="Content\js\admin.js" />
+    <None Remove="Content\js\bundle.min.js" />
+    <None Remove="Views\adminLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content\css\admin.css" />
-    <EmbeddedResource Include="Content\js\admin.js" />
+    <EmbeddedResource Include="Content\css\style.css" />
+    <EmbeddedResource Include="Content\fonts\fontawesome-webfont.eot" />
+    <EmbeddedResource Include="Content\fonts\fontawesome-webfont.svg" />
+    <EmbeddedResource Include="Content\fonts\fontawesome-webfont.ttf" />
+    <EmbeddedResource Include="Content\fonts\fontawesome-webfont.woff" />
+    <EmbeddedResource Include="Content\fonts\fontawesome-webfont.woff2" />
+    <EmbeddedResource Include="Content\fonts\FontAwesome.otf" />
+    <EmbeddedResource Include="Content\js\bundle.min.js" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="Views\admin.cshtml" />
+    <EmbeddedResource Include="Views\adminLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
     <PackageReference Include="Tavis.UriTemplates" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="1.1.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="1.3.2" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
@@ -38,5 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Partials\" />
   </ItemGroup>
 </Project>

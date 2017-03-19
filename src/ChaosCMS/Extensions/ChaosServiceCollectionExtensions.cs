@@ -22,13 +22,17 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <typeparam name="TPage"></typeparam>
         /// <typeparam name="TContent"></typeparam>
+        /// <typeparam name="TUser"></typeparam>
+        /// <typeparam name="TRole"></typeparam>
         /// <param name="service"></param>
         /// <returns></returns>
-        public static ChaosBuilder AddChaos<TPage, TContent>(this IServiceCollection service)
+        public static ChaosBuilder AddChaos<TPage, TContent, TUser, TRole>(this IServiceCollection service)
             where TPage : class 
             where TContent : class
+            where TUser : class
+            where TRole : class
         {
-            return service.AddChaos<TPage, TContent>(options: null);
+            return service.AddChaos<TPage, TContent, TUser, TRole>(options: null);
         }
 
         /// <summary>
@@ -36,11 +40,16 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <typeparam name="TPage"></typeparam>
         /// <typeparam name="TContent"></typeparam>
+        /// <typeparam name="TUser"></typeparam>
+        /// <typeparam name="TRole"></typeparam>
         /// <param name="services"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static ChaosBuilder AddChaos<TPage, TContent>(this IServiceCollection services, Action<ChaosOptions> options)
-            where TPage : class where TContent : class
+        public static ChaosBuilder AddChaos<TPage, TContent, TUser, TRole>(this IServiceCollection services, Action<ChaosOptions> options)
+            where TPage : class 
+            where TContent : class
+            where TUser : class
+            where TRole : class
         {
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -48,7 +57,9 @@ namespace Microsoft.Extensions.DependencyInjection
 
             options?.Invoke(opt);
 
-            services.AddMvc(o =>
+            var identityBuilder = services.AddIdentity<TUser, TRole>();
+
+            var mvcBuilder = services.AddMvc(o =>
                 {
                     o.OutputFormatters.Add(new JsonHalOutputFormatter(new[] { "application/hal+json", "application/vnd.example.hal+json", "application/vnd.example.hal.v1+json"}));
                 })
@@ -68,7 +79,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 typeof(ContentController<TContent>),
                                 typeof(RenderController<TPage>),
                                 typeof(ResourceController),
-                                typeof(AdminController)
+                                typeof(AdminController<TUser>)
                             )
                         );
                 })
@@ -99,7 +110,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 services.Configure(options);
             }
 
-            var builder = new ChaosBuilder(typeof(TPage), typeof(TContent), services);
+            var builder = new ChaosBuilder(typeof(TPage), typeof(TContent), identityBuilder, mvcBuilder, services);
 
             services.TryAddSingleton(builder);
 

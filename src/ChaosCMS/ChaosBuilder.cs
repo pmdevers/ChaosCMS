@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
 using ChaosCMS.Validators;
+using Microsoft.AspNetCore.Identity;
 
 namespace ChaosCMS
 {
@@ -17,12 +18,16 @@ namespace ChaosCMS
         /// </summary>
         /// <param name="pageType">The <see cref="Type"/> to use for the pages.</param>
         /// <param name="contentType">The <see cref="Type"/> to use for the content.</param>
+        /// <param name="identityBuilder"></param>
+        /// <param name="mvcBuilder"></param>
         /// <param name="services">The <see cref="IServiceCollection"/> to attach to.</param>
-        public ChaosBuilder(Type pageType, Type contentType, IServiceCollection services)
+        public ChaosBuilder(Type pageType, Type contentType, IdentityBuilder identityBuilder, IMvcBuilder mvcBuilder, IServiceCollection services)
         {
             this.Services = services;
             this.PageType = pageType;
             this.ContentType = contentType;
+            this.IdentityBuilder = identityBuilder;
+            this.MvcBuilder = mvcBuilder;
         }
 
         /// <summary>
@@ -42,6 +47,16 @@ namespace ChaosCMS
         /// Gets the <see cref="Type"/> used for content
         /// </summary>
         public Type ContentType { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="IdentityBuilder"/>
+        /// </summary>
+        public IdentityBuilder IdentityBuilder { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="IMvcBuilder"/>
+        /// </summary>
+        public IMvcBuilder MvcBuilder { get; set; }
 
 
         private ChaosBuilder AddScoped(Type serviceType, Type concreteType)

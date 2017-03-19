@@ -40,6 +40,8 @@ namespace Microsoft.AspNetCore.Builder
 
             app.UseStaticFiles();
             app.UseMiddleware(exceptionMiddleWare);
+            app.UseIdentity();
+
             app.UseMvc();
 
             //app.UseMiddleware(middleware);

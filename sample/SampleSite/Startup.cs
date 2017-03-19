@@ -36,7 +36,7 @@ namespace SampleSite
             //services.AddDbContext<ApplicationDbContext>(options =>
             //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddChaos<Page, Content>(options => { })
+            services.AddChaos<Page, Content, User, Role>(options => { })
                 .AddJsonStores();
                 //.AddEntityFrameworkStores<ApplicationDbContext, int>();
         }
