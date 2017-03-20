@@ -6,22 +6,21 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ChaosCMS.Controllers
 {
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="TUser"></typeparam>
     [Route("admin", Name = "admin")]
-    public class AdminController<TUser> : Controller
-        where TUser : class
+    [Authorize]
+    public class AdminController : Controller
     {
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="userManager"></param>
-        public AdminController(UserManager<TUser> userManager)
+        public AdminController()
         {
               
         }

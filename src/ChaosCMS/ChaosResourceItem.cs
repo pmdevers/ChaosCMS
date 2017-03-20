@@ -16,7 +16,11 @@ namespace ChaosCMS
     public class ChaosResourceItem : IFileInfo
     {
         private readonly Stream stream;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="name"></param>
         public ChaosResourceItem(Stream stream, string name)
         {
             this.stream = stream;
@@ -32,23 +36,35 @@ namespace ChaosCMS
         /// </summary>
         public string Name { get; }
 
-        #region Implementation of IFileInfo
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public Stream CreateReadStream()
         {
             return this.stream;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool Exists { get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public long Length { get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public string PhysicalPath { get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public DateTimeOffset LastModified { get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsDirectory { get; }
-
-        #endregion
     }
 }

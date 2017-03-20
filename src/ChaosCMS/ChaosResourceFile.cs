@@ -26,25 +26,40 @@ namespace ChaosCMS
             this.manifestResourceStream = manifestResourceStream;
         }
         
-        #region Implementation of IFileInfo
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
 
         public Stream CreateReadStream()
         {
             return this.manifestResourceStream;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool Exists { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public long Length { get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public string PhysicalPath { get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public string Name { get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public DateTimeOffset LastModified { get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsDirectory { get; }
-
-        #endregion
     }
 }

@@ -37,6 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection
             var pageStoreType = typeof(PageStore<>).MakeGenericType(builder.PageType);
             var contentStoreType = typeof(ContentStore<>).MakeGenericType(builder.ContentType);
             var userStoreType = typeof(UserStore<>).MakeGenericType(builder.IdentityBuilder.UserType);
+            var roleStoreType = typeof(RoleStore<>).MakeGenericType(builder.IdentityBuilder.RoleType);
 
             var services = new ServiceCollection();
 
@@ -45,12 +46,16 @@ namespace Microsoft.Extensions.DependencyInjection
                 pageStoreType);
 
             services.AddScoped(
-                typeof(IContentStore<>).MakeGenericType(builder.PageType),
+                typeof(IContentStore<>).MakeGenericType(builder.ContentType),
                 contentStoreType);
 
             services.AddScoped(
                 typeof(IUserStore<>).MakeGenericType(builder.IdentityBuilder.UserType), 
                 userStoreType);
+
+            services.AddScoped(
+                typeof(IRoleStore<>).MakeGenericType(builder.IdentityBuilder.RoleType),
+                roleStoreType);
 
             return services;
         }

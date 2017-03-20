@@ -29,6 +29,10 @@ namespace ChaosCMS.Json.Models
         /// 
         /// </summary>
         public string Username { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string NormalizedUserName { get; set; }
 
         /// <summary>
         /// 

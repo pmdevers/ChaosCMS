@@ -16,6 +16,9 @@
     <PreBuildEvent>::\admin\npm run build</PreBuildEvent>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="ChaosResourceFile.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Content\css\style.css" />
     <None Remove="Content\fonts\fontawesome-webfont.eot" />
     <None Remove="Content\fonts\fontawesome-webfont.svg" />

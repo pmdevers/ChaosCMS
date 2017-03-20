@@ -11,46 +11,56 @@ using Microsoft.Extensions.Primitives;
 
 namespace ChaosCMS
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ChaosFileProvider : IFileProvider
     {
         private readonly ResourceManager resourceManager;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="resourceManager"></param>
         public ChaosFileProvider(ResourceManager resourceManager)
         {
             this.resourceManager = resourceManager;
         }
 
-        #region Implementation of IFileProvider
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="subpath"></param>
+        /// <returns></returns>
         public IFileInfo GetFileInfo(string subpath)
         {
             return this.resourceManager.FindByPath(subpath.TrimStart('/'));
         }
 
-        #endregion
-
-        #region Implementation of IFileProvider
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="subpath"></param>
+        /// <returns></returns>
         public IDirectoryContents GetDirectoryContents(string subpath)
         {
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region Implementation of IFileProvider
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         public IChangeToken Watch(string filter)
         {
             return null;
         }
 
-        #endregion
-
+        /// <summary>
+        /// 
+        /// </summary>
         public class NotChangedToken : IChangeToken
         {
-            #region Implementation of IChangeToken
-
             /// <summary>
             /// 
             /// </summary>
@@ -62,10 +72,6 @@ namespace ChaosCMS
                 return EmptyDisposable.Instance;
             }
 
-            #endregion
-
-            #region Implementation of IChangeToken
-
             /// <summary>
             /// 
             /// </summary>
@@ -75,8 +81,6 @@ namespace ChaosCMS
             /// 
             /// </summary>
             public bool ActiveChangeCallbacks { get; } = false;
-
-            #endregion
 
             internal class EmptyDisposable : IDisposable
             {

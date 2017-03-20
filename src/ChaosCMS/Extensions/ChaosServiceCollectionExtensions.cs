@@ -9,6 +9,8 @@ using ChaosCMS.Formatters;
 using ChaosCMS.Validators;
 using Microsoft.AspNetCore.Mvc.Razor;
 using ChaosCMS.Rendering;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -27,10 +29,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="service"></param>
         /// <returns></returns>
         public static ChaosBuilder AddChaos<TPage, TContent, TUser, TRole>(this IServiceCollection service)
-            where TPage : class 
-            where TContent : class
-            where TUser : class
-            where TRole : class
+            where TPage : class, new()
+            where TContent : class, new()
+            where TUser : class, new()
+            where TRole : class, new()
         {
             return service.AddChaos<TPage, TContent, TUser, TRole>(options: null);
         }
@@ -46,10 +48,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="options"></param>
         /// <returns></returns>
         public static ChaosBuilder AddChaos<TPage, TContent, TUser, TRole>(this IServiceCollection services, Action<ChaosOptions> options)
-            where TPage : class 
-            where TContent : class
-            where TUser : class
-            where TRole : class
+            where TPage : class , new()
+            where TContent : class, new()
+            where TUser : class, new()
+            where TRole : class, new()
         {
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -58,6 +60,8 @@ namespace Microsoft.Extensions.DependencyInjection
             options?.Invoke(opt);
 
             var identityBuilder = services.AddIdentity<TUser, TRole>();
+
+            services.AddSingleton<IOptions<IdentityOptions>>(Options.Options.Create(opt.Security));
 
             var mvcBuilder = services.AddMvc(o =>
                 {
@@ -79,7 +83,8 @@ namespace Microsoft.Extensions.DependencyInjection
                                 typeof(ContentController<TContent>),
                                 typeof(RenderController<TPage>),
                                 typeof(ResourceController),
-                                typeof(AdminController<TUser>)
+                                typeof(AccountController<TUser>),
+                                typeof(AdminController)
                             )
                         );
                 })

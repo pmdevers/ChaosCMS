@@ -36,7 +36,26 @@ namespace SampleSite
             //services.AddDbContext<ApplicationDbContext>(options =>
             //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddChaos<Page, Content, User, Role>(options => { })
+            services.AddChaos<Page, Content, User, Role>(options => {
+                // Password settings
+                options.Security.Password.RequireDigit = true;
+                options.Security.Password.RequiredLength = 8;
+                options.Security.Password.RequireNonAlphanumeric = false;
+                options.Security.Password.RequireUppercase = true;
+                options.Security.Password.RequireLowercase = false;
+
+                // Lockout settings
+                options.Security.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Security.Lockout.MaxFailedAccessAttempts = 10;
+
+                // Cookie settings
+                options.Security.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
+                options.Security.Cookies.ApplicationCookie.LoginPath = "/login";
+                options.Security.Cookies.ApplicationCookie.LogoutPath = "/logout";
+
+                // User settings
+                options.Security.User.RequireUniqueEmail = false;
+            })
                 .AddJsonStores();
                 //.AddEntityFrameworkStores<ApplicationDbContext, int>();
         }

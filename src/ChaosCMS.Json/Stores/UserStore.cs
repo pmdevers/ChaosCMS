@@ -239,6 +239,7 @@ namespace ChaosCMS.Json.Stores
             return Task.FromResult(user.PhoneNumber);
         }
 
+        /// <inheritdoc />
         public Task<bool> GetPhoneNumberConfirmedAsync(TUser user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -516,7 +517,14 @@ namespace ChaosCMS.Json.Stores
         /// <inheritdoc />
         public Task SetNormalizedUserNameAsync(TUser user, string normalizedName, CancellationToken cancellationToken)
         {
-            return Task.FromResult(0);
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+            user.NormalizedUserName = normalizedName;
+            return Task.FromResult(false);
         }
         /// <inheritdoc />
         public Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken)

@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Builder;
+using System;
+
 namespace ChaosCMS
 {
     /// <summary>
@@ -14,5 +17,29 @@ namespace ChaosCMS
         /// Gets or set the template directory.
         /// </summary>
         public string TempateDirectory { get; set; } = "Templates";
+
+        /// <summary>
+        /// Gets or set the SecurityOptions used.
+        /// </summary>
+        public ChaosSecurityOptions Security { get; set; } = new ChaosSecurityOptions();
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ChaosSecurityOptions : IdentityOptions
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public string RedirectAfterLoginPath { get; set; } = "/";
+        /// <summary>
+        /// 
+        /// </summary>
+        public string RedirectAfterLogoutPath { get; set; } = "/";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string RegistrationPath { get; set; } = "/register";
     }
 }
