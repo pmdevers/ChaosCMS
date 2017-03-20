@@ -72,7 +72,7 @@ namespace ChaosCMS.Controllers
         [HttpPost("login")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = "/")
         {
             if (ModelState.IsValid)
             {

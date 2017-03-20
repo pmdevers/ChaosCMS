@@ -29,6 +29,8 @@
     <None Remove="Content\js\admin.js" />
     <None Remove="Content\js\bundle.min.js" />
     <None Remove="Views\adminLayout.cshtml" />
+    <None Remove="Views\createpage.cshtml" />
+    <None Remove="Views\pages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Content\css\style.css" />
@@ -43,8 +45,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Views\admin.cshtml" />
     <EmbeddedResource Include="Views\adminLayout.cshtml" />
+    <EmbeddedResource Include="Views\createpage.cshtml" />
+    <EmbeddedResource Include="Views\pages.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
     <PackageReference Include="Tavis.UriTemplates" Version="1.1.1" />

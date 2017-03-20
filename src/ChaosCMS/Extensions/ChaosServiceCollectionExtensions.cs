@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using ChaosCMS.Rendering;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
+using System.Text;
+using ChaosCMS.Administration;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -59,9 +61,10 @@ namespace Microsoft.Extensions.DependencyInjection
 
             options?.Invoke(opt);
 
-            var identityBuilder = services.AddIdentity<TUser, TRole>();
+            var identityBuilder = services.AddIdentity<TUser, TRole>()
+                .AddDefaultTokenProviders();
 
-            services.AddSingleton<IOptions<IdentityOptions>>(Options.Options.Create(opt.Security));
+            services.AddSingleton(Options.Options.Create(opt.Security.Identity));
 
             var mvcBuilder = services.AddMvc(o =>
                 {
@@ -84,6 +87,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 typeof(RenderController<TPage>),
                                 typeof(ResourceController),
                                 typeof(AccountController<TUser>),
+                                typeof(UserController<TUser>),
                                 typeof(AdminController)
                             )
                         );
@@ -109,6 +113,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IRenderer<TContent>, MacroRenderer<TContent>>();
             services.AddSingleton<IRenderer<TContent>, CarouselRenderer<TContent>>();
             services.AddSingleton<IRenderer<TContent>, LinkContentRenderer<TContent>>();
+
+            services.AddSingleton<IAdminContext, AdminContext<TUser>>();
 
             if (options != null)
             {

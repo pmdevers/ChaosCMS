@@ -38,23 +38,23 @@ namespace SampleSite
 
             services.AddChaos<Page, Content, User, Role>(options => {
                 // Password settings
-                options.Security.Password.RequireDigit = true;
-                options.Security.Password.RequiredLength = 8;
-                options.Security.Password.RequireNonAlphanumeric = false;
-                options.Security.Password.RequireUppercase = true;
-                options.Security.Password.RequireLowercase = false;
+                options.Security.Identity.Password.RequireDigit = true;
+                options.Security.Identity.Password.RequiredLength = 8;
+                options.Security.Identity.Password.RequireNonAlphanumeric = false;
+                options.Security.Identity.Password.RequireUppercase = true;
+                options.Security.Identity.Password.RequireLowercase = false;
 
                 // Lockout settings
-                options.Security.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
-                options.Security.Lockout.MaxFailedAccessAttempts = 10;
+                options.Security.Identity.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Security.Identity.Lockout.MaxFailedAccessAttempts = 10;
 
                 // Cookie settings
-                options.Security.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
-                options.Security.Cookies.ApplicationCookie.LoginPath = "/login";
-                options.Security.Cookies.ApplicationCookie.LogoutPath = "/logout";
+                options.Security.Identity.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
+                options.Security.Identity.Cookies.ApplicationCookie.LoginPath = "/login";
+                options.Security.Identity.Cookies.ApplicationCookie.LogoutPath = "/logout";
 
                 // User settings
-                options.Security.User.RequireUniqueEmail = false;
+                options.Security.Identity.User.RequireUniqueEmail = false;
             })
                 .AddJsonStores();
                 //.AddEntityFrameworkStores<ApplicationDbContext, int>();

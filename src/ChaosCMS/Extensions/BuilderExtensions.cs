@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using ChaosCMS;
 using Microsoft.Extensions.Options;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using ChaosCMS.Security;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -36,12 +39,21 @@ namespace Microsoft.AspNetCore.Builder
             var options = app.ApplicationServices.GetRequiredService<IOptions<ChaosOptions>>().Value;
             var builder = app.ApplicationServices.GetService<ChaosBuilder>();
             var exceptionMiddleWare = typeof(ChaosExceptionMiddleware);
+            //var tokenProvider = typeof(TokenProviderMiddleware<>).MakeGenericType(builder.IdentityBuilder.UserType);
 
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                TokenValidationParameters = options.Security.GetTokenValidationParameters()
+            });
+
+            app.UseCookieAuthentication(options.Security.GetCookiesOptions());
 
             app.UseStaticFiles();
             app.UseMiddleware(exceptionMiddleWare);
+            //app.UseMiddleware(tokenProvider);
             app.UseIdentity();
-
             app.UseMvc();
 
             //app.UseMiddleware(middleware);
