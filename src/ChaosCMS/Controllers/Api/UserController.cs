@@ -34,7 +34,7 @@ namespace ChaosCMS.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
             return Ok(this.User);
         }

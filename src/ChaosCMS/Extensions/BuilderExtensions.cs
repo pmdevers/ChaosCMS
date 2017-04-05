@@ -50,6 +50,10 @@ namespace Microsoft.AspNetCore.Builder
 
             app.UseCookieAuthentication(options.Security.GetCookiesOptions());
 
+            app.UseCors(policy =>
+            {
+                policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build();
+            });
             app.UseStaticFiles();
             app.UseMiddleware(exceptionMiddleWare);
             //app.UseMiddleware(tokenProvider);

@@ -83,6 +83,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     manager.ApplicationParts.Add(
                         new ChaosTypesPart(
                                 typeof(PageController<TPage>),
+                                typeof(PagesController<TPage>),
                                 typeof(ContentController<TContent>),
                                 typeof(RenderController<TPage>),
                                 typeof(ResourceController),

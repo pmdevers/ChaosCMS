@@ -1,3 +1,4 @@
+using ChaosCMS.Administration;
 using ChaosCMS.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
@@ -20,8 +21,10 @@ namespace ChaosCMS
         /// Gets or set the template directory.
         /// </summary>
         public string TempateDirectory { get; set; } = "Templates";
-
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        public AdminOptions Admin { get; set; } = new AdminOptions();
 
         /// <summary>
         /// Gets or set the SecurityOptions used.
@@ -33,6 +36,31 @@ namespace ChaosCMS
     /// </summary>
     public class ChaosSecurityOptions
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public ChaosSecurityOptions()
+        {
+            // Password settings
+            Identity.Password.RequireDigit = true;
+            Identity.Password.RequiredLength = 8;
+            Identity.Password.RequireNonAlphanumeric = false;
+            Identity.Password.RequireUppercase = true;
+            Identity.Password.RequireLowercase = false;
+
+            // Lockout settings
+            Identity.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+            Identity.Lockout.MaxFailedAccessAttempts = 10;
+
+            // Cookie settings
+            Identity.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
+            Identity.Cookies.ApplicationCookie.LoginPath = "/login";
+            Identity.Cookies.ApplicationCookie.LogoutPath = "/logout";
+
+            // User settings
+            Identity.User.RequireUniqueEmail = false;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -151,5 +179,26 @@ namespace ChaosCMS
             /// </summary>
             public string CookieName { get; set; } = "ChaosAuth";
         } 
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class AdminOptions
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public AdminOptions()
+        {
+            AdminMenu.AddSection("General");
+            AdminMenu.AddAdminMenu("General", AdminMenu.CreateAdminMenu("Pages", "files-o"));
+            AdminMenu.AddMenuItem("General", "Pages", AdminMenu.CreateMenuItem("Overview", "Pages", "Index"));
+            AdminMenu.AddMenuItem("General", "Pages", AdminMenu.CreateMenuItem("Create Page", "Pages", "Create"));
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public SideMenu AdminMenu { get; set; } = new SideMenu();
     }
 }

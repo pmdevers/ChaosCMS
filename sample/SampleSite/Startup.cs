@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SampleSite.Model;
 using Microsoft.Extensions.Configuration;
+using ChaosCMS.Administration;
 
 namespace SampleSite
 {
@@ -36,26 +37,7 @@ namespace SampleSite
             //services.AddDbContext<ApplicationDbContext>(options =>
             //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddChaos<Page, Content, User, Role>(options => {
-                // Password settings
-                options.Security.Identity.Password.RequireDigit = true;
-                options.Security.Identity.Password.RequiredLength = 8;
-                options.Security.Identity.Password.RequireNonAlphanumeric = false;
-                options.Security.Identity.Password.RequireUppercase = true;
-                options.Security.Identity.Password.RequireLowercase = false;
-
-                // Lockout settings
-                options.Security.Identity.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
-                options.Security.Identity.Lockout.MaxFailedAccessAttempts = 10;
-
-                // Cookie settings
-                options.Security.Identity.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
-                options.Security.Identity.Cookies.ApplicationCookie.LoginPath = "/login";
-                options.Security.Identity.Cookies.ApplicationCookie.LogoutPath = "/logout";
-
-                // User settings
-                options.Security.Identity.User.RequireUniqueEmail = false;
-            })
+            services.AddChaos<Page, Content, User, Role>()
                 .AddJsonStores();
                 //.AddEntityFrameworkStores<ApplicationDbContext, int>();
         }

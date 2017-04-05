@@ -25,6 +25,8 @@ namespace ChaosCMS.Security
         /// 
         /// </summary>
         /// <param name="next"></param>
+        /// <param name="userManager"></param>
+        /// <param name="signInManager"></param>
         /// <param name="options"></param>
         public TokenProviderMiddleware(
             RequestDelegate next,

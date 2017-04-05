@@ -6,9 +6,23 @@ using System.Threading.Tasks;
 
 namespace ChaosCMS.Administration
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IAdminContext
     {
+        /// <summary>
+        /// 
+        /// </summary>
         string UserName { get; }
-        IDictionary<string, IList<AdminMenu>> Menu { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        ChaosOptions Options { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SideMenu Menu { get; }
     }
 }
