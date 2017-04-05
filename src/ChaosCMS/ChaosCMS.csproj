@@ -16,6 +16,11 @@
     <PreBuildEvent></PreBuildEvent>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="admin\**" />
+    <EmbeddedResource Remove="admin\**" />
+    <None Remove="admin\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Remove="ChaosResourceFile.cs" />
   </ItemGroup>
   <ItemGroup>
