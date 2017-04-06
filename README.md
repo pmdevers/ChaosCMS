@@ -1,5 +1,6 @@
 ChaosCMS
 =
+[![Stories in Ready](https://badge.waffle.io/pmdevers/ChaosCMS.png?label=ready&title=Ready)](https://waffle.io/pmdevers/ChaosCMS)
 
 Travis : [![Build Status](https://travis-ci.org/pmdevers/ChaosCMS.svg?branch=develop)](https://travis-ci.org/pmdevers/ChaosCMS)
 
