@@ -1,0 +1,74 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>ChaosCMS</Description>
+    <TargetFrameworks>net451;netstandard1.6</TargetFrameworks>
+    <WarningsAsErrors>true</WarningsAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>ChaosCMS</AssemblyName>
+    <PackageId>ChaosCMS</PackageId>
+    <PackageTags>ChaosCMS;cms</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>git://github.com/pmdevers/ChaosCMS</RepositoryUrl>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <PreBuildEvent></PreBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="admin\**" />
+    <EmbeddedResource Remove="admin\**" />
+    <None Remove="admin\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="ChaosResourceFile.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Content\css\style.css" />
+    <None Remove="Content\fonts\fontawesome-webfont.eot" />
+    <None Remove="Content\fonts\fontawesome-webfont.svg" />
+    <None Remove="Content\fonts\fontawesome-webfont.ttf" />
+    <None Remove="Content\fonts\fontawesome-webfont.woff" />
+    <None Remove="Content\fonts\fontawesome-webfont.woff2" />
+    <None Remove="Content\fonts\FontAwesome.otf" />
+    <None Remove="Content\js\admin.js" />
+    <None Remove="Content\js\bundle.min.js" />
+    <None Remove="Views\adminLayout.cshtml" />
+    <None Remove="Views\createpage.cshtml" />
+    <None Remove="Views\pages.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\css\style.css" />
+    <EmbeddedResource Include="Content\fonts\fontawesome-webfont.eot" />
+    <EmbeddedResource Include="Content\fonts\fontawesome-webfont.svg" />
+    <EmbeddedResource Include="Content\fonts\fontawesome-webfont.ttf" />
+    <EmbeddedResource Include="Content\fonts\fontawesome-webfont.woff" />
+    <EmbeddedResource Include="Content\fonts\fontawesome-webfont.woff2" />
+    <EmbeddedResource Include="Content\fonts\FontAwesome.otf" />
+    <EmbeddedResource Include="Content\js\bundle.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\admin.cshtml" />
+    <EmbeddedResource Include="Views\adminLayout.cshtml" />
+    <EmbeddedResource Include="Views\createpage.cshtml" />
+    <EmbeddedResource Include="Views\pages.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
+    <PackageReference Include="Tavis.UriTemplates" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="1.1.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="1.3.2" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Partials\" />
+  </ItemGroup>
+</Project>

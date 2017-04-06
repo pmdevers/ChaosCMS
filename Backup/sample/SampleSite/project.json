@@ -1,0 +1,32 @@
+{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "debugType": "portable",
+    "emitEntryPoint": true
+  },
+  "dependencies": {
+    "ChaosCMS": "1.0.0",
+    "ChaosCMS.Json": "1.0.0",
+    "Microsoft.AspNetCore.Owin": "1.0.0",
+    "Microsoft.AspNetCore.Server.Kestrel.Https": "1.0.1",
+    "Microsoft.Extensions.Configuration.CommandLine": "1.0.0"
+  },
+  "publishOptions": {
+    "include": [
+      "Templates",
+      "Data",
+      "web.config",
+      "wwwroot"
+    ]},
+    "frameworks": {
+      "netcoreapp1.1": {
+        "dependencies": {
+          "Microsoft.NETCore.App": {
+            "type": "platform",
+            "version": "1.1.0"
+          }
+        },
+        "imports": "dnxcore50"
+      }
+    }
+  }

@@ -1,0 +1,16 @@
+﻿@using ChaosCMS.Administration
+
+@{
+    Layout = "adminLayout";
+}
+
+@inject IAdminContext context
+
+<h1></h1>
+
+<form class="login-form" method="post" action="/admin/pages/create" role="form">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Name</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+    </div>
+</form>

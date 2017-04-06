@@ -1,0 +1,21 @@
+[
+  {
+    "Id": "825cab93-f3bb-4ebe-812c-e61fba329262",
+    "Username": "admin@chaos.com",
+    "NormalizedUserName": "ADMIN@CHAOS.COM",
+    "PasswordHash": "AQAAAAEAACcQAAAAECZYBKPzj3/5bdmicrqRN2/vS5GadzKl2RP2U+jkS3jNzYmhKaiuUSZTofS7pskG3A==",
+    "SecurityStamp": "339ed42a-8088-4c02-a237-61e2d08ce575",
+    "NormalizedEmail": null,
+    "Email": "admin@chaos.com",
+    "LockOutEnabled": true,
+    "TwoFactorEnabled": false,
+    "PhoneNumber": null,
+    "PhoneNumberConfirmed": false,
+    "LockOutEndDate": null,
+    "FailedAttempts": 0,
+    "EmailConfirmed": false,
+    "Logins": [],
+    "Claims": [],
+    "Roles": []
+  }
+]
