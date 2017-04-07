@@ -32,7 +32,7 @@ namespace ChaosCMS.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return this.View("admin");
+            return this.View("admin.index.html");
         }
     }
 }

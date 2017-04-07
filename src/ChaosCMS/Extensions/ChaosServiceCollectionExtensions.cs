@@ -12,7 +12,6 @@ using ChaosCMS.Rendering;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 using System.Text;
-using ChaosCMS.Administration;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -114,8 +113,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IRenderer<TContent>, MacroRenderer<TContent>>();
             services.AddSingleton<IRenderer<TContent>, CarouselRenderer<TContent>>();
             services.AddSingleton<IRenderer<TContent>, LinkContentRenderer<TContent>>();
-
-            services.AddSingleton<IAdminContext, AdminContext<TUser>>();
 
             if (options != null)
             {

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.10
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8625FF44-479B-4263-9A34-6073D3516209}"
 EndProject
@@ -36,6 +36,52 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{22C1013B-1
 	ProjectSection(SolutionItems) = preProject
 		docs\index.md = docs\index.md
 		Instalation.md = Instalation.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "admin", "admin", "{0232D527-C937-40D1-B7C4-34396EB30980}"
+	ProjectSection(SolutionItems) = preProject
+		admin\.gitignore = admin\.gitignore
+		admin\package.json = admin\package.json
+		admin\README.md = admin\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AE55BDD6-8BB2-482F-BF5E-85C798276EF8}"
+	ProjectSection(SolutionItems) = preProject
+		admin\src\App.css = admin\src\App.css
+		admin\src\App.js = admin\src\App.js
+		admin\src\App.test.js = admin\src\App.test.js
+		admin\src\index.css = admin\src\index.css
+		admin\src\index.js = admin\src\index.js
+		admin\src\logo.svg = admin\src\logo.svg
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "componentds", "componentds", "{D3D3AA10-EF5B-4ACD-84C7-8647448C7AA5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "home", "home", "{3795BBFB-F7F8-4422-89E7-3B8FA0C9DE9F}"
+	ProjectSection(SolutionItems) = preProject
+		admin\src\components\home\home.js = admin\src\components\home\home.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "main", "main", "{512258AF-2904-4470-8103-CC9BBFD903D4}"
+	ProjectSection(SolutionItems) = preProject
+		admin\src\components\main\main.js = admin\src\components\main\main.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "page", "page", "{3EE7FF63-7AF6-4A0B-B37F-FD4255719BEA}"
+	ProjectSection(SolutionItems) = preProject
+		admin\src\components\page\page.js = admin\src\components\page\page.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "profile", "profile", "{7B802BA9-3EAA-4409-BD64-6C29996981C8}"
+	ProjectSection(SolutionItems) = preProject
+		admin\src\components\profile\profile.js = admin\src\components\profile\profile.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sidebar", "sidebar", "{C9C870A2-C9E3-4320-9169-EBD2FA89C662}"
+	ProjectSection(SolutionItems) = preProject
+		admin\src\components\sidebar\baseStyles.js = admin\src\components\sidebar\baseStyles.js
+		admin\src\components\sidebar\sidebar.css = admin\src\components\sidebar\sidebar.css
+		admin\src\components\sidebar\sidebar.js = admin\src\components\sidebar\sidebar.js
 	EndProjectSection
 EndProject
 Global
@@ -105,5 +151,12 @@ Global
 		{F2C63166-7176-4F41-B807-6FCA3A1F3FF6} = {34B85C6A-00DC-4AB1-A74F-7FCEDC8F78A5}
 		{35B9532B-C3E0-4F52-B145-9E204BCAF6EF} = {8625FF44-479B-4263-9A34-6073D3516209}
 		{9CF10187-8401-4EB2-8C44-0A6A8B0A633C} = {5990BA9A-13D4-42BF-941B-4588C963EFBE}
+		{AE55BDD6-8BB2-482F-BF5E-85C798276EF8} = {0232D527-C937-40D1-B7C4-34396EB30980}
+		{D3D3AA10-EF5B-4ACD-84C7-8647448C7AA5} = {AE55BDD6-8BB2-482F-BF5E-85C798276EF8}
+		{3795BBFB-F7F8-4422-89E7-3B8FA0C9DE9F} = {D3D3AA10-EF5B-4ACD-84C7-8647448C7AA5}
+		{512258AF-2904-4470-8103-CC9BBFD903D4} = {D3D3AA10-EF5B-4ACD-84C7-8647448C7AA5}
+		{3EE7FF63-7AF6-4A0B-B37F-FD4255719BEA} = {D3D3AA10-EF5B-4ACD-84C7-8647448C7AA5}
+		{7B802BA9-3EAA-4409-BD64-6C29996981C8} = {D3D3AA10-EF5B-4ACD-84C7-8647448C7AA5}
+		{C9C870A2-C9E3-4320-9169-EBD2FA89C662} = {D3D3AA10-EF5B-4ACD-84C7-8647448C7AA5}
 	EndGlobalSection
 EndGlobal
