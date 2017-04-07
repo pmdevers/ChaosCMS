@@ -1,8 +1,10 @@
-ChaosCMS [![Stories in Ready](https://badge.waffle.io/pmdevers/ChaosCMS.png?label=ready&title=Ready)](https://waffle.io/pmdevers/ChaosCMS)
+ChaosCMS
 =
 
-Travis : [![Build Status](https://travis-ci.org/pmdevers/ChaosCMS.svg?branch=develop)](https://travis-ci.org/pmdevers/ChaosCMS)
-AppVeyor : [![Build status](https://ci.appveyor.com/api/projects/status/w6079k2coukjfq2q?svg=true)](https://ci.appveyor.com/project/pmdevers/chaoscms)
+|BackLog|Travis|AppVeyor|Documentation|
+|---|---|---|---|
+|[![Stories in Ready](https://badge.waffle.io/pmdevers/ChaosCMS.png?label=ready&title=Ready)](https://waffle.io/pmdevers/ChaosCMS)|[![Build Status](https://travis-ci.org/pmdevers/ChaosCMS.svg?branch=develop)](https://travis-ci.org/pmdevers/ChaosCMS)|[![Build status](https://ci.appveyor.com/api/projects/status/w6079k2coukjfq2q?svg=true)](https://ci.appveyor.com/project/pmdevers/chaoscms)|[![build status](https://readthedocs.org/projects/pip/badge)](http://chaoscms.readthedocs.io)|
+
 
 Chaos CMS is a core Content Management System.
 

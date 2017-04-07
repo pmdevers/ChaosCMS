@@ -32,6 +32,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChaosCMS", "src\ChaosCMS\Ch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChaosCMS.Test", "test\ChaosCMS.Test\ChaosCMS.Test.csproj", "{9CF10187-8401-4EB2-8C44-0A6A8B0A633C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{22C1013B-1B22-43C3-9A92-E033D553EFA4}"
+	ProjectSection(SolutionItems) = preProject
+		docs\index.md = docs\index.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
