@@ -6,11 +6,26 @@ branches:
     - release
     - dev
     - /^(.*\/)?ci-.*$/
+environment:
+  nodejs_version: "6"
+# Install scripts. (runs after repo cloning)
+install:
+  # Get the latest stable version of Node.js or io.js
+  - ps: Install-Product node $env:nodejs_version
+  # install modules
+  - npm --version
+  - npm install
+  - npm install webpack -g
 build_script:
-  - .\admin\npm install
-  - .\admin\webpack
+  - webpack
   - ps: .\build.ps1
 clone_depth: 1
 test: off
-deploy: off
+artifacts:
+- path: /artifacts/build/*.nupkg
+deploy:
+  provider: NuGet
+  api_key:
+    secure: 82jTc4+tKUmxGnoGfBH1lGkx98G/oE13jaw18hHt2DMcJsF2wGSS6caxNg/6tvN+
+  skip_symbols: false
 os: Visual Studio 2017

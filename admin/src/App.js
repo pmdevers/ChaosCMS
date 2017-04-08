@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import pkg from '../package.json';
+import pkg from '../../package.json';
 import { BrowserRouter as Router, Route,  Link } from 'react-router-dom';
 import Sidebar from './components/sidebar/sidebar';
 import Profile from './components/profile/profile';
