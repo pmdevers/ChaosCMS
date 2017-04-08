@@ -16,7 +16,7 @@ install:
   - npm --version
   - npm install
 build_script:
-  - .\admin\webpack
+  - webpack
   - ps: .\build.ps1
 clone_depth: 1
 test: off
