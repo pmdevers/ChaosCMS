@@ -4,7 +4,7 @@ branches:
   only:
     - master
     - release
-    - dev
+    - develop
     - /^(.*\/)?ci-.*$/
 environment:
   nodejs_version: "6"
