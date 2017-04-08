@@ -7,6 +7,8 @@ branches:
     - dev
     - /^(.*\/)?ci-.*$/
 build_script:
+  - .\admin\npm install
+  - .\admin\webpack
   - ps: .\build.ps1
 clone_depth: 1
 test: off
