@@ -4,7 +4,7 @@ branches:
   only:
     - master
     - release
-    - dev
+    - develop
     - /^(.*\/)?ci-.*$/
 environment:
   nodejs_version: "6"
@@ -28,4 +28,6 @@ deploy:
   api_key:
     secure: 82jTc4+tKUmxGnoGfBH1lGkx98G/oE13jaw18hHt2DMcJsF2wGSS6caxNg/6tvN+
   skip_symbols: false
+  on:
+      branch: master
 os: Visual Studio 2017
