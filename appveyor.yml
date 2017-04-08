@@ -15,6 +15,7 @@ install:
   # install modules
   - npm --version
   - npm install
+  - npm install webpack -g
 build_script:
   - webpack
   - ps: .\build.ps1
