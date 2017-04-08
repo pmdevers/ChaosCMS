@@ -1,12 +1,12 @@
 var path = require('path');
 
 var config = {
-  context: __dirname + "/src",
+  context: __dirname + "/admin/src",
   entry: "./index.js",
 
   output: {
     filename: "index.js",
-    path: path.join(__dirname, '../src/ChaosCMS/admin'),
+    path: path.join(__dirname, '/src/ChaosCMS/admin'),
     publicPath: '/api/resources/ChaosCMS/admin/'
   },
   module: {

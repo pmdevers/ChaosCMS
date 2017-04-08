@@ -13,7 +13,8 @@ install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
   # install modules
-  - .\admin\npm install
+  - npm --version
+  - npm install
 build_script:
   - .\admin\webpack
   - ps: .\build.ps1
