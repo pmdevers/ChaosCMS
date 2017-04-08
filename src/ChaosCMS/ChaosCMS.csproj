@@ -16,42 +16,15 @@
     <PreBuildEvent></PreBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="admin\**" />
-    <EmbeddedResource Remove="admin\**" />
-    <None Remove="admin\**" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Remove="ChaosResourceFile.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Content\css\style.css" />
-    <None Remove="Content\fonts\fontawesome-webfont.eot" />
-    <None Remove="Content\fonts\fontawesome-webfont.svg" />
-    <None Remove="Content\fonts\fontawesome-webfont.ttf" />
-    <None Remove="Content\fonts\fontawesome-webfont.woff" />
-    <None Remove="Content\fonts\fontawesome-webfont.woff2" />
-    <None Remove="Content\fonts\FontAwesome.otf" />
-    <None Remove="Content\js\admin.js" />
-    <None Remove="Content\js\bundle.min.js" />
-    <None Remove="Views\adminLayout.cshtml" />
-    <None Remove="Views\createpage.cshtml" />
-    <None Remove="Views\pages.cshtml" />
+    <None Remove="admin\index.html" />
+    <None Remove="admin\index.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content\css\style.css" />
-    <EmbeddedResource Include="Content\fonts\fontawesome-webfont.eot" />
-    <EmbeddedResource Include="Content\fonts\fontawesome-webfont.svg" />
-    <EmbeddedResource Include="Content\fonts\fontawesome-webfont.ttf" />
-    <EmbeddedResource Include="Content\fonts\fontawesome-webfont.woff" />
-    <EmbeddedResource Include="Content\fonts\fontawesome-webfont.woff2" />
-    <EmbeddedResource Include="Content\fonts\FontAwesome.otf" />
-    <EmbeddedResource Include="Content\js\bundle.min.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\admin.cshtml" />
-    <EmbeddedResource Include="Views\adminLayout.cshtml" />
-    <EmbeddedResource Include="Views\createpage.cshtml" />
-    <EmbeddedResource Include="Views\pages.cshtml" />
+    <EmbeddedResource Include="admin\index.html" />
+    <EmbeddedResource Include="admin\index.js" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.1" />
@@ -67,8 +40,5 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Partials\" />
   </ItemGroup>
 </Project>

@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SampleSite.Model;
 using Microsoft.Extensions.Configuration;
-using ChaosCMS.Administration;
 
 namespace SampleSite
 {
@@ -34,19 +33,13 @@ namespace SampleSite
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddChaos<Page, Content, User, Role>()
                 .AddJsonStores();
-                //.AddEntityFrameworkStores<ApplicationDbContext, int>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            //loggerFactory.AddConsole();
-            //loggerFactory.AddDebug();
             app.UseChaos();
         }
     }

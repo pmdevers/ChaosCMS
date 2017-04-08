@@ -1,4 +1,3 @@
-using ChaosCMS.Administration;
 using ChaosCMS.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
@@ -21,11 +20,7 @@ namespace ChaosCMS
         /// Gets or set the template directory.
         /// </summary>
         public string TempateDirectory { get; set; } = "Templates";
-        /// <summary>
-        /// 
-        /// </summary>
-        public AdminOptions Admin { get; set; } = new AdminOptions();
-
+        
         /// <summary>
         /// Gets or set the SecurityOptions used.
         /// </summary>
@@ -179,26 +174,5 @@ namespace ChaosCMS
             /// </summary>
             public string CookieName { get; set; } = "ChaosAuth";
         } 
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class AdminOptions
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public AdminOptions()
-        {
-            AdminMenu.AddSection("General");
-            AdminMenu.AddAdminMenu("General", AdminMenu.CreateAdminMenu("Pages", "files-o"));
-            AdminMenu.AddMenuItem("General", "Pages", AdminMenu.CreateMenuItem("Overview", "Pages", "Index"));
-            AdminMenu.AddMenuItem("General", "Pages", AdminMenu.CreateMenuItem("Create Page", "Pages", "Create"));
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public SideMenu AdminMenu { get; set; } = new SideMenu();
     }
 }
