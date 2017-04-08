@@ -21,10 +21,11 @@ build_script:
   - ps: .\build.ps1
 clone_depth: 1
 test: off
+artifacts:
+- path: /artifacts/build/*.nupkg
 deploy:
   provider: NuGet
   api_key:
     secure: 82jTc4+tKUmxGnoGfBH1lGkx98G/oE13jaw18hHt2DMcJsF2wGSS6caxNg/6tvN+
   skip_symbols: false
-  artifact: /artifacts/build/*.nupkg
 os: Visual Studio 2017
