@@ -6,8 +6,15 @@ branches:
     - release
     - dev
     - /^(.*\/)?ci-.*$/
-build_script:
+environment:
+  nodejs_version: "6"
+# Install scripts. (runs after repo cloning)
+install:
+  # Get the latest stable version of Node.js or io.js
+  - ps: Install-Product node $env:nodejs_version
+  # install modules
   - .\admin\npm install
+build_script:
   - .\admin\webpack
   - ps: .\build.ps1
 clone_depth: 1
