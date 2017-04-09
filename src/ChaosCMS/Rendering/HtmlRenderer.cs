@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Html;
+﻿using System.Threading.Tasks;
 using ChaosCMS.Managers;
+using Microsoft.AspNetCore.Html;
 
 namespace ChaosCMS.Rendering
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="TContent"></typeparam>
     public class HtmlRenderer<TContent> : IRenderer<TContent>
@@ -18,7 +14,7 @@ namespace ChaosCMS.Rendering
         private readonly ContentManager<TContent> contentManager;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="contentManager"></param>
         public HtmlRenderer(ContentManager<TContent> contentManager)
@@ -27,12 +23,18 @@ namespace ChaosCMS.Rendering
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public string TypeName { get { return "html"; } }
+        public string TypeName
+        {
+            get
+            {
+                return "html";
+            }
+        }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="chaos"></param>
         /// <param name="content"></param>

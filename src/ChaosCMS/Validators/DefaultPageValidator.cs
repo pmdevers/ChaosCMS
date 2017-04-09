@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ChaosCMS.Managers;
 
@@ -12,7 +11,7 @@ namespace ChaosCMS.Validators
         private readonly ChaosErrorDescriber errorDescriber;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="errorDescriber"></param>
         public DefaultPageValidator(ChaosErrorDescriber errorDescriber)

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChaosCMS.Models.Pages
+﻿namespace ChaosCMS.Models.Pages
 {
-    class PageViewModel
+    internal class PageViewModel
     {
     }
 }

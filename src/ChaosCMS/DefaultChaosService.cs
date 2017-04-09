@@ -1,20 +1,17 @@
-﻿using ChaosCMS.Managers;
-using Microsoft.AspNetCore.Html;
-using System.Threading.Tasks;
-using System;
-using Microsoft.AspNetCore.Http;
-
-using ChaosCMS.Extensions;
-using ChaosCMS.Rendering;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Threading.Tasks;
+using ChaosCMS.Extensions;
+using ChaosCMS.Managers;
+using ChaosCMS.Rendering;
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ChaosCMS
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="TPage"></typeparam>
     /// <typeparam name="TContent"></typeparam>
@@ -29,7 +26,7 @@ namespace ChaosCMS
         private readonly IList<IHtmlContent> scripts = new List<IHtmlContent>();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pageManager"></param>
         /// <param name="contentManager"></param>
@@ -44,7 +41,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public TPage CurrentPage
@@ -60,25 +57,32 @@ namespace ChaosCMS
         }
 
         private TPage currentPage;
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Name { get { return this.pageManager.GetName(CurrentPage); } }
 
         /// <summary>
-        /// 
+        ///
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                return this.pageManager.GetName(CurrentPage);
+            }
+        }
+
+        /// <summary>
+        ///
         /// </summary>
         public IHtmlHelper Helper { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
         public async Task<IHtmlContent> RenderAsync(string name)
         {
             var content = this.Helper.ViewData.Model as TContent;
-            
+
             if (content != null)
             {
                 content = await this.contentManager.FindChildByNameAsync(content, name);
@@ -88,18 +92,18 @@ namespace ChaosCMS
                 var pageId = await this.pageManager.GetIdAsync(CurrentPage);
                 content = await this.contentManager.FindByPageIdAsync(pageId, name);
             }
-            
+
             return await this.RenderAsync(content);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
         public async Task<IHtmlContent> RenderAsync(TContent content)
         {
-            if(content == null)
+            if (content == null)
             {
                 return HtmlString.Empty;
             }
@@ -116,23 +120,23 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public Task<IHtmlContent> Scripts()
         {
             var script = new TagBuilder("script");
 
-            foreach(var row in scripts)
+            foreach (var row in scripts)
             {
                 script.InnerHtml.AppendHtml(row);
             }
-            
+
             return Task.FromResult<IHtmlContent>(script);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>

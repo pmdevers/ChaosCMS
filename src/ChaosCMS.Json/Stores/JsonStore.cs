@@ -10,17 +10,17 @@ using Newtonsoft.Json;
 namespace ChaosCMS.Json.Stores
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public abstract class JsonStore<TEntity> : IDisposable 
+    public abstract class JsonStore<TEntity> : IDisposable
         where TEntity : class, IEntity
     {
         private bool isDisposed = false;
         private static object lockObject = new object();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="optionsAccessor"></param>
         protected JsonStore(IOptions<ChaosJsonStoreOptions> optionsAccessor)
@@ -33,8 +33,9 @@ namespace ChaosCMS.Json.Stores
         /// The <see cref="ChaosJsonStoreOptions"/> used to configure Chaos Json Store.
         /// </summary>
         protected internal ChaosJsonStoreOptions Options { get; }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected internal IList<TEntity> Collection { get; set; }
 
@@ -90,9 +91,8 @@ namespace ChaosCMS.Json.Stores
             return Task.FromResult(this.ConvertIdToString(entity.Id));
         }
 
-        
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public void Dispose()
         {
@@ -100,7 +100,7 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pageId"></param>
         /// <returns></returns>
@@ -115,7 +115,7 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -129,7 +129,7 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         protected void ReadFile()
@@ -151,7 +151,7 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected void WriteFile()
         {

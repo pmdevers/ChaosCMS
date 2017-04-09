@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using ChaosCMS.Hal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,12 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace ChaosCMS.Extensions
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static class HalResponseExtensions
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="response"></param>
         /// <returns></returns>
@@ -25,7 +23,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="halModel"></param>
         /// <param name="links"></param>
@@ -36,7 +34,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="hyperMedia"></param>
@@ -45,7 +43,7 @@ namespace ChaosCMS.Extensions
         /// <param name="links"></param>
         /// <returns></returns>
         public static HalResponse AddEmbeddedResource<T>(this HalResponse hyperMedia, string resourceName, T model, IEnumerable<Link> links = null)
-        { 
+        {
             if (links == null)
             {
                 links = Enumerable.Empty<Link>();
@@ -58,7 +56,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="hyperMedia"></param>
@@ -83,7 +81,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="response"></param>
@@ -100,7 +98,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="response"></param>
@@ -117,14 +115,13 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="response"></param>
         /// <param name="embeddedCollections"></param>
         /// <returns></returns>
         public static HalResponse AddEmbeddedCollections(this HalResponse response, IEnumerable<KeyValuePair<string, IEnumerable<HalResponse>>> embeddedCollections)
         {
-
             foreach (var embeddedCollection in embeddedCollections)
             {
                 response.AddEmbeddedCollection(embeddedCollection.Key, embeddedCollection.Value);
@@ -134,7 +131,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="response"></param>
         /// <param name="request"></param>
@@ -150,7 +147,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="response"></param>
         /// <param name="request"></param>
@@ -163,7 +160,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="model"></param>
         /// <param name="controller"></param>

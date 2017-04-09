@@ -17,11 +17,11 @@
     <div class="panel-body">
         @if (SignInManager.IsSignedIn(User))
         {
-            
+
             <h1>Hello @UserManager.GetUserName(User)!</h1>
             <form action="/logout" method="post" role="form">
                 @Html.AntiForgeryToken()
-                <input type="submit" value="logout" >
+                <input type="submit" value="logout">
             </form>
         }
         else

@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Tavis.UriTemplates;
 
 namespace ChaosCMS.Extensions
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static class TemplateExtensions
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="uriTemplateString"></param>
         /// <param name="parameters"></param>

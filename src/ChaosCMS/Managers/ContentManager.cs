@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ChaosCMS.Stores;
@@ -19,7 +18,6 @@ namespace ChaosCMS.Managers
     public class ContentManager<TContent> : IDisposable
         where TContent : class
     {
-
         private readonly HttpContext context;
 
         /// <summary>
@@ -28,6 +26,7 @@ namespace ChaosCMS.Managers
         protected CancellationToken CancellationToken => context?.RequestAborted ?? CancellationToken.None;
 
         #region Constructor and Properties
+
         /// <summary>
         /// Constructs a new instance of <see cref="ContentManager{TContent}"/>
         /// </summary>
@@ -72,7 +71,7 @@ namespace ChaosCMS.Managers
         /// Gets or Sets the presistence store the manager operates over.
         /// </summary>
         protected internal IContentStore<TContent> Store { get; private set; }
-        
+
         /// <summary>
         /// The <see cref="ILogger"/> used to log messages from the manager.
         /// </summary>
@@ -96,10 +95,10 @@ namespace ChaosCMS.Managers
         /// </summary>
         protected internal ChaosOptions Options { get; set; }
 
-        #endregion
+        #endregion Constructor and Properties
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
@@ -121,9 +120,9 @@ namespace ChaosCMS.Managers
 
             return await this.Store.CreateAsync(content, CancellationToken);
         }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
@@ -147,7 +146,7 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="page"></param>
         /// <param name="itemsPerPage"></param>
@@ -185,7 +184,7 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pageId"></param>
         /// <param name="name"></param>
@@ -203,7 +202,7 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="parent"></param>
         /// <param name="name"></param>
@@ -243,7 +242,7 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
@@ -293,7 +292,6 @@ namespace ChaosCMS.Managers
             return this.Store.GetTypeAsync(content, CancellationToken);
         }
 
-        
         /// <summary>
         /// Gets the value of the content.
         /// </summary>
@@ -330,7 +328,7 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
@@ -347,7 +345,7 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="parent"></param>
         /// <param name="child"></param>
@@ -371,6 +369,7 @@ namespace ChaosCMS.Managers
         }
 
         #region IDisposable Support
+
         private bool isDisposed = false; // To detect redundant calls
 
         /// <summary>
@@ -394,7 +393,8 @@ namespace ChaosCMS.Managers
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        #endregion
+
+        #endregion IDisposable Support
 
         #region Private Methods
 
@@ -418,7 +418,7 @@ namespace ChaosCMS.Managers
             return ChaosResult.Success;
         }
 
-        #endregion
+        #endregion Private Methods
 
         /// <summary>
         /// Throws if this class has been disposed.

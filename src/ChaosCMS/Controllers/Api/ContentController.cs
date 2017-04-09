@@ -1,19 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ChaosCMS.Extensions;
-using ChaosCMS.Managers;
-using ChaosCMS;
+﻿using ChaosCMS.Extensions;
 using ChaosCMS.Hal;
-
+using ChaosCMS.Managers;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ChaosCMS.Controllers
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="TContent"></typeparam>
     [Route("api/content", Name = "contents")]
@@ -22,7 +16,7 @@ namespace ChaosCMS.Controllers
         private readonly ContentManager<TContent> manager;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="contentManager"></param>
         public ContentController(ContentManager<TContent> contentManager)
@@ -31,7 +25,7 @@ namespace ChaosCMS.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="page"></param>
         /// <param name="itemsPerPage"></param>
@@ -39,11 +33,11 @@ namespace ChaosCMS.Controllers
         public IActionResult Get(int page = 1, int itemsPerPage = 25)
         {
             var content = this.manager.FindPagedAsync(page, itemsPerPage).Result;
-            return this.PagedHal(content, item => this.CreateEmbeddedResponse(this.manager, item) , "contents");
+            return this.PagedHal(content, item => this.CreateEmbeddedResponse(this.manager, item), "contents");
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -56,12 +50,12 @@ namespace ChaosCMS.Controllers
             return this.Hal(content, new[]
             {
                 this.SelfLink(this.manager, content),
-                new Link("children", this.Url.RouteUrl("children", new { id = this.manager.GetIdAsync(content).Result})), 
+                new Link("children", this.Url.RouteUrl("children", new { id = this.manager.GetIdAsync(content).Result})),
             });
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -80,7 +74,7 @@ namespace ChaosCMS.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="id"></param>
         /// <param name="child"></param>
@@ -102,7 +96,7 @@ namespace ChaosCMS.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="id"></param>
         /// <param name="model"></param>
@@ -123,7 +117,7 @@ namespace ChaosCMS.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>

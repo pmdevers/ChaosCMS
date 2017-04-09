@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{5BC73008
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CBE6AD3C-91F5-4C6D-BB8B-C4985A760E3A}"
 	ProjectSection(SolutionItems) = preProject
+		.babelrc = .babelrc
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		.travis.yml = .travis.yml
@@ -21,7 +22,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build.ps1 = build.ps1
 		build.sh = build.sh
 		NuGet.config = NuGet.config
+		package.json = package.json
 		README.md = README.md
+		webpack.config.js = webpack.config.js
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChaosCMS.Json", "src\ChaosCMS.Json\ChaosCMS.Json.csproj", "{A6D5060C-AD2C-446D-AC16-E61FA9405C15}"
@@ -82,6 +85,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sidebar", "sidebar", "{C9C8
 		admin\src\components\sidebar\baseStyles.js = admin\src\components\sidebar\baseStyles.js
 		admin\src\components\sidebar\sidebar.css = admin\src\components\sidebar\sidebar.css
 		admin\src\components\sidebar\sidebar.js = admin\src\components\sidebar\sidebar.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{37D20201-49F3-48CE-8BC3-F0166308F4DE}"
+	ProjectSection(SolutionItems) = preProject
+		test\Shared\MockHelper.cs = test\Shared\MockHelper.cs
+		test\Shared\TestContent.cs = test\Shared\TestContent.cs
+		test\Shared\TestPage.cs = test\Shared\TestPage.cs
+		test\Shared\TestRole.cs = test\Shared\TestRole.cs
+		test\Shared\TestUser.cs = test\Shared\TestUser.cs
 	EndProjectSection
 EndProject
 Global
@@ -158,5 +170,6 @@ Global
 		{3EE7FF63-7AF6-4A0B-B37F-FD4255719BEA} = {D3D3AA10-EF5B-4ACD-84C7-8647448C7AA5}
 		{7B802BA9-3EAA-4409-BD64-6C29996981C8} = {D3D3AA10-EF5B-4ACD-84C7-8647448C7AA5}
 		{C9C870A2-C9E3-4320-9169-EBD2FA89C662} = {D3D3AA10-EF5B-4ACD-84C7-8647448C7AA5}
+		{37D20201-49F3-48CE-8BC3-F0166308F4DE} = {5990BA9A-13D4-42BF-941B-4588C963EFBE}
 	EndGlobalSection
 EndGlobal

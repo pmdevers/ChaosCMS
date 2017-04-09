@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ChaosCMS
 {
@@ -15,16 +12,14 @@ namespace ChaosCMS
         /// </summary>
         public ChaosException() : base("Unkown Exception!")
         {
-
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ChaosException"/>
         /// </summary>
         /// <param name="message">The message of the <see cref="ChaosException"/>.</param>
         public ChaosException(string message) : base(message)
         {
-
         }
     }
 }

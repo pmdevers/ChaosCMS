@@ -1,17 +1,13 @@
 ﻿using System;
+using ChaosCMS;
+using ChaosCMS.Controllers;
+using ChaosCMS.Formatters;
+using ChaosCMS.Managers;
+using ChaosCMS.Rendering;
+using ChaosCMS.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using ChaosCMS;
-using ChaosCMS.Managers;
-using ChaosCMS.Controllers;
 using Newtonsoft.Json.Serialization;
-using ChaosCMS.Formatters;
-using ChaosCMS.Validators;
-using Microsoft.AspNetCore.Mvc.Razor;
-using ChaosCMS.Rendering;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Options;
-using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -21,7 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class ChaosServiceCollectionExtensions
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="TPage"></typeparam>
         /// <typeparam name="TContent"></typeparam>
@@ -49,7 +45,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="options"></param>
         /// <returns></returns>
         public static ChaosBuilder AddChaos<TPage, TContent, TUser, TRole>(this IServiceCollection services, Action<ChaosOptions> options)
-            where TPage : class , new()
+            where TPage : class, new()
             where TContent : class, new()
             where TUser : class, new()
             where TRole : class, new()
@@ -67,9 +63,10 @@ namespace Microsoft.Extensions.DependencyInjection
 
             var mvcBuilder = services.AddMvc(o =>
                 {
-                    o.OutputFormatters.Add(new JsonHalOutputFormatter(new[] { "application/hal+json", "application/vnd.example.hal+json", "application/vnd.example.hal.v1+json"}));
+                    o.OutputFormatters.Add(new JsonHalOutputFormatter(new[] { "application/hal+json", "application/vnd.example.hal+json", "application/vnd.example.hal.v1+json" }));
                 })
-                .AddRazorOptions(r=> {
+                .AddRazorOptions(r =>
+                {
                     r.ViewLocationExpanders.Add(new ChaosViewLocationRemapper());
                     r.FileProviders.Add(new ChaosFileProvider(new ResourceManager()));
                 })
@@ -88,11 +85,8 @@ namespace Microsoft.Extensions.DependencyInjection
                                 typeof(ResourceController),
                                 typeof(AccountController<TUser>),
                                 typeof(UserController<TUser>),
-                                typeof(AdminController)
-                            )
-                        );
-                })
-                .AddControllersAsServices();
+                                typeof(AdminController)));
+                }).AddControllersAsServices();
 
             services.TryAddScoped<IChaos, DefaultChaosService<TPage, TContent>>();
 

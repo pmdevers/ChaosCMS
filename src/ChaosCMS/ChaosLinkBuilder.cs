@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace ChaosCMS
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static class ChaosLinkBuilder
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="controller"></param>
         /// <param name="manager"></param>
@@ -23,7 +23,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="controller"></param>
         /// <param name="manager"></param>
@@ -57,7 +57,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="TContent"></typeparam>
         /// <param name="controller"></param>

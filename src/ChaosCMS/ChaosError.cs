@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ChaosCMS
+﻿namespace ChaosCMS
 {
     /// <summary>
     /// Encapsulates an error from the chaos system.
@@ -17,6 +12,7 @@ namespace ChaosCMS
         /// The code for this error.
         /// </value>
         public string Code { get; set; }
+
         /// <summary>
         /// Gets or sets the description for this error.
         /// </summary>

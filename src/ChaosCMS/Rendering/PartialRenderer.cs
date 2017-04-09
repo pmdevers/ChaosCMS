@@ -1,25 +1,22 @@
-﻿using ChaosCMS.Managers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Html;
+﻿using System.Threading.Tasks;
 using ChaosCMS.Extensions;
+using ChaosCMS.Managers;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ChaosCMS.Rendering
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="TContent"></typeparam>
     public class MacroRenderer<TContent> : IRenderer<TContent>
         where TContent : class
     {
         private readonly ContentManager<TContent> manager;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="manager"></param>
         public MacroRenderer(ContentManager<TContent> manager)
@@ -28,12 +25,12 @@ namespace ChaosCMS.Rendering
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string TypeName => "macro";
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="chaos"></param>
         /// <param name="content"></param>
@@ -45,16 +42,14 @@ namespace ChaosCMS.Rendering
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public class MacroOptions : RenderOptions
         {
             /// <summary>
-            /// 
+            ///
             /// </summary>
             public string ViewName { get; set; }
         }
-            
     }
-
 }

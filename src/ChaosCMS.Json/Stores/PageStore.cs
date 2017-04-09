@@ -1,32 +1,28 @@
-﻿using ChaosCMS.Json.Models;
-using ChaosCMS.Stores;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Threading;
-using System.IO;
+using System.Threading.Tasks;
+using ChaosCMS.Json.Models;
+using ChaosCMS.Stores;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace ChaosCMS.Json.Stores
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="TPage"></typeparam>
     public class PageStore<TPage> : JsonStore<TPage>, IPageStore<TPage>
         where TPage : JsonPage, new()
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public PageStore(IOptions<ChaosJsonStoreOptions> optionsAccessor)
-            :base(optionsAccessor)
+            : base(optionsAccessor)
         {
-            
         }
+
         /// <inheritdoc />
         public Task<ChaosPaged<TPage>> FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken)
         {
@@ -41,7 +37,6 @@ namespace ChaosCMS.Json.Stores
                 TotalItems = this.Collection.Count(),
                 Items = items
             });
-
         }
 
         /// <inheritdoc />
@@ -52,7 +47,7 @@ namespace ChaosCMS.Json.Stores
             var item = this.Collection.FirstOrDefault(x => x.Url.Equals(urlPath, StringComparison.CurrentCultureIgnoreCase));
             return Task.FromResult(item);
         }
-        
+
         /// <inheritdoc />
         public virtual Task<string> GetNameAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -70,7 +65,7 @@ namespace ChaosCMS.Json.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            if(page == null)
+            if (page == null)
             {
                 throw new ArgumentNullException(nameof(page));
             }
@@ -88,6 +83,5 @@ namespace ChaosCMS.Json.Stores
             }
             return Task.FromResult(page.Template);
         }
-
     }
 }

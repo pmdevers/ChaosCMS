@@ -1,15 +1,7 @@
 using System;
-
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-
 using ChaosCMS;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using ChaosCMS.Security;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -61,7 +53,7 @@ namespace Microsoft.AspNetCore.Builder
             app.UseMvc();
 
             //app.UseMiddleware(middleware);
-            
+
             return app;
         }
     }

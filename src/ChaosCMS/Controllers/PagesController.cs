@@ -1,24 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChaosCMS.Controllers
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [Route("/admin/pages", Name = "Pages")]
     public class PagesController<TPage> : Controller
         where TPage : class, new()
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        [Route("", Name ="Index")]
+        [Route("", Name = "Index")]
         [HttpGet]
         public IActionResult Index()
         {
@@ -26,7 +21,7 @@ namespace ChaosCMS.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         [Route("create", Name = "Create")]
@@ -37,7 +32,7 @@ namespace ChaosCMS.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>

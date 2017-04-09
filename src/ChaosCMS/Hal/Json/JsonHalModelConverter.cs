@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace ChaosCMS.Hal.Json
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class JsonHalModelConverter : JsonConverter
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="objectType"></param>
         /// <returns></returns>
@@ -20,8 +17,9 @@ namespace ChaosCMS.Hal.Json
         {
             return objectType == typeof(HalResponse);
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="reader"></param>
         /// <param name="objectType"></param>
@@ -32,8 +30,9 @@ namespace ChaosCMS.Hal.Json
         {
             throw new NotImplementedException();
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="value"></param>
@@ -41,7 +40,10 @@ namespace ChaosCMS.Hal.Json
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var model = value as HalResponse;
-            if (model == null) return;
+            if (model == null)
+            {
+                return;
+            }
 
             var output = model.ToJObject(serializer);
             output.WriteTo(writer);

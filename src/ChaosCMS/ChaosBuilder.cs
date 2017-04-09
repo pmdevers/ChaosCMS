@@ -1,10 +1,10 @@
-﻿using ChaosCMS.Managers;
-using ChaosCMS.Stores;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Reflection;
+using ChaosCMS.Managers;
+using ChaosCMS.Stores;
 using ChaosCMS.Validators;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ChaosCMS
 {
@@ -58,7 +58,6 @@ namespace ChaosCMS
         /// </summary>
         public IMvcBuilder MvcBuilder { get; set; }
 
-
         private ChaosBuilder AddScoped(Type serviceType, Type concreteType)
         {
             Services.AddScoped(serviceType, concreteType);
@@ -85,8 +84,8 @@ namespace ChaosCMS
         {
             var pageManagerType = typeof(PageManager<>).MakeGenericType(PageType);
             var customType = typeof(TPageManager);
-            if(pageManagerType == customType ||
-                !pageManagerType.GetTypeInfo().IsAssignableFrom(customType.GetTypeInfo()))
+
+            if (pageManagerType == customType || !pageManagerType.GetTypeInfo().IsAssignableFrom(customType.GetTypeInfo()))
             {
                 throw new InvalidOperationException(Resources.FormatInvalidManagerType(customType.Name, "PageManager", this.PageType));
             }
@@ -135,7 +134,7 @@ namespace ChaosCMS
         /// </summary>
         /// <typeparam name="T">The page validator.</typeparam>
         /// <returns>The current <see cref="ChaosBuilder"/> instance.</returns>
-        public virtual ChaosBuilder AddPageValidator<T>() where T : class 
+        public virtual ChaosBuilder AddPageValidator<T>() where T : class
         {
             return AddScoped(typeof(IPageValidator<>).MakeGenericType(PageType), typeof(T));
         }

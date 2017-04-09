@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Html;
-using ChaosCMS.Managers;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using System.Threading.Tasks;
 using ChaosCMS.Extensions;
+using ChaosCMS.Managers;
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ChaosCMS.Rendering
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="TContent"></typeparam>
     public class CarouselRenderer<TContent> : IRenderer<TContent>
         where TContent : class
     {
         private readonly ContentManager<TContent> contentManager;
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="contentManager"></param>
         public CarouselRenderer(ContentManager<TContent> contentManager)
@@ -61,12 +57,11 @@ namespace ChaosCMS.Rendering
 
             var slides = await this.contentManager.GetChildrenAsync(content);
 
-            foreach(var item in slides)
+            foreach (var item in slides)
             {
                 var slide = new TagBuilder("div");
                 var slideOptions = await this.contentManager.GetValueAsync<SlideOptions, TContent>(item);
 
-                
                 if (slideOptions.IsActive)
                 {
                     slide.AddCssClass("active");
@@ -78,7 +73,7 @@ namespace ChaosCMS.Rendering
                 image.MergeAttributes(slideOptions.Attributes);
 
                 slide.InnerHtml.AppendHtml(image);
-                
+
                 var children = await this.contentManager.GetChildrenAsync(item);
                 if (children.Count > 0)
                 {
@@ -92,11 +87,11 @@ namespace ChaosCMS.Rendering
 
                     slide.InnerHtml.AppendHtml(caption);
                 }
-                               
+
                 wrapper.InnerHtml.AppendHtml(slide);
             }
 
-            return wrapper; 
+            return wrapper;
         }
 
         private async Task<IHtmlContent> Control(CarouselOptions options, TContent content, string className, string slide, string label)
@@ -114,7 +109,7 @@ namespace ChaosCMS.Rendering
             var spanIcon = new TagBuilder("span");
             spanIcon.AddCssClass("glyphicon-chevron-" + className);
             spanIcon.AddCssClass("glyphicon");
-                        spanIcon.MergeAttribute("aria-hidden", "true");
+            spanIcon.MergeAttribute("aria-hidden", "true");
 
             var spanLabel = new TagBuilder("span");
             spanLabel.AddCssClass("sr-only");
@@ -160,20 +155,19 @@ namespace ChaosCMS.Rendering
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public class CarouselOptions : RenderOptions
         {
-            
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public class SlideOptions : RenderOptions
         {
             /// <summary>
-            /// 
+            ///
             /// </summary>
             public bool IsActive { get; set; }
         }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ChaosCMS
+﻿namespace ChaosCMS
 {
     /// <summary>
     /// Service to enable localization for application facing chaos errors.
@@ -27,7 +22,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public virtual ChaosError NegativePage()
@@ -40,7 +35,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -54,7 +49,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
@@ -68,7 +63,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="template"></param>
         /// <returns></returns>
@@ -82,7 +77,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -96,7 +91,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
@@ -110,7 +105,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -122,8 +117,9 @@ namespace ChaosCMS
                 Description = Resources.FormatContentValueIsInvalid(value)
             };
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -137,7 +133,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public ChaosError ConcurrencyFailure()

@@ -1,15 +1,11 @@
-﻿using ChaosCMS.Managers;
+﻿using System.Threading.Tasks;
+using ChaosCMS.Managers;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChaosCMS.Controllers
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="TPage"></typeparam>
     [Route("{*url}", Name = "render")]
@@ -17,8 +13,9 @@ namespace ChaosCMS.Controllers
         where TPage : class
     {
         private readonly PageManager<TPage> pageManager;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pageManager"></param>
         public RenderController(PageManager<TPage> pageManager)
@@ -27,7 +24,7 @@ namespace ChaosCMS.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         [HttpGet]

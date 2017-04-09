@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ChaosCMS.Managers;
 
 namespace ChaosCMS.Validators
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="TContent"></typeparam>
     public class DefaultContentValidator<TContent> : IContentValidator<TContent> where TContent : class
@@ -15,7 +14,7 @@ namespace ChaosCMS.Validators
         private readonly ChaosErrorDescriber errorDescriber;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="errorDescriber"></param>
         public DefaultContentValidator(ChaosErrorDescriber errorDescriber)

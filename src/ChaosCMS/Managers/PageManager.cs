@@ -1,14 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using ChaosCMS.Stores;
+using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
+using ChaosCMS.Stores;
+using ChaosCMS.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading;
-using ChaosCMS.Validators;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace ChaosCMS.Managers
 {
@@ -97,9 +96,8 @@ namespace ChaosCMS.Managers
         /// </summary>
         protected internal ChaosOptions Options { get; set; }
 
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
@@ -143,7 +141,7 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="page"></param>
         /// <param name="itemsPerPage"></param>
@@ -189,7 +187,7 @@ namespace ChaosCMS.Managers
         {
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            if(urlPath == null)
+            if (urlPath == null)
             {
                 throw new ArgumentNullException(nameof(urlPath));
             }
@@ -198,7 +196,7 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
@@ -223,7 +221,7 @@ namespace ChaosCMS.Managers
         {
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            if(page == null)
+            if (page == null)
             {
                 throw new ArgumentNullException(nameof(page));
             }
@@ -240,7 +238,7 @@ namespace ChaosCMS.Managers
         {
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            if(page == null)
+            if (page == null)
             {
                 throw new ArgumentNullException(nameof(page));
             }
@@ -265,6 +263,7 @@ namespace ChaosCMS.Managers
         }
 
         #region IDisposable Support
+
         private bool isDisposed = false; // To detect redundant calls
 
         /// <summary>
@@ -288,8 +287,8 @@ namespace ChaosCMS.Managers
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        #endregion
 
+        #endregion IDisposable Support
 
         /// <summary>
         /// Throws if this class has been disposed.

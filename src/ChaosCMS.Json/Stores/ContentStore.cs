@@ -10,14 +10,14 @@ using Microsoft.Extensions.Options;
 namespace ChaosCMS.Json.Stores
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="TContent"></typeparam>
     public class ContentStore<TContent> : JsonStore<TContent>, IContentStore<TContent>
         where TContent : JsonContent
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="optionsAccessor"></param>
         public ContentStore(IOptions<ChaosJsonStoreOptions> optionsAccessor) : base(optionsAccessor)
@@ -29,7 +29,7 @@ namespace ChaosCMS.Json.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
-            var items = this.Collection.Where(x=> x.ParentId.Equals(default(Guid))).Skip((page - 1) * itemsPerPage).Take(itemsPerPage);
+            var items = this.Collection.Where(x => x.ParentId.Equals(default(Guid))).Skip((page - 1) * itemsPerPage).Take(itemsPerPage);
 
             return Task.FromResult(new ChaosPaged<TContent>
             {
@@ -38,7 +38,6 @@ namespace ChaosCMS.Json.Stores
                 TotalItems = this.Collection.Count(),
                 Items = items
             });
-
         }
 
         /// <inheritdoc />
@@ -84,6 +83,7 @@ namespace ChaosCMS.Json.Stores
             }
             return Task.FromResult(content.Name);
         }
+
         /// <inheritdoc />
         public Task<string> GetTypeAsync(TContent content, CancellationToken cancellationToken)
         {
@@ -95,6 +95,7 @@ namespace ChaosCMS.Json.Stores
             }
             return Task.FromResult(content.Type);
         }
+
         /// <inheritdoc />
         public Task<string> GetValueAsync(TContent content, CancellationToken cancellationToken)
         {
@@ -117,7 +118,7 @@ namespace ChaosCMS.Json.Stores
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var items = this.Collection.Where(x=>x.ParentId.Equals(content.Id)).ToList();
+            var items = this.Collection.Where(x => x.ParentId.Equals(content.Id)).ToList();
 
             return Task.FromResult(items);
         }
@@ -140,6 +141,7 @@ namespace ChaosCMS.Json.Stores
 
             return Task.FromResult(0);
         }
+
         /// <inheritdoc />
         public Task<TContent> FindChildByNameAsync(TContent parent, string name, CancellationToken cancellationToken)
         {
@@ -174,6 +176,6 @@ namespace ChaosCMS.Json.Stores
             return Task.FromResult(0);
         }
 
-        #endregion
+        #endregion Implementation of IContentStore<TContent>
     }
 }

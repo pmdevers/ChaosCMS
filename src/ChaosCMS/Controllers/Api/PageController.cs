@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ChaosCMS.Extensions;
-using ChaosCMS.Hal;
+﻿using ChaosCMS.Extensions;
 using ChaosCMS.Managers;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +14,7 @@ namespace ChaosCMS.Controllers
         private readonly PageManager<TPage> manager;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="manager"></param>
         public PageController(PageManager<TPage> manager)
@@ -28,20 +23,18 @@ namespace ChaosCMS.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public IActionResult Get(int page = 1, int itemsPerPage = 25)
         {
             var pages = this.manager.FindPagedAsync(page, itemsPerPage).Result;
-            return this.PagedHal(pages, item => this.CreateEmbeddedResponse(this.manager, item) ,"pages");
+            return this.PagedHal(pages, item => this.CreateEmbeddedResponse(this.manager, item), "pages");
         }
 
-        
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -52,13 +45,13 @@ namespace ChaosCMS.Controllers
 
             return this.Hal(page, new[]
             {
-                this.SelfLink(this.manager, page), 
-                //new Link("properties", "/api/page/{id}/properties") 
+                this.SelfLink(this.manager, page),
+                //new Link("properties", "/api/page/{id}/properties")
             });
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="id"></param>
         /// <param name="model"></param>

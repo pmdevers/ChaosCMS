@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Moq;
-using ChaosCMS.Managers;
+﻿using ChaosCMS.Managers;
 using ChaosCMS.Stores;
+using Moq;
 
 namespace ChaosCMS.Test
 {

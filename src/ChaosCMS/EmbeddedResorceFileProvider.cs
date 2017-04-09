@@ -1,24 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using ChaosCMS.Managers;
-
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Primitives;
 
 namespace ChaosCMS
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class ChaosFileProvider : IFileProvider
     {
         private readonly ResourceManager resourceManager;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="resourceManager"></param>
         public ChaosFileProvider(ResourceManager resourceManager)
@@ -27,7 +22,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="subpath"></param>
         /// <returns></returns>
@@ -37,7 +32,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="subpath"></param>
         /// <returns></returns>
@@ -47,7 +42,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
@@ -57,12 +52,12 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public class NotChangedToken : IChangeToken
         {
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="callback"></param>
             /// <param name="state"></param>
@@ -73,22 +68,27 @@ namespace ChaosCMS
             }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             public bool HasChanged { get; } = false;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             public bool ActiveChangeCallbacks { get; } = false;
 
             internal class EmptyDisposable : IDisposable
             {
                 public static EmptyDisposable Instance { get; } = new EmptyDisposable();
-                private EmptyDisposable() { }
-                public void Dispose() { }
+
+                private EmptyDisposable()
+                {
+                }
+
+                public void Dispose()
+                {
+                }
             }
         }
     }
-
 }

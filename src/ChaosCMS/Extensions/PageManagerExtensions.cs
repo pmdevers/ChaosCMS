@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using ChaosCMS.Helpers;
 using ChaosCMS.Managers;
 
 namespace ChaosCMS.Extensions
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static class PageManagerExtensions
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="TPage"></typeparam>
         /// <param name="manager"></param>
@@ -31,7 +26,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="TPage"></typeparam>
         /// <param name="manager"></param>

@@ -3,21 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
 using Microsoft.DotNet.PlatformAbstractions;
 using Microsoft.Extensions.DependencyModel;
 
 namespace ChaosCMS.Managers
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class ResourceManager
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ResourceManager()
         {
@@ -36,14 +33,12 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IList<ChaosResourceItem> Resources { get; set; } = new List<ChaosResourceItem>();
 
-
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="virtualPath"></param>
         /// <returns></returns>
@@ -57,18 +52,19 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="virtualPath"></param>
         /// <returns></returns>
         public string GetNameFromPath(string virtualPath)
         {
             if (string.IsNullOrEmpty(virtualPath))
+            {
                 return null;
+            }
 
             return virtualPath.Replace("~", string.Empty).Replace("/", ".");
         }
-
 
         private IEnumerable<AssemblyName> GetAssemblies()
         {

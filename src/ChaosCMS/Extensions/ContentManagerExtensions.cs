@@ -1,17 +1,16 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ChaosCMS.Managers;
 using Newtonsoft.Json;
 
 namespace ChaosCMS.Extensions
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static class ContentManagerExtensions
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <typeparam name="TContent"></typeparam>
@@ -20,7 +19,7 @@ namespace ChaosCMS.Extensions
         /// <returns></returns>
         public static async Task<TResult> GetValueAsync<TResult, TContent>(this ContentManager<TContent> manager, TContent content)
             where TContent : class
-            where TResult : class , new()
+            where TResult : class, new()
         {
             var value = await manager.GetValueAsync(content);
             var result = JsonConvert.DeserializeObject<TResult>(value);
@@ -28,7 +27,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="TContent"></typeparam>
         /// <param name="manager"></param>

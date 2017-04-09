@@ -1,16 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace ChaosCMS.Security
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class TokenProviderMiddleware<TUser>
         where TUser : class
@@ -22,7 +22,7 @@ namespace ChaosCMS.Security
         private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="next"></param>
         /// <param name="userManager"></param>
@@ -41,7 +41,7 @@ namespace ChaosCMS.Security
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>

@@ -1,19 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc.Razor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace ChaosCMS
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class ChaosViewLocationRemapper : IViewLocationExpander
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="viewLocations"></param>
@@ -23,16 +19,15 @@ namespace ChaosCMS
             var locations = new List<string> { "/Templates/{0}.cshtml", "/Macros/{0}.cshtml", "ChaosCMS.{0}" };
             //locations.AddRange(viewLocations);
 
-
             return locations.ToArray();
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         public void PopulateValues(ViewLocationExpanderContext context)
         {
-            
         }
     }
 }

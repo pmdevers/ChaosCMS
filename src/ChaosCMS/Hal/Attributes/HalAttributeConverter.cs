@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Linq;
-using ChaosCMS.Extensions;
 using System.Reflection;
+using ChaosCMS.Extensions;
 
 namespace ChaosCMS.Hal.Attributes
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class HalAttributeConverter : IHalConverter
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
@@ -27,7 +27,7 @@ namespace ChaosCMS.Hal.Attributes
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>

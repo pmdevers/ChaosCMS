@@ -1,23 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
 using Microsoft.Extensions.FileProviders;
 
 namespace ChaosCMS
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class ChaosResourceItem : IFileInfo
     {
         private readonly Stream stream;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="stream"></param>
         /// <param name="name"></param>
@@ -32,13 +27,12 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string Name { get; }
 
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public Stream CreateReadStream()
@@ -47,23 +41,27 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool Exists { get; }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public long Length { get; }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string PhysicalPath { get; }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public DateTimeOffset LastModified { get; }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsDirectory { get; }
     }

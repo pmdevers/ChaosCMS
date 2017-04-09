@@ -1,10 +1,10 @@
-﻿using ChaosCMS;
+﻿using System;
+using ChaosCMS;
+using ChaosCMS.Json;
 using ChaosCMS.Json.Stores;
 using ChaosCMS.Stores;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using System;
-using ChaosCMS.Json;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -14,7 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class ChaosJsonBuilderExtensions
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="options"></param>
@@ -30,7 +30,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return builder;
         }
-
 
         private static IServiceCollection GetDefaultServices(ChaosBuilder builder)
         {
@@ -50,7 +49,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 contentStoreType);
 
             services.AddScoped(
-                typeof(IUserStore<>).MakeGenericType(builder.IdentityBuilder.UserType), 
+                typeof(IUserStore<>).MakeGenericType(builder.IdentityBuilder.UserType),
                 userStoreType);
 
             services.AddScoped(
