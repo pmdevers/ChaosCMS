@@ -12,9 +12,9 @@ environment:
 install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
-  - GitVersion
+  # - GitVersion
   # install modules
-  - npm --version
+  - npm --version {build}
   - npm install
   - npm install webpack -g
 build_script:
