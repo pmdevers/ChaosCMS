@@ -31,7 +31,6 @@ namespace Microsoft.AspNetCore.Builder
             var options = app.ApplicationServices.GetRequiredService<IOptions<ChaosOptions>>().Value;
             var builder = app.ApplicationServices.GetService<ChaosBuilder>();
             var exceptionMiddleWare = typeof(ChaosExceptionMiddleware);
-            //var tokenProvider = typeof(TokenProviderMiddleware<>).MakeGenericType(builder.IdentityBuilder.UserType);
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
@@ -41,19 +40,16 @@ namespace Microsoft.AspNetCore.Builder
             });
 
             app.UseCookieAuthentication(options.Security.GetCookiesOptions());
-
+            
             app.UseCors(policy =>
             {
                 policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build();
             });
             app.UseStaticFiles();
             app.UseMiddleware(exceptionMiddleWare);
-            //app.UseMiddleware(tokenProvider);
             app.UseIdentity();
             app.UseMvc();
-
-            //app.UseMiddleware(middleware);
-
+            
             return app;
         }
     }

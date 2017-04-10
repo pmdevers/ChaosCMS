@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using ChaosCMS.Extensions;
 using ChaosCMS.Hal;
-using ChaosCMS.Models.Admin;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChaosCMS.Controllers.Api
@@ -27,7 +26,7 @@ namespace ChaosCMS.Controllers.Api
         [HttpGet]
         public IActionResult Get()
         {
-            var profile = new ProfileModel() { Name = "Admin" };
+            var profile = this.User;
             var links = new List<Link>();
             return this.Hal(profile, links);
         }
