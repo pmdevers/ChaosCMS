@@ -36,12 +36,23 @@ namespace ChaosCMS.Validators
             await ValidatePageName(manager, page, errors);
             await ValidatePageUrl(manager, page, errors);
             await ValidatePageTemplate(manager, page, errors);
+            await ValidatePageStatusCode(manager, page, errors);
 
             if (errors.Count > 0)
             {
                 return ChaosResult.Failed(errors.ToArray());
             }
             return ChaosResult.Success;
+        }
+
+        private async Task ValidatePageStatusCode(PageManager<TPage> manager, TPage page, List<ChaosError> errors)
+        {
+            var status = await manager.GetStatusCodeAsync(page);
+            var found = await manager.FindByStatusCodeAsync(status);
+            if(status != 200 && found != null)
+            {
+                errors.Add(errorDescriber.PageStatusCodeIsInvalid(status));
+            }
         }
 
         private async Task ValidatePageUrl(PageManager<TPage> manager, TPage page, List<ChaosError> errors)

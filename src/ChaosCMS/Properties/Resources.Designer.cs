@@ -163,6 +163,22 @@ namespace ChaosCMS
         }
 
         /// <summary>
+        /// The statuscode '{0}' is already used.
+        /// </summary>
+        internal static string FormatPageStatusIsInvalid(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("PageStatusIsInvalid"), p0);
+        }
+
+        /// <summary>
+        /// The statuscode '{0}' is already used.
+        /// </summary>
+        internal static string PageStatusIsInvalid
+        {
+            get { return GetString("PageStatusIsInvalid"); }
+        }
+
+        /// <summary>
         /// The name '{0}' is not a valid page name.
         /// </summary>
         internal static string PageNameIsInvalid

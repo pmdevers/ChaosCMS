@@ -173,4 +173,8 @@
     <value>ConcurrencyFailure.</value>
     <comment>Error when there is ConcurrencyFailure</comment>
   </data>
+  <data name="PageStatusIsInvalid" xml:space="preserve">
+    <value>The StatusCode '{0}' can only be used once.</value>
+    <comment>Error when the statuscode of the page is invalid</comment>
+  </data>
 </root>

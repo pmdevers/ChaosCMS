@@ -88,5 +88,21 @@ namespace ChaosCMS.Stores
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<ChaosResult> DeleteAsync(TPage page, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="statusCode"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<TPage> FindByStatusCodeAsync(int statusCode, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<int> GetStatusCodeAsync(TPage page, CancellationToken cancellationToken);
     }
 }

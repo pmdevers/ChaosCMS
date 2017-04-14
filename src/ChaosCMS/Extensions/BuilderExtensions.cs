@@ -1,5 +1,6 @@
 using System;
 using ChaosCMS;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -22,6 +23,8 @@ namespace Microsoft.AspNetCore.Builder
                 throw new ArgumentNullException(nameof(app));
             }
 
+            var hosting = app.ApplicationServices.GetService<IHostingEnvironment>();
+
             var marker = app.ApplicationServices.GetService<ChaosMarkerService>();
             if (marker == null)
             {
@@ -31,6 +34,17 @@ namespace Microsoft.AspNetCore.Builder
             var options = app.ApplicationServices.GetRequiredService<IOptions<ChaosOptions>>().Value;
             var builder = app.ApplicationServices.GetService<ChaosBuilder>();
             var exceptionMiddleWare = typeof(ChaosExceptionMiddleware);
+
+            //if (hosting.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+            //else
+            //{
+            //app.UseExceptionHandler("/error");
+                app.UseStatusCodePagesWithReExecute("/{0}");
+            //}
+
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
@@ -46,7 +60,7 @@ namespace Microsoft.AspNetCore.Builder
                 policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build();
             });
             app.UseStaticFiles();
-            app.UseMiddleware(exceptionMiddleWare);
+            //app.UseMiddleware(exceptionMiddleWare);
             app.UseIdentity();
             app.UseMvc();
             

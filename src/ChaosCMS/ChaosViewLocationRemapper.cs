@@ -16,7 +16,7 @@ namespace ChaosCMS
         /// <returns></returns>
         public IEnumerable<string> ExpandViewLocations(ViewLocationExpanderContext context, IEnumerable<string> viewLocations)
         {
-            var locations = new List<string> { "/Templates/{0}.cshtml", "/Macros/{0}.cshtml", "ChaosCMS.{0}" };
+            var locations = new List<string> { "/Templates/{0}.cshtml", "/Macros/{0}.cshtml", "ChaosCMS.{0}", "ChaosCMS.Views.{0}.cshtml" };
             //locations.AddRange(viewLocations);
 
             return locations.ToArray();
@@ -28,6 +28,7 @@ namespace ChaosCMS
         /// <param name="context"></param>
         public void PopulateValues(ViewLocationExpanderContext context)
         {
+            
         }
     }
 }

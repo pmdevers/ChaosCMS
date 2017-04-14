@@ -1,4 +1,6 @@
-﻿namespace ChaosCMS
+﻿using System;
+
+namespace ChaosCMS
 {
     /// <summary>
     /// Service to enable localization for application facing chaos errors.
@@ -59,6 +61,15 @@
             {
                 Code = nameof(PageUrlIsInvalid),
                 Description = Resources.FormatPageUrlIsInvalid(url)
+            };
+        }
+
+        internal ChaosError PageStatusCodeIsInvalid(int status)
+        {
+            return new ChaosError
+            {
+                Code = nameof(PageStatusCodeIsInvalid),
+                Description = Resources.FormatPageStatusIsInvalid(status)
             };
         }
 

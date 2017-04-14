@@ -8,7 +8,7 @@
     <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="wwwroot\style.css" />
+    <Content Include="wwwroot\404.html" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="Templates\**\*;Data\**\*;web.config;wwwroot">

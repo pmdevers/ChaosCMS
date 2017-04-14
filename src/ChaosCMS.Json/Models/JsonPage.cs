@@ -31,6 +31,11 @@ namespace ChaosCMS.Json.Models
         public string Url { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public int StatusCode { get; set; }
+
+        /// <summary>
         ///
         /// </summary>
         public string Template { get; set; }

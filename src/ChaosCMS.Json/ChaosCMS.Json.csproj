@@ -17,7 +17,7 @@
     <ProjectReference Include="..\ChaosCMS\ChaosCMS.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="1.1.0" />

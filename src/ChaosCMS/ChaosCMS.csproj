@@ -21,6 +21,10 @@
   <ItemGroup>
     <None Remove="admin\index.html" />
     <None Remove="admin\index.js" />
+    <None Remove="Resources\chaos.jpg" />
+    <None Remove="Views\403.cshtml" />
+    <None Remove="Views\404.cshtml" />
+    <None Remove="Views\500.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="admin\index.html" />
@@ -28,9 +32,14 @@
       <ExcludeFromSourceAnalysis>True</ExcludeFromSourceAnalysis>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\chaos.jpg" />
+    <EmbeddedResource Include="Views\403.cshtml" />
+    <EmbeddedResource Include="Views\404.cshtml" />
+    <EmbeddedResource Include="Views\500.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
     <PackageReference Include="Tavis.UriTemplates" Version="1.1.1" />

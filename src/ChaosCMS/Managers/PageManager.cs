@@ -179,6 +179,18 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
+        /// Finds a page by a statusCode
+        /// </summary>
+        /// <param name="statusCode"></param>
+        /// <returns></returns>
+        public virtual Task<TPage> FindByStatusCodeAsync(int statusCode)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            return this.Store.FindByStatusCodeAsync(statusCode, CancellationToken);
+        }
+
+        /// <summary>
         /// Finds the assosiated page with the urlPath.
         /// </summary>
         /// <param name="urlPath">The url of the page.</param>
@@ -260,6 +272,22 @@ namespace ChaosCMS.Managers
                 throw new ArgumentNullException(nameof(page));
             }
             return this.Store.GetTemplateAsync(page, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public Task<int> GetStatusCodeAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return this.Store.GetStatusCodeAsync(page, CancellationToken);
         }
 
         #region IDisposable Support

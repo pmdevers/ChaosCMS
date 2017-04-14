@@ -49,6 +49,15 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <inheritdoc />
+        public Task<TPage> FindByStatusCodeAsync(int statusCode, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var item = this.Collection.FirstOrDefault(x => x.StatusCode == statusCode);
+            return Task.FromResult(item);
+        }
+
+        /// <inheritdoc />
         public virtual Task<string> GetNameAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -82,6 +91,18 @@ namespace ChaosCMS.Json.Stores
                 throw new ArgumentNullException(nameof(page));
             }
             return Task.FromResult(page.Template);
+        }
+
+        /// <inheritdoc />
+        public Task<int> GetStatusCodeAsync(TPage page, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return Task.FromResult(page.StatusCode);
         }
     }
 }

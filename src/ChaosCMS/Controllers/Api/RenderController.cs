@@ -33,9 +33,13 @@ namespace ChaosCMS.Controllers
             var page = await this.pageManager.FindByUrlAsync(this.Request.Path.Value);
             if (page == null)
             {
-                throw ChaosHttpExeption.PageNotFound(this.Request.Path.Value);
+                //page = await this.pageManager.FindByStatusCodeAsync(404);
+                //if(page == null)
+                //{
+                    return NotFound();
+                //}
             }
-
+            var statusCode = this.pageManager.GetStatusCodeAsync(page);
             var template = await this.pageManager.GetTemplateAsync(page);
             return this.View(template, page);
         }

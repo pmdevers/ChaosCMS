@@ -41,6 +41,7 @@ namespace ChaosCMS
             {".xml", "application/xml"},
             {".txt", "text/plain"},
             {".html", "text/html"},
+            {".cshtml", "text/html"},
             {".eot", "application/vnd.ms-fontobject" },
             {".otf", "application/font-otf" },
             {".svg", "image/svg+xml" },
