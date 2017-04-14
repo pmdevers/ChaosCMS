@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter  as Router, Route, Link } from 'react-router-dom';
 
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
@@ -39,19 +39,19 @@ toggleDrawer(){
 
  render() {
     return (
-      <Router>
-      <div>
-          <div style={this.menuStyle(this.state.isOpen)}>
-          <AppBar title="Chaos Admin"
-            iconClassNameRight="muidocs-icon-navigation-expand-more"
-            onLeftIconButtonTouchTap={this.toggleDrawer} />
-            <Main />
+      <Router basename="/admin">
+        <div>
+            <div style={this.menuStyle(this.state.isOpen)}>
+            <AppBar title="Chaos Admin"
+              iconClassNameRight="muidocs-icon-navigation-expand-more"
+              onLeftIconButtonTouchTap={this.toggleDrawer} />
+              <Main />
+            </div>
+            <Drawer docked={this.state.isOpen}>
+                <Profile username="Patrick" logo={Logo} />
+                <Menu />
+              </Drawer>
           </div>
-          <Drawer docked={this.state.isOpen}>
-              <Profile username="Patrick" logo={Logo} />
-              <Menu />
-            </Drawer>
-        </div>
       </Router>
     );
   }

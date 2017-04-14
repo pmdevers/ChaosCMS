@@ -21,6 +21,7 @@ namespace ChaosCMS.Controllers
         ///
         /// </summary>
         /// <returns></returns>
+        [Route("{url*}")]
         [HttpGet]
         public IActionResult Get()
         {

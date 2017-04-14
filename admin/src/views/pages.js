@@ -35,9 +35,7 @@ class Pages extends Component {
 
     render() {
         return (
-                <Grid style={{height: "100%"}}>
-                    <Row style={{height: "100%"}}>
-                        <Col xs={2} md={2} style={{border: "1px solid black", paddingLeft: "25px", height: "100%"}}>
+                <div style={{width: "276px", marginLeft: "20px", borderRight: "1px solid black", bottom: 0, top: "65px", position: "fixed" }}>
                             <TextField
                                 id="text-field-controlled"
                                 hintText="Search..."
@@ -46,15 +44,13 @@ class Pages extends Component {
                                 hasIcon={true}
                                 icon={Search}
                                 />
-                            <PageTree />
-                        </Col>
-                        <Col xs={10} md={10}>
-                            <Toolbar />
+                                <PageTree />
+                    </div>
+
+                    
                             
 
-                        </Col>
-                    </Row>
-                </Grid>
+                
             
         );
     }

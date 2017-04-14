@@ -43,7 +43,7 @@ class componentName extends Component {
             <div >
                 <MenuItem primaryText="Dashboard" leftIcon={<Home />} containerElement={<Link to="/" />} />
                 <MenuItem primaryText="Pages" leftIcon={<LibraryBooks />} containerElement={<Link to="/pages" />} />
-                <MenuItem primaryText="Templates" leftIcon={<LibraryBooks />} />
+                <MenuItem primaryText="Templates" leftIcon={<LibraryBooks />} containerElement={<Link to="/templates" />} />
                 <Divider />
             </div>
         );
