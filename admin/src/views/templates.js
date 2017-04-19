@@ -6,8 +6,11 @@ class templates extends Component {
 
     constructor(props){
         super(props);
+
+        this.onChange = this.onChange.bind(this)
+
         this.state = {
-            code: '// type your code...',
+            code: '@using System.Linq',
         }
     }
 
@@ -17,7 +20,7 @@ class templates extends Component {
     }
 
     onChange(newValue, e) {
-        console.log('onChange', newValue, e);
+        this.setState({code: newValue});
     }
 
     render() {
@@ -45,6 +48,7 @@ class templates extends Component {
                     options={options}
                     value={code}
                     requireConfig={requireConfig}
+                    onChange={this.onChange}
                 />
             </div>
         );

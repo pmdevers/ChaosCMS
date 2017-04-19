@@ -19,14 +19,6 @@
     <Compile Remove="ChaosResourceFile.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="admin\index.html" />
-    <None Remove="admin\index.js" />
-    <None Remove="Resources\chaos.jpg" />
-    <None Remove="Views\403.cshtml" />
-    <None Remove="Views\404.cshtml" />
-    <None Remove="Views\500.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="admin\index.html" />
     <EmbeddedResource Include="admin\index.js">
       <ExcludeFromSourceAnalysis>True</ExcludeFromSourceAnalysis>
