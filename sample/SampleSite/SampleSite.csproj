@@ -8,9 +8,6 @@
     <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="wwwroot\404.html" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Update="Templates\**\*;Data\**\*;web.config;wwwroot">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
