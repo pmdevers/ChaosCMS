@@ -78,14 +78,17 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     manager.ApplicationParts.Add(
                         new ChaosTypesPart(
-                                typeof(PageController<TPage>),
-                                typeof(PagesController<TPage>),
-                                typeof(ContentController<TContent>),
+                                //typeof(PagesController<TPage>),
+                                //typeof(PagesController<TPage>),
+                                //typeof(ContentController<TContent>),
                                 typeof(RenderController<TPage>),
-                                typeof(ResourceController),
-                                typeof(AccountController<TUser>),
-                                typeof(UserController<TUser>),
-                                typeof(AdminController)));
+                                typeof(ErrorController<TPage>)
+                                //typeof(ResourceController),
+                                //typeof(AccountController<TUser>),
+                                //typeof(UserController<TUser>)
+                                //typeof(AdminController)
+                                ));
+
                 }).AddControllersAsServices();
 
             services.TryAddScoped<IChaos, DefaultChaosService<TPage, TContent>>();

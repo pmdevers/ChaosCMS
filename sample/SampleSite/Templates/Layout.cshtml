@@ -1,12 +1,10 @@
-﻿@inject IChaos Chaos;
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>@Chaos.Name</title>
     <link rel="stylesheet" href="/dist/css/style.css" />
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -16,9 +14,19 @@
     <![endif]-->
 </head>
 <body>
-    @RenderBody()
+    <div class="wrapper">
+        <header>
+            <div class="container">
+                <div class="row clearfix">
+                    <div class="col-lg-4">
+                        <span>logo here</span>
+                    </div>
+                </div>
+            </div>
+        </header>
 
-    <div class="container">
+        @RenderBody()
+
         <footer>
             <p class="pull-right"><a href="#">Back to top</a></p>
             <p>© @DateTime.Now.Year Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
@@ -31,6 +39,5 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    @await Html.Chaos().Scripts()
 </body>
 </html>

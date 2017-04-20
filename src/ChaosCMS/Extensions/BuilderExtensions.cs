@@ -1,6 +1,7 @@
 using System;
 using ChaosCMS;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -35,15 +36,15 @@ namespace Microsoft.AspNetCore.Builder
             var builder = app.ApplicationServices.GetService<ChaosBuilder>();
             var exceptionMiddleWare = typeof(ChaosExceptionMiddleware);
 
-            //if (hosting.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-            //else
-            //{
-            //app.UseExceptionHandler("/error");
+            if (hosting.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                //app.UseExceptionHandler("/error");
                 app.UseStatusCodePagesWithReExecute("/{0}");
-            //}
+            }
 
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions
@@ -54,7 +55,7 @@ namespace Microsoft.AspNetCore.Builder
             });
 
             app.UseCookieAuthentication(options.Security.GetCookiesOptions());
-            
+
             app.UseCors(policy =>
             {
                 policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build();
@@ -64,6 +65,11 @@ namespace Microsoft.AspNetCore.Builder
             app.UseIdentity();
             app.UseMvc();
             
+            app.Run(async context =>
+            {
+                await context.Response.WriteAsync("Hello, World!");
+            });
+
             return app;
         }
     }

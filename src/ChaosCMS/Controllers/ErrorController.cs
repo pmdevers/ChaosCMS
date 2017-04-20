@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ChaosCMS.Managers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChaosCMS.Controllers
@@ -11,8 +12,21 @@ namespace ChaosCMS.Controllers
     /// 
     /// </summary>
     [Route("error", Name ="Error")]
-    public class ErrorController : Controller
+    public class ErrorController<TPage> : Controller
+        where TPage : class
     {
+        private readonly PageManager<TPage> pageManager;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageManager"></param>
+        public ErrorController(PageManager<TPage> pageManager)
+        {
+            this.pageManager = pageManager;
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -31,10 +45,17 @@ namespace ChaosCMS.Controllers
         /// <returns></returns>
         [Route("{statuscode}")]
         [HttpGet]
-        public IActionResult Get(int statuscode)
+        public async Task<IActionResult> Get(int statuscode)
         {
+            var page = await this.pageManager.FindByStatusCodeAsync(statuscode);
 
-            return View(statuscode);
+            if (page == null)
+            {
+                return View(statuscode);
+            }
+            var statusCode = this.pageManager.GetStatusCodeAsync(page);
+            var template = await this.pageManager.GetTemplateAsync(page);
+            return this.View(template, page);
         }
 
     }
