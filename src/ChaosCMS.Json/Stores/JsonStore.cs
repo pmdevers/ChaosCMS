@@ -18,6 +18,7 @@ namespace ChaosCMS.Json.Stores
     {
         private bool isDisposed = false;
         private static object lockObject = new object();
+        private List<TEntity> collection;
 
         /// <summary>
         ///
@@ -37,7 +38,7 @@ namespace ChaosCMS.Json.Stores
         /// <summary>
         ///
         /// </summary>
-        protected internal IList<TEntity> Collection { get; set; }
+        protected virtual internal IList<TEntity> Collection { get { return this.collection; } }
 
         /// <inheritdoc />
         public Task<ChaosResult> CreateAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
@@ -134,7 +135,7 @@ namespace ChaosCMS.Json.Stores
         /// <returns></returns>
         protected void ReadFile()
         {
-            if (this.Collection == null)
+            if (this.collection == null)
             {
                 lock (lockObject)
                 {
@@ -145,7 +146,7 @@ namespace ChaosCMS.Json.Stores
                         this.WriteFile();
                     }
                     var fileContents = File.ReadAllText(filename);
-                    this.Collection = JsonConvert.DeserializeObject<List<TEntity>>(fileContents);
+                    this.collection = JsonConvert.DeserializeObject<List<TEntity>>(fileContents);
                 }
             }
         }
@@ -155,7 +156,7 @@ namespace ChaosCMS.Json.Stores
         /// </summary>
         protected void WriteFile()
         {
-            if (this.Collection != null)
+            if (this.collection != null)
             {
                 lock (lockObject)
                 {
@@ -165,7 +166,7 @@ namespace ChaosCMS.Json.Stores
                     {
                         Directory.CreateDirectory(path);
                     }
-                    File.WriteAllText(filename, JsonConvert.SerializeObject(this.Collection, Formatting.Indented));
+                    File.WriteAllText(filename, JsonConvert.SerializeObject(this.collection, Formatting.Indented));
                 }
             }
         }

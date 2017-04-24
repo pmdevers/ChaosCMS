@@ -1,0 +1,52 @@
+﻿.progress {
+    display: block;
+    height: 16px;
+    margin: 8px 0 14px;
+    position: relative;
+    width: 100%;
+    overflow: visible;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    background: #fff;
+
+    .percentage {
+        -moz-border-radius: 50px 0 0 50px;
+        -webkit-border-radius: 50px 0 0 50px;
+        border-radius: 50px 0 0 50px;
+        bottom: 0;
+        position: absolute;
+        top: 0;
+    }
+}
+
+.vc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+}
+
+.skills-list .h4 {
+    display: block;
+    text-transform: uppercase;
+    margin-bottom: 0;
+    font-size: 13px;
+    color: #666666;
+}
+
+.skill .title {
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+    left: -15px;
+    padding: 5px 25px;
+    position: absolute;
+    text-align: center;
+    text-transform: uppercase;
+    top: 0;
+}

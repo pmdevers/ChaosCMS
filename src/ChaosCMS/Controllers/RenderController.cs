@@ -39,8 +39,9 @@ namespace ChaosCMS.Controllers
                     return NotFound();
                 }
             }
-            var statusCode = this.pageManager.GetStatusCodeAsync(page);
+            var statusCode = await this.pageManager.GetStatusCodeAsync(page);
             var template = await this.pageManager.GetTemplateAsync(page);
+            this.Response.StatusCode = statusCode;
             return this.View(template, page);
         }
     }

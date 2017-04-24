@@ -1,0 +1,86 @@
+﻿.timeline {
+    position: relative;
+
+    &:before {
+        background: #ededed;
+        background: -moz-linear-gradient(top, #ededed 1%, #ededed 75%, $active-color 100%);
+        background: -o-linear-gradient(top, #ededed 1%,#ededed 75%,$active-color 100%);
+        background: -ms-linear-gradient(top, #ededed 1%,#ededed 75%,$active-color 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededed', endColorstr='#ffffff',GradientType=0 );
+        bottom: 0;
+        content: "";
+        left: 18px;
+        position: absolute;
+        top: 0;
+        width: 3px;
+        height: 100%;
+    }
+
+    &.experience:after {
+       content: "\e8ba";
+    }
+
+    &:after {
+        background: #ffffff;
+        border: 3px solid #efefef;
+        font-family: 'fontello';
+        top: 0;
+        left: -5px;
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        text-align: center;
+        color: #333333;
+        font-size: 20px;
+        line-height: 45px;
+        -moz-border-radius: 100%;
+        -webkit-border-radius: 100%;
+        border-radius: 100%;
+    }
+
+    .exp {
+        padding-left: 50px;
+        padding-top: 20px;
+        position: relative;
+        margin-bottom: 10px;
+
+        &:after {
+            background: $active-background-color;
+            border: 3px solid $active-color;
+            content: "";
+            height: 15px;
+            left: 12px;
+            position: absolute;
+            text-align: center;
+            top: 24px;
+            width: 15px;
+        }
+
+        .hgroup {
+            margin-bottom: 5px;
+
+            .h4 {
+                text-transform: none;
+                font-size: 14px;
+            }
+
+            .h6 {
+                text-transform: none;
+
+                i {
+                    color: $timeline-icon-color;
+                }
+
+                .current {
+                    background: $active-background-color;
+                    color: $active-color;
+                    -moz-border-radius: 6px;
+                    -webkit-border-radius: 6px;
+                    -ms-border-radius: 6px;
+                    -o-border-radius: 6px;
+                    padding: 1px 12px;
+                }
+            }
+        }
+    }
+}

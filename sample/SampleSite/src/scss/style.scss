@@ -1,1 +1,30 @@
-﻿
+﻿@import "variables";
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700);
+@import "../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+
+@import "fonts/opensans";
+@import "fonts/fontello";
+
+@import "parts/base";
+@import "parts/profile";
+@import "parts/main-nav";
+@import "parts/social";
+@import "parts/content";
+@import "parts/progress";
+@import "parts/timeline";
+
+.btn-default {
+    background: $active-background-color;
+    border-color: $active-background-color;
+    color: $active-color;
+
+    &:hover {
+        background: $active-background-color;
+        border-color: $active-background-color;
+        color: $active-color;
+    }
+}
+
+a, a:hover, a:active, a:visited, a:focus {
+    text-decoration: none;
+}

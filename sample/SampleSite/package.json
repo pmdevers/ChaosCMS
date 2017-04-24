@@ -7,7 +7,7 @@
     "clean": "del /f /s /q wwwroot\\dist\\",
     "fonts": "xcopy src\\fonts wwwroot\\dist\\fonts\\ /S /E /Y",
     "images": "xcopy src\\images wwwroot\\dist\\\\images\\ /S /E /Y",
-    "sass": "node-sass -r --output-style compressed src/scss -o wwwroot/dist/css",
+    "sass": "node-sass -r --output-style compressed src/scss/style.scss -o wwwroot/dist/css",
     "lint": "eslint src\\js",
     "makedir": "if not exist \"wwwroot\\dist\\js\\\" mkdir \"wwwroot\\dist\\js\"",
     "compile": "npm run makedir && uglifyjs src\\js\\* -o wwwroot\\dist\\js\\bundle.min.js -p -c",

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json.Linq;
 
 namespace ChaosCMS
 {
@@ -25,6 +26,12 @@ namespace ChaosCMS
         /// <param name="name"></param>
         /// <returns></returns>
         Task<IHtmlContent> RenderAsync(string name);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        Task<JObject> GetJson();
 
         /// <summary>
         ///

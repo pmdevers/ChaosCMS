@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ChaosCMS.Json.Models;
 using ChaosCMS.Stores;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
 namespace ChaosCMS.Json.Stores
@@ -15,12 +17,27 @@ namespace ChaosCMS.Json.Stores
     public class PageStore<TPage> : JsonStore<TPage>, IPageStore<TPage>
         where TPage : JsonPage, new()
     {
+        private readonly HttpContext httpContext;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected internal override IList<TPage> Collection
+        {
+            get
+            {
+                var host = httpContext.Request.Host.Host;
+                return base.Collection.Where(x => x.Hosts.Contains(host)).ToList();
+            }
+        }
+
         /// <summary>
         ///
         /// </summary>
-        public PageStore(IOptions<ChaosJsonStoreOptions> optionsAccessor)
+        public PageStore(IOptions<ChaosJsonStoreOptions> optionsAccessor, IHttpContextAccessor httpContextAccessor)
             : base(optionsAccessor)
         {
+            this.httpContext = httpContextAccessor.HttpContext;
         }
 
         /// <inheritdoc />
@@ -44,7 +61,8 @@ namespace ChaosCMS.Json.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            var item = this.Collection.FirstOrDefault(x => x.Url.Equals(urlPath, StringComparison.CurrentCultureIgnoreCase));
+
+            var item = this.FilterCollection().FirstOrDefault(x => x.Url.Equals(urlPath, StringComparison.CurrentCultureIgnoreCase));
             return Task.FromResult(item);
         }
 
@@ -104,5 +122,12 @@ namespace ChaosCMS.Json.Stores
             }
             return Task.FromResult(page.StatusCode);
         }
+
+        private List<TPage> FilterCollection()
+        {
+            var host = this.httpContext.Request.Host.Host;
+            return this.Collection.Where(x => x.Hosts.Contains(host)).ToList();
+        }
+
     }
 }

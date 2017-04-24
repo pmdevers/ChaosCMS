@@ -1,0 +1,31 @@
+﻿.profile {
+    position: relative;
+
+    .name {
+        left: -22%;
+        position: absolute;
+        top: 23.2%;
+        -moz-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        -o-transform: rotate(-90deg);
+        -webkit-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+        background: -moz-linear-gradient(left, rgba(51,55,61,1) 0%, rgba(51,55,61,0) 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(51,55,61,1)), color-stop(100%,rgba(51,55,61,0)));
+        background: -webkit-linear-gradient(left, rgba(51,55,61,1) 0%,rgba(51,55,61,0) 100%);
+        background: -o-linear-gradient(left, rgba(51,55,61,1) 0%,rgba(51,55,61,0) 100%);
+        background: -ms-linear-gradient(left, rgba(51,55,61,1) 0%,rgba(51,55,61,0) 100%);
+        background: linear-gradient(to left, rgba(51,55,61,1) 0%,rgba(51,55,61,0) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33373d', endColorstr='#0033373d',GradientType=0 );
+    }
+
+    span {
+        color: #ffffff;
+        opacity: .95;
+        font-family: "open_sans",Arial,sans-serif;
+        padding: 0 15px 0px 30px;
+        font-size: 11px;
+        display: block;
+        text-transform: uppercase;
+    }
+}

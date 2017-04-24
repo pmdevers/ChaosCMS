@@ -2,6 +2,7 @@
   {
     "Id": "5807cab2-fabc-42df-b59f-0d30f506765f",
     "Name": "HomePage",
+    "Hosts": [ "localhost", "patrick-evers.nl" ],
     "Url": "/",
     "Template": "index",
     "StatusCode": 200
@@ -9,6 +10,7 @@
   {
     "Id": "5807cab3-fabc-42df-b59f-0d30f506765f",
     "Name": "SubPage",
+    "Hosts": [ "localhost", "patrick-evers.nl" ],
     "Url": "/register",
     "Template": "register",
     "StatusCode": 200
@@ -16,6 +18,7 @@
   {
     "Id": "5807cab3-fabc-42df-b59f-0d30f506765f",
     "Name": "Page Not Found",
+    "Hosts": [ "localhost", "patrick-evers.nl" ],
     "Url": "/404",
     "Template": "404",
     "StatusCode": 404
@@ -23,6 +26,7 @@
   {
     "Id": "5807cab4-fabc-42df-b59f-0d30f506765f",
     "Name": "SubPage-1",
+    "Hosts": [ "localhost", "patrick-evers.nl" ],
     "Url": "/login",
     "Template": "login",
     "StatusCode": 403
@@ -30,6 +34,7 @@
   {
     "Id": "5807cab5-fabc-42df-b59f-0d30f506765f",
     "Name": "test",
+    "Hosts": [ "localhost", "patrick-evers.nl" ],
     "Url": "/subpage-2",
     "Template": "index",
     "StatusCode": 200

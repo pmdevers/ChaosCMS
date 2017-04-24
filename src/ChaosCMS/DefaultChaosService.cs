@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ChaosCMS.Extensions;
@@ -7,6 +8,7 @@ using ChaosCMS.Rendering;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json.Linq;
 
 namespace ChaosCMS
 {
@@ -81,6 +83,13 @@ namespace ChaosCMS
         /// <returns></returns>
         public async Task<IHtmlContent> RenderAsync(string name)
         {
+            TContent content = await Getcontent(name);
+
+            return await this.RenderAsync(content);
+        }
+
+        private async Task<TContent> Getcontent(string name)
+        {
             var content = this.Helper.ViewData.Model as TContent;
 
             if (content != null)
@@ -93,7 +102,7 @@ namespace ChaosCMS
                 content = await this.contentManager.FindByPageIdAsync(pageId, name);
             }
 
-            return await this.RenderAsync(content);
+            return content;
         }
 
         /// <summary>
@@ -144,6 +153,22 @@ namespace ChaosCMS
         {
             scripts.Add(content);
             return Task.FromResult(0);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<JObject> GetJson()
+        {
+            var content = this.Helper.ViewData.Model as TContent;
+
+            if (content != null)
+            {
+                var data = await this.contentManager.GetValueAsync(content);
+                return JObject.Parse(data);
+            }
+            return new JObject();
         }
     }
 }

@@ -1,0 +1,58 @@
+﻿.content {
+    padding: 40px;
+
+    .h1 {
+        font-size: 28px;
+        line-height: 25px;
+
+        @media only screen and (max-width: 479px) {
+            font-size: 25px;
+        }
+    }
+
+    .h3 {
+        font-size: 22px;
+        color: #777777;
+        
+        @media only screen and (max-width: 479px) {
+            font-size: 20px;
+            line-height: 30px;
+        }
+    }
+}
+
+
+.info ul.info-list {
+    border: 1px solid #efefef;
+    text-align: center;
+}
+
+
+.info ul.info-list li {
+    border-bottom: 1px solid #efefef;
+    background: #fafafa;
+    font-size: 14px;
+}
+
+.info ul.info-list li .inf, .info ul.info-list li .value {
+    display: inline-block;
+    padding: 8px 0;
+}
+
+.info ul.info-list li .inf {
+    width: 35%;
+    background: #ffffff;
+    left: -1px;
+    position: relative;
+    border-right: 1px solid #efefef;
+    color: #333333;
+}
+
+.info ul.info-list li .value {
+    width: 63%;
+    color: #666666;
+}
+
+.info ul.info-list li:last-child {
+    border-bottom: none;
+}

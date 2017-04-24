@@ -1,0 +1,59 @@
+﻿ <!--Content-->
+<div class="content">
+    <!--2ColumnBlock start-->
+    <div class="block-content margBSmall">
+        <div class="margBSmall">
+            <span class="h1 semibold">@await Html.Chaos().RenderAsync("header")</span>
+            <span class="h3 light">@await Html.Chaos().RenderAsync("subheader")</span>
+        </div>
+        <!--Row-->
+        <div class="row">
+            <div class="col-md-6">
+                @await Html.Chaos().RenderAsync("left")
+            </div>
+            <div class="col-md-6">
+                @await Html.Chaos().RenderAsync("right")
+            </div>
+        </div>
+        <!--End row-->
+    </div>
+    <!--2ColumnBlock End-->
+
+    <!--Block content-->
+    <div class="block-content">
+
+        <div class="info">
+
+            <!--Row-->
+            <div class="row">
+                <div class="col-md-6">
+
+                    <ul class="info-list clearfix">
+                        <li><span class="inf">Name </span>  <span class="value">Patrick Evers</span></li>
+                        <li><span class="inf">Date of birth</span>  <span class="value"> October 9, 1978 </span></li>
+                        <li><span class="inf">Address</span>  <span class="value">Vrederustlaan 152 Den Haag</span></li>
+                    </ul>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <ul class="info-list">
+                        <li><span class="inf">Email</span>  <span class="value">pmdevers@gmail.com</span></li>
+                        <li><span class="inf">Phone</span>  <span class="value"> +31 683 162 303</span></li>
+                        <li><span class="inf">Skype</span>  <span class="value">pmdevers78</span></li>
+                    </ul>
+
+                </div>
+
+
+            </div>
+            <!--End row-->
+
+        </div>
+
+    </div>
+    <!--End block content-->
+</div>
+<!--End Content-->

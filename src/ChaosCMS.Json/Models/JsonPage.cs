@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ChaosCMS.Json.Models
 {
@@ -24,6 +25,11 @@ namespace ChaosCMS.Json.Models
         ///
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<string> Hosts { get; set; } = new List<string>();
 
         /// <summary>
         ///

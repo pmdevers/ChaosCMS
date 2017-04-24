@@ -8,7 +8,7 @@
     <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
   </PropertyGroup>
   <ItemGroup>
-    <Content Update="Templates\**\*;Data\**\*;web.config;wwwroot">
+    <Content Update="Templates\**\*;data\**\*;web.config;wwwroot">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
@@ -35,6 +35,5 @@
     <Folder Include="src\js\" />
     <Folder Include="src\fonts\" />
     <Folder Include="src\images\" />
-    <Folder Include="src\scss\" />
   </ItemGroup>
 </Project>
