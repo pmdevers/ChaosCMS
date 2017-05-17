@@ -1,8 +1,8 @@
 language: csharp
 mono: none
-dotnet: 1.0.3
+dotnet: 1.0.1
 dist: trust
-
+sudo: required
 branches:
   only:
     - master
