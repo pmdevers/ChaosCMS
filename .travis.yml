@@ -1,18 +1,15 @@
 language: csharp
-sudo: false
-dist: trusty
 mono: none
-dotnet: 1.0.1
-os:
-  - linux
-  - osx
-osx_image: xcode8.2
+dotnet: 1.0.3
+dist: trust
+
 branches:
   only:
     - master
     - release
     - develop
     - /^(.*\/)?ci-.*$/
+
 script:
   - dotnet --info
   - dotnet restore ChaosCMS.sln
