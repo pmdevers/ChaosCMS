@@ -1,7 +1,7 @@
 language: csharp
 mono: none
-dotnet: 1.1.2
-dist: trust
+dotnet: 1.0.4
+dist: trusty
 sudo: required
 env:
   global:
