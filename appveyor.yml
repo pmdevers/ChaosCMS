@@ -4,23 +4,10 @@ branches:
     - release
     - develop
     - /^(.*\/)?ci-.*$/
-environment:
-  nodejs_version: "6"
-# Install scripts. (runs after repo cloning)
 install:
-  # Make sure curl is available
   - set PATH=C:\Program Files\Git\mingw64\bin;%PATH%
-  # add dotnet to PATH
-   - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
-  # Get the latest stable version of Node.js or io.js
-  #- ps: Install-Product node $env:nodejs_version
-  # - GitVersion
-  # install modules
-  #- npm --version {build}
-  #- npm install
-  #- npm install webpack -g
+  - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
 build_script:
-  #- webpack
   - dotnet --info
   - dotnet restore ChaosCMS.sln
   - dotnet build ChaosCMS.sln -c Release
