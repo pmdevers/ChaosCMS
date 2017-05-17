@@ -11,16 +11,16 @@ install:
   # Make sure curl is available
   - set PATH=C:\Program Files\Git\mingw64\bin;%PATH%
   # add dotnet to PATH
-  - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
+   - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
   # Get the latest stable version of Node.js or io.js
-  - ps: Install-Product node $env:nodejs_version
+  #- ps: Install-Product node $env:nodejs_version
   # - GitVersion
   # install modules
-  - npm --version {build}
-  - npm install
-  - npm install webpack -g
+  #- npm --version {build}
+  #- npm install
+  #- npm install webpack -g
 build_script:
-  - webpack
+  #- webpack
   - dotnet --info
   - dotnet restore ChaosCMS.sln
   - dotnet build ChaosCMS.sln -c Release
