@@ -50,7 +50,7 @@ namespace ChaosCMS.Managers
 
             this.Store = store;
             this.Options = optionsAccessor?.Value ?? new ChaosOptions();
-            this.ErrorDescriber = errors;
+            this.ErrorDescriber = errors ?? new ChaosErrorDescriber();
             this.Logger = logger;
 
             if (validators != null)

@@ -34,6 +34,7 @@ namespace ChaosCMS.Validators
             var errors = new List<ChaosError>();
 
             await ValidatePageName(manager, page, errors);
+            await ValidatePageType(manager, page, errors);
             await ValidatePageUrl(manager, page, errors);
             await ValidatePageTemplate(manager, page, errors);
             await ValidatePageStatusCode(manager, page, errors);
@@ -43,6 +44,22 @@ namespace ChaosCMS.Validators
                 return ChaosResult.Failed(errors.ToArray());
             }
             return ChaosResult.Success;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="manager"></param>
+        /// <param name="page"></param>
+        /// <param name="errors"></param>
+        /// <returns></returns>
+        private async Task ValidatePageType(PageManager<TPage> manager, TPage page, List<ChaosError> errors)
+        {
+            var pageType = await manager.GetPageTypeAsync(page);
+            if (string.IsNullOrWhiteSpace(pageType))
+            {
+                errors.Add(errorDescriber.PageTypeIsInvalid(pageType));
+            }
         }
 
         private async Task ValidatePageStatusCode(PageManager<TPage> manager, TPage page, List<ChaosError> errors)

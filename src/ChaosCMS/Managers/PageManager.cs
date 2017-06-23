@@ -48,7 +48,7 @@ namespace ChaosCMS.Managers
 
             this.Store = store;
             this.Options = optionsAccessor?.Value ?? new ChaosOptions();
-            this.ErrorDescriber = errors;
+            this.ErrorDescriber = errors ?? new ChaosErrorDescriber();
             this.Logger = logger;
 
             if (validators != null)
@@ -272,6 +272,22 @@ namespace ChaosCMS.Managers
                 throw new ArgumentNullException(nameof(page));
             }
             return this.Store.GetTemplateAsync(page, CancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the type of page
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns>the name of the type</returns>
+        public virtual Task<string> GetPageTypeAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return this.Store.GetPageTypeAsync(page, CancellationToken);
         }
 
         /// <summary>

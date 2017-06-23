@@ -53,6 +53,34 @@ namespace ChaosCMS
         /// <summary>
         ///
         /// </summary>
+        /// <param name="pageType"></param>
+        /// <returns></returns>
+        public ChaosError PageTypeIsInvalid(string pageType)
+        {
+            return new ChaosError
+            {
+                Code = nameof(PageTypeIsInvalid),
+                Description = Resources.FormatPageTypeIsInvalid(pageType)
+            };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public ChaosError PageTypeNameIsInvalid(string name)
+        {
+            return new ChaosError
+            {
+                Code = nameof(PageTypeNameIsInvalid),
+                Description = Resources.FormatNameIsInvalid(name)
+            };
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
         public ChaosError PageUrlIsInvalid(string url)

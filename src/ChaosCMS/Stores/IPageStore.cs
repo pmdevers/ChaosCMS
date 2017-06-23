@@ -11,6 +11,16 @@ namespace ChaosCMS.Stores
     public interface IPageStore<TPage> : IDisposable
         where TPage : class
     {
+        #region CRUD Operations
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ChaosResult> CreateAsync(TPage page, CancellationToken cancellationToken);
+
+        #region READ
         /// <summary>
         ///
         /// </summary>
@@ -26,6 +36,43 @@ namespace ChaosCMS.Stores
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<TPage> FindByUrlAsync(string urlPath, CancellationToken cancellationToken);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        Task<ChaosPaged<TPage>> FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken);
+
+        #endregion
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ChaosResult> UpdateAsync(TPage page, CancellationToken cancellationToken);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ChaosResult> DeleteAsync(TPage page, CancellationToken cancellationToken);
+
+        #endregion
+
+        #region Gets and Sets
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="statusCode"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<TPage> FindByStatusCodeAsync(int statusCode, CancellationToken cancellationToken);
+
 
         /// <summary>
         ///
@@ -60,49 +107,21 @@ namespace ChaosCMS.Stores
         Task<string> GetTemplateAsync(TPage page, CancellationToken cancellationToken);
 
         /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        Task<ChaosPaged<TPage>> FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken);
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<ChaosResult> CreateAsync(TPage page, CancellationToken cancellationToken);
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<ChaosResult> UpdateAsync(TPage page, CancellationToken cancellationToken);
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<ChaosResult> DeleteAsync(TPage page, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="statusCode"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<TPage> FindByStatusCodeAsync(int statusCode, CancellationToken cancellationToken);
-
-        /// <summary>
         /// 
         /// </summary>
         /// <param name="page"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<int> GetStatusCodeAsync(TPage page, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<string> GetPageTypeAsync(TPage page, CancellationToken cancellationToken);
+
+        #endregion
     }
 }

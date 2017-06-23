@@ -98,6 +98,19 @@ namespace ChaosCMS
             return string.Format(CultureInfo.CurrentCulture, GetString("ContentNameIsInvalid"), p0);
         }
 
+        internal static string FormatPageTypeIsInvalid(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("PageTypeIsInvalid"), p0);
+        }
+
+        /// <summary>
+        /// The name '{0}' is not a valid.
+        /// </summary>
+        internal static string FormatNameIsInvalid(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("NameIsInvalid"), p0);
+        }
+
         /// <summary>
         /// The content name '{0}' is already taken.
         /// </summary>
@@ -176,6 +189,14 @@ namespace ChaosCMS
         internal static string PageStatusIsInvalid
         {
             get { return GetString("PageStatusIsInvalid"); }
+        }
+
+        /// <summary>
+        /// The name '{0}' is not a valid page name.
+        /// </summary>
+        internal static string NameIsInvalid
+        {
+            get { return GetString("NameIsInvalid"); }
         }
 
         /// <summary>

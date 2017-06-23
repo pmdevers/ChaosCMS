@@ -123,11 +123,23 @@ namespace ChaosCMS.Json.Stores
             return Task.FromResult(page.StatusCode);
         }
 
+        /// <inhertdoc />
+        public Task<string> GetPageTypeAsync(TPage page, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return Task.FromResult(page.Type);
+        }
+
         private List<TPage> FilterCollection()
         {
             var host = this.httpContext.Request.Host.Host;
             return this.Collection.Where(x => x.Hosts.Contains(host)).ToList();
         }
-
     }
 }

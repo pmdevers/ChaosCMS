@@ -45,5 +45,9 @@ namespace ChaosCMS.Json.Models
         ///
         /// </summary>
         public string Template { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Type { get; set; }
     }
 }

@@ -177,4 +177,12 @@
     <value>The StatusCode '{0}' can only be used once.</value>
     <comment>Error when the statuscode of the page is invalid</comment>
   </data>
+  <data name="NameIsInvalid" xml:space="preserve">
+    <value>The name '{0}' is not a valid</value>
+    <comment>Error when the name is invalid</comment>
+  </data>
+  <data name="PageTypeIsInvalid" xml:space="preserve">
+    <value>The type '{0}' is not valid</value>
+    <comment>Error when PageType is invalid</comment>
+  </data>
 </root>
