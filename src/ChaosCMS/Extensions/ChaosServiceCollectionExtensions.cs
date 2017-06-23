@@ -17,14 +17,14 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class ChaosServiceCollectionExtensions
     {
         /// <summary>
-        ///
+        /// Adds and configures the chaos system for specific Page types
         /// </summary>
-        /// <typeparam name="TPage"></typeparam>
-        /// <typeparam name="TContent"></typeparam>
-        /// <typeparam name="TUser"></typeparam>
-        /// <typeparam name="TRole"></typeparam>
-        /// <param name="service"></param>
-        /// <returns></returns>
+        /// <typeparam name="TPage">The type of the page.</typeparam>
+        /// <typeparam name="TContent">the type of the content</typeparam>
+        /// <typeparam name="TUser">The type of the user</typeparam>
+        /// <typeparam name="TRole">The type of the Role</typeparam>
+        /// <param name="service">The service collection</param>
+        /// <returns>The instance of the <see cref="ChaosBuilder"/></returns>
         public static ChaosBuilder AddChaos<TPage, TContent, TUser, TRole>(this IServiceCollection service)
             where TPage : class, new()
             where TContent : class, new()
@@ -37,13 +37,13 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// Adds and configures the chaos system for specific Page types
         /// </summary>
-        /// <typeparam name="TPage"></typeparam>
-        /// <typeparam name="TContent"></typeparam>
-        /// <typeparam name="TUser"></typeparam>
-        /// <typeparam name="TRole"></typeparam>
-        /// <param name="services"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
+        /// <typeparam name="TPage">The type of the page.</typeparam>
+        /// <typeparam name="TContent">the type of the content</typeparam>
+        /// <typeparam name="TUser">The type of the user</typeparam>
+        /// <typeparam name="TRole">The type of the Role</typeparam>
+        /// <param name="services">The service collection</param>
+        /// <param name="options">The options to configure</param>
+        /// <returns>The instance of the <see cref="ChaosBuilder"/></returns>
         public static ChaosBuilder AddChaos<TPage, TContent, TUser, TRole>(this IServiceCollection services, Action<ChaosOptions> options)
             where TPage : class, new()
             where TContent : class, new()
@@ -78,15 +78,14 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     manager.ApplicationParts.Add(
                         new ChaosTypesPart(
-                                //typeof(PagesController<TPage>),
-                                //typeof(PagesController<TPage>),
-                                //typeof(ContentController<TContent>),
+                                typeof(PageController<TPage>),
+                                typeof(ContentController<TContent>),
                                 typeof(RenderController<TPage>),
-                                typeof(ErrorController<TPage>)
-                                //typeof(ResourceController),
-                                //typeof(AccountController<TUser>),
-                                //typeof(UserController<TUser>)
-                                //typeof(AdminController)
+                                typeof(ErrorController<TPage>),
+                                typeof(ResourceController),
+                                typeof(AccountController<TUser>),
+                                typeof(UserController<TUser>),
+                                typeof(AdminController)
                                 ));
 
                 }).AddControllersAsServices();

@@ -40,7 +40,8 @@ namespace ChaosCMS.Controllers
                 foreach (var typeInfo in parts.Types)
                 {
                     var attribute = (RouteAttribute)typeInfo.GetCustomAttribute(typeof(RouteAttribute));
-                    links.Add(new Link(attribute.Name, attribute.Template));
+                    if(attribute.Template.StartsWith("api"))
+                        links.Add(new Link(attribute.Name, attribute.Template));
                 }
             }
 
