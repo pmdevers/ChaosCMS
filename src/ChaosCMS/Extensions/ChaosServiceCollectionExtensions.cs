@@ -83,6 +83,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     manager.ApplicationParts.Add(
                         new ChaosTypesPart(
                                 typeof(PageController<TPage>),
+                                typeof(PageTypeController<TPageType>),
                                 typeof(ContentController<TContent>),
                                 typeof(RenderController<TPage>),
                                 typeof(ErrorController<TPage>),
@@ -122,7 +123,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 services.Configure(options);
             }
 
-            var builder = new ChaosBuilder(typeof(TPage), typeof(TContent), identityBuilder, mvcBuilder, services);
+            var builder = new ChaosBuilder(typeof(TPage), typeof(TPageType), typeof(TContent), identityBuilder, mvcBuilder, services);
 
             services.TryAddSingleton(builder);
 

@@ -34,6 +34,7 @@ namespace Microsoft.Extensions.DependencyInjection
         private static IServiceCollection GetDefaultServices(ChaosBuilder builder)
         {
             var pageStoreType = typeof(PageStore<>).MakeGenericType(builder.PageType);
+            var pageTypeStoreType = typeof(PageTypeStore<>).MakeGenericType(builder.PageTypeType);
             var contentStoreType = typeof(ContentStore<>).MakeGenericType(builder.ContentType);
             var userStoreType = typeof(UserStore<>).MakeGenericType(builder.IdentityBuilder.UserType);
             var roleStoreType = typeof(RoleStore<>).MakeGenericType(builder.IdentityBuilder.RoleType);
@@ -43,6 +44,10 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped(
                 typeof(IPageStore<>).MakeGenericType(builder.PageType),
                 pageStoreType);
+
+            services.AddScoped(
+                typeof(IPageTypeStore<>).MakeGenericType(builder.PageTypeType),
+                pageTypeStoreType);
 
             services.AddScoped(
                 typeof(IContentStore<>).MakeGenericType(builder.ContentType),
