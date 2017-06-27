@@ -28,7 +28,7 @@ namespace ChaosCMS
         /// <param name="controller"></param>
         /// <param name="manager"></param>
         /// <param name="page"></param>
-        /// <typeparam name="TPage"></typeparam>
+        /// <typeparam name="TPageType"></typeparam>
         /// <returns></returns>
         public static Link SelfLink<TPageType>(this ControllerBase controller, PageTypeManager<TPageType> manager, TPageType page) where TPageType : class
         {
@@ -98,7 +98,7 @@ namespace ChaosCMS
         /// <summary>
         /// /
         /// </summary>
-        /// <typeparam name="TPage"></typeparam>
+        /// <typeparam name="TPageType"></typeparam>
         /// <param name="controller"></param>
         /// <param name="manager"></param>
         /// <param name="page"></param>

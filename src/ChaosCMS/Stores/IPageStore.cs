@@ -30,6 +30,14 @@ namespace ChaosCMS.Stores
         Task<TPage> FindByIdAsync(string pageId, CancellationToken cancelationToken);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="externalId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<TPage> FindByExternalIdAsync(string externalId, CancellationToken cancellationToken);
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="urlPath"></param>
@@ -91,12 +99,31 @@ namespace ChaosCMS.Stores
         Task<string> GetNameAsync(TPage page, CancellationToken cancellationToken);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="name"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task SetNameAsync(TPage page, string name, CancellationToken cancellationToken);
+
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="page"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<string> GetUrlAsync(TPage page, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="url"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task SetUrlAsync(TPage page, string url, CancellationToken cancellationToken);
 
         /// <summary>
         ///
@@ -110,6 +137,15 @@ namespace ChaosCMS.Stores
         /// 
         /// </summary>
         /// <param name="page"></param>
+        /// <param name="template"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task SetTemplateAsync(TPage page, string template, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<int> GetStatusCodeAsync(TPage page, CancellationToken cancellationToken);
@@ -118,9 +154,28 @@ namespace ChaosCMS.Stores
         /// 
         /// </summary>
         /// <param name="page"></param>
+        /// <param name="code"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task SetStatusCodeAsync(TPage page, int code, CancellationToken cancellationToken);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<string> GetPageTypeAsync(TPage page, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="pageType"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task SetPageTypeAsync(TPage page, string pageType, CancellationToken cancellationToken);
 
         #endregion
     }

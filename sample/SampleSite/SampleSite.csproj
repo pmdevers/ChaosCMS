@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\ChaosCMS.Json\ChaosCMS.Json.csproj" />
+    <ProjectReference Include="..\..\src\ChaosCMS.LiteDB\ChaosCMS.LiteDB.csproj" />
     <ProjectReference Include="..\..\src\ChaosCMS\ChaosCMS.csproj" />
   </ItemGroup>
   <ItemGroup>

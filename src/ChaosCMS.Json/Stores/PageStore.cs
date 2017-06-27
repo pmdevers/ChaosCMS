@@ -88,6 +88,21 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <inheritdoc />
+        public virtual Task SetNameAsync(TPage page, string name, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            page.Name = name;
+
+            return Task.FromResult(0);
+        }
+
+        /// <inheritdoc />
         public virtual Task<string> GetUrlAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -140,6 +155,58 @@ namespace ChaosCMS.Json.Stores
         {
             var host = this.httpContext.Request.Host.Host;
             return this.Collection.Where(x => x.Hosts.Contains(host)).ToList();
+        }
+
+        /// <inhertdoc />
+        public Task SetUrlAsync(TPage page, string url, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            page.Url = url;
+            return Task.FromResult(0);
+        }
+
+        /// <inhertdoc />
+        public Task SetTemplateAsync(TPage page, string template, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            page.Template = template;
+            return Task.FromResult(0);
+        }
+
+        /// <inhertdoc />
+        public Task SetStatusCodeAsync(TPage page, int code, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            page.StatusCode = code;
+            return Task.FromResult(0);
+        }
+
+        /// <inhertdoc />
+        public Task SetPageTypeAsync(TPage page, string pageType, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            page.Type = pageType;
+            return Task.FromResult(0);
         }
     }
 }

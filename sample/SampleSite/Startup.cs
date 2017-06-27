@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SampleSite.Model;
 
+
 namespace SampleSite
 {
     public class Startup
@@ -27,8 +28,8 @@ namespace SampleSite
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddChaos<Page, PageType, Content, User, Role>()
-                .AddJsonStores();
+            services.AddChaos<Page, PageType, Content, User, Role>().AddLiteDBStores();
+                
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

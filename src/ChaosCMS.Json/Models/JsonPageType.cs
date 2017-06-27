@@ -26,6 +26,10 @@ namespace ChaosCMS.Json.Models
         /// <summary>
         /// 
         /// </summary>
+        public string ExternalId { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string Name { get; set; }
     }
 }

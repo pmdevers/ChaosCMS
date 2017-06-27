@@ -1,8 +1,9 @@
 ﻿using ChaosCMS.Json.Models;
+using ChaosCMS.LiteDB.Models;
 
 namespace SampleSite.Model
 {
-    public class Content : JsonContent // ChaosContent<Content, int>
+    public class Content : LiteDBContent<Content> // JsonContent // ChaosContent<Content, int>
     {
     }
 }

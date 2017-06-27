@@ -21,6 +21,11 @@ namespace ChaosCMS.Json.Models
         public Guid Id { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public string ExternalId { get; set; }
+
+        /// <summary>
         ///
         /// </summary>
         public Guid PageId { get; set; }

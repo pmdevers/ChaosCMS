@@ -9,7 +9,7 @@ namespace ChaosCMS
     public class ChaosResult
     {
         private static readonly ChaosResult success = new ChaosResult() { Succeeded = true };
-        private List<ChaosError> errors = new List<ChaosError>();
+        protected List<ChaosError> errors = new List<ChaosError>();
 
         /// <summary>
         ///

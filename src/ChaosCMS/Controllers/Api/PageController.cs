@@ -2,6 +2,7 @@
 using ChaosCMS.Managers;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ChaosCMS.Controllers
 {
@@ -39,9 +40,9 @@ namespace ChaosCMS.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "page")]
-        public IActionResult Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
-            var page = this.manager.FindByIdAsync(id).Result;
+            var page = await this.manager.FindByIdAsync(id);
 
             return this.Hal(page, new[]
             {
@@ -51,22 +52,34 @@ namespace ChaosCMS.Controllers
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] TPage page)
+        {
+            var result = await this.manager.CreateAsync(page);
+            return this.Ok(result);
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="id"></param>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPatch("{id}")]
-        public IActionResult Patch(string id, [FromBody] JsonPatchDocument<TPage> model)
+        public async Task<IActionResult> Patch(string id, [FromBody] JsonPatchDocument<TPage> model)
         {
-            var page = this.manager.FindByIdAsync(id).Result;
+            var page = await this.manager.FindByIdAsync(id);
 
             model.ApplyTo(page, ModelState);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var result = this.manager.UpdateAsync(page).Result;
+            var result = await this.manager.UpdateAsync(page);
 
             return this.ChaosResult(result);
         }

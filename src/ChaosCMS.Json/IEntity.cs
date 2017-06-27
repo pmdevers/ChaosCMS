@@ -11,5 +11,10 @@ namespace ChaosCMS.Json
         ///
         /// </summary>
         Guid Id { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        string ExternalId { get; set; }
     }
 }

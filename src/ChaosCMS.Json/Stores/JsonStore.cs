@@ -81,6 +81,15 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <inheritdoc />
+        public Task<TEntity> FindByExternalIdAsync(string externalId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var item = this.Collection.FirstOrDefault(x => x.ExternalId.Equals(this.ConvertIdFromString(externalId)));
+            return Task.FromResult(item);
+        }
+
+        /// <inheritdoc />
         public Task<string> GetIdAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
