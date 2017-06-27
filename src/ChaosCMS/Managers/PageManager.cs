@@ -15,8 +15,10 @@ namespace ChaosCMS.Managers
     /// Provides the APIs for managing pages in a persistence store.
     /// </summary>
     /// <typeparam name="TPage">The type encapsulating a page.</typeparam>
-    public class PageManager<TPage> : IDisposable
+    /// <typeparam name="TContent">The type encapsulating a page.</typeparam>
+    public class PageManager<TPage, TContent> : IDisposable
         where TPage : class
+        where TContent : class
     {
         private readonly HttpContext context;
 
@@ -37,9 +39,9 @@ namespace ChaosCMS.Managers
         public PageManager(IPageStore<TPage> store,
             IOptions<ChaosOptions> optionsAccessor,
             ChaosErrorDescriber errors,
-            IEnumerable<IPageValidator<TPage>> validators,
+            IEnumerable<IPageValidator<TPage, TContent>> validators,
             IServiceProvider services,
-            ILogger<PageManager<TPage>> logger)
+            ILogger<PageManager<TPage, TContent>> logger)
         {
             if (store == null)
             {
@@ -84,7 +86,7 @@ namespace ChaosCMS.Managers
         /// <summary>
         /// The <see cref="IPageValidator{TPage}"/> used to validate pages.
         /// </summary>
-        protected internal IList<IPageValidator<TPage>> PageValidators { get; } = new List<IPageValidator<TPage>>();
+        protected internal IList<IPageValidator<TPage, TContent>> PageValidators { get; } = new List<IPageValidator<TPage, TContent>>();
 
         /// <summary>
         /// The <see cref="ChaosErrorDescriber"/> used to generate error messages.
@@ -463,6 +465,19 @@ namespace ChaosCMS.Managers
         }
 
         #endregion IDisposable Support
+
+
+        private IPageContentStore<TPage, TContent> GetPageContentStore()
+        {
+            this.ThrowIfDisposed();
+            var store = this.Store as IPageContentStore<TPage, TContent>;
+            if(store == null)
+            {
+                throw new NotSupportedException(Resources.FormatStoreIsNotOfType(typeof(IPageContentStore<TPage, TContent>).Name));
+            }
+
+            return store;
+        }
 
         /// <summary>
         /// Throws if this class has been disposed.

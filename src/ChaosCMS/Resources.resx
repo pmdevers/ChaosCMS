@@ -185,4 +185,8 @@
     <value>The type '{0}' is not valid</value>
     <comment>Error when PageType is invalid</comment>
   </data>
+  <data name="StoreIsNotOfType" xml:space="preserve">
+    <value>The store is not of type '{0}'.</value>
+    <comment>Error when the store is not of a specific type</comment>
+  </data>
 </root>

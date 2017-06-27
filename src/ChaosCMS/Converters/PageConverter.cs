@@ -11,17 +11,21 @@ namespace ChaosCMS.Converters
     /// Provides methods to convert from TSource to TDestination
     /// </summary>
     /// <typeparam name="TSource">The source type.</typeparam>
-    /// <typeparam name="TDestination">The source types</typeparam>
-    public class PageConverter<TSource, TDestination> : IConverter<TSource, TDestination>
+    /// <typeparam name="TSourceContent">The source types</typeparam>
+    /// /// <typeparam name="TDestination">The destinatin type</typeparam>
+    /// /// <typeparam name="TDestinationContent">The destination types</typeparam>
+    public class PageConverter<TSource, TSourceContent, TDestination, TDestinationContent> : IConverter<TSource, TDestination>
         where TSource : class
+        where TSourceContent : class
         where TDestination : class, new()
+        where TDestinationContent : class, new()
     {
         /// <summary>
-        /// Constructs a new instance of <see cref="PageConverter{TSource, TDestination}"/>.
+        /// Constructs a new instance of <see cref="PageConverter{TSource, TSourceContent, TDestination, TDestinationContent}"/>.
         /// </summary>
         /// <param name="sourceManager">The Source Manager</param>
         /// <param name="destinationManager">The destination Manager.</param>
-        public PageConverter(PageManager<TSource> sourceManager, PageManager<TDestination> destinationManager)
+        public PageConverter(PageManager<TSource, TSourceContent> sourceManager, PageManager<TDestination, TDestinationContent> destinationManager)
         {
             SourceManager = sourceManager ?? throw new ArgumentNullException(nameof(sourceManager));
             DestinationManager = destinationManager ?? throw new ArgumentNullException(nameof(destinationManager));
@@ -30,11 +34,11 @@ namespace ChaosCMS.Converters
         /// <summary>
         /// 
         /// </summary>
-        public PageManager<TSource> SourceManager { get; }
+        public PageManager<TSource, TSourceContent> SourceManager { get; }
         /// <summary>
         /// 
         /// </summary>
-        public PageManager<TDestination> DestinationManager { get; }
+        public PageManager<TDestination, TDestinationContent> DestinationManager { get; }
 
         /// <summary>
         /// 

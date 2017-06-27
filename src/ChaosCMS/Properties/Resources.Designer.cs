@@ -43,6 +43,22 @@ namespace ChaosCMS
         }
 
         /// <summary>
+        /// The store is not of type '{0}'.
+        /// </summary>
+        internal static string FormatStoreIsNotOfType(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("StoreIsNotOfType"), p0);
+        }
+
+        /// <summary>
+        /// The store is not of type '{0}'.
+        /// </summary>
+        internal static string StoreIsNotOfType
+        {
+            get { return GetString("StoreIsNotOfType"); }
+        }
+
+        /// <summary>
         /// Type {0} must derive from {1}&lt;{2}&gt;.
         /// </summary>
         internal static string InvalidManagerType

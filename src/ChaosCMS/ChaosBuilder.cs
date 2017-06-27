@@ -89,7 +89,7 @@ namespace ChaosCMS
         /// <returns>The current <see cref="ChaosBuilder"/> instance.</returns>
         public virtual ChaosBuilder AddPageManager<TPageManager>() where TPageManager : class
         {
-            var pageManagerType = typeof(PageManager<>).MakeGenericType(PageType);
+            var pageManagerType = typeof(PageManager<,>).MakeGenericType(PageType, ContentType);
             var customType = typeof(TPageManager);
 
             if (pageManagerType == customType || !pageManagerType.GetTypeInfo().IsAssignableFrom(customType.GetTypeInfo()))
@@ -137,13 +137,13 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// Adds an <see cref="IPageValidator{TPage}"/> for the <seealso cref="PageType"/>.
+        /// Adds an <see cref="IPageValidator{TPage, TContent}"/> for the <seealso cref="PageType"/>.
         /// </summary>
         /// <typeparam name="T">The page validator.</typeparam>
         /// <returns>The current <see cref="ChaosBuilder"/> instance.</returns>
         public virtual ChaosBuilder AddPageValidator<T>() where T : class
         {
-            return AddScoped(typeof(IPageValidator<>).MakeGenericType(PageType), typeof(T));
+            return AddScoped(typeof(IPageValidator<,>).MakeGenericType(PageType, ContentType), typeof(T));
         }
 
         /// <summary>

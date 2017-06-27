@@ -21,7 +21,7 @@ namespace ChaosCMS
         where TPage : class
         where TContent : class
     {
-        private readonly PageManager<TPage> pageManager;
+        private readonly PageManager<TPage, TContent> pageManager;
         private readonly ContentManager<TContent> contentManager;
         private readonly HttpContext context;
         private readonly IEnumerable<IRenderer<TContent>> renderers;
@@ -34,7 +34,7 @@ namespace ChaosCMS
         /// <param name="contentManager"></param>
         /// <param name="context"></param>
         /// <param name="renderers"></param>
-        public DefaultChaosService(PageManager<TPage> pageManager, ContentManager<TContent> contentManager, IHttpContextAccessor context, IEnumerable<IRenderer<TContent>> renderers)
+        public DefaultChaosService(PageManager<TPage, TContent> pageManager, ContentManager<TContent> contentManager, IHttpContextAccessor context, IEnumerable<IRenderer<TContent>> renderers)
         {
             this.pageManager = pageManager;
             this.contentManager = contentManager;

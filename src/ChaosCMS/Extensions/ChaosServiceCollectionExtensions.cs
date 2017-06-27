@@ -82,11 +82,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     manager.ApplicationParts.Add(
                         new ChaosTypesPart(
-                                typeof(PageController<TPage>),
+                                typeof(PageController<TPage, TContent>),
                                 typeof(PageTypeController<TPageType>),
                                 typeof(ContentController<TContent>),
-                                typeof(RenderController<TPage>),
-                                typeof(ErrorController<TPage>),
+                                typeof(RenderController<TPage, TContent>),
+                                typeof(ErrorController<TPage, TContent>),
                                 typeof(ResourceController),
                                 typeof(AccountController<TUser>),
                                 typeof(UserController<TUser>),
@@ -101,14 +101,14 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<ChaosMarkerService>();
             services.TryAddScoped<ChaosErrorDescriber>();
 
-            services.TryAddScoped<PageManager<TPage>, PageManager<TPage>>();
+            services.TryAddScoped<PageManager<TPage, TContent>, PageManager<TPage, TContent>>();
             services.TryAddScoped<PageTypeManager<TPageType>, PageTypeManager<TPageType>>();
             services.TryAddScoped<ContentManager<TContent>, ContentManager<TContent>>();
 
             services.TryAddScoped<ResourceManager, ResourceManager>();
 
             // Validators
-            services.TryAddScoped<IPageValidator<TPage>, DefaultPageValidator<TPage>>();
+            services.TryAddScoped<IPageValidator<TPage, TContent>, DefaultPageValidator<TPage, TContent>>();
             services.TryAddScoped<IContentValidator<TContent>, DefaultContentValidator<TContent>>();
 
             services.AddSingleton<IRenderer<TContent>, DefaultRenderer<TContent>>();
