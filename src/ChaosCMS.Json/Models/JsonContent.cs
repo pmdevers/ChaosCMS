@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChaosCMS.Models.Pages;
+using System;
 
 namespace ChaosCMS.Json.Models
 {

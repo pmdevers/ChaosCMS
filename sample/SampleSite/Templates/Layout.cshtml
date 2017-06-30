@@ -14,50 +14,8 @@
     <![endif]-->
 </head>
 <body>
-    <div class="margLTop margLBottom">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3 left-content">
-                    <header>
-                        <div class="main-header">
-                            <!--Profile Header-->
-                            <figure class="profile">
-                                <img src="~/dist/images/profile.jpg" height="140" />
-                                <figcaption class="name">
-                                    <span>Patrick Evers</span>
-                                </figcaption>
-                            </figure>
-                            <!--End Profile Header-->
-                            <!--Navigation-->
-                            <nav id="main-nav" class="main-nav clearfix tabbed">
-
-                                <ul>
-                                    <li class="active"><a href="/" class="active"><i class="icon-user"></i>About</a></li>
-                                    @*<li><a href="#portfolio"><i class="icon-camera"></i>Portfolio</a></li>
-                                    <li><a href="#blog"><i class="icon-chat"></i>Blog</a></li>
-                                    <li class=""><a href="#contact" class=""><i class="icon-phone"></i>Contact</a></li>*@
-                                </ul>
-
-                            </nav>
-                            <!--End Navigation-->
-                        </div>
-                        <div class="bottom-header bgWhite ofsTSmall ofsBSmall tCenter">
-                            <ul class="social">
-                                <li><a href="https://www.facebook.com/pmdevers"><i class="icon-facebook"></i></a></li>
-                                <li><a href="https://github.com/pmdevers"><i class="icon-github"></i></a></li>
-                                <li><a href="https://www.linkedin.com/in/patrick-evers-8a44514/"><i class="icon-linkedin"></i></a></li>
-                            </ul>
-                            <p>© @DateTime.Now.Year Patrick Evers</p>
-                        </div>
-                    </header>
-                </div>
-                <div class="col-md-9 right-content">
-                    @RenderBody()
-                </div>
-            </div>
-        </div>
-    </div>
-
+    @RenderBody()
+    
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

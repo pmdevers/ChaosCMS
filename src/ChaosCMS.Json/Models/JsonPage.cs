@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ChaosCMS.Models.Pages;
 
 namespace ChaosCMS.Json.Models
 {
@@ -54,5 +55,10 @@ namespace ChaosCMS.Json.Models
         /// 
         /// </summary>
         public string Type { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<Content> Content { get; set; }
     }
 }

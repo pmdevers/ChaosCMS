@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ChaosCMS.Json.Models;
+using ChaosCMS.Models.Pages;
 using ChaosCMS.Stores;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -14,7 +15,7 @@ namespace ChaosCMS.Json.Stores
     ///
     /// </summary>
     /// <typeparam name="TPage"></typeparam>
-    public class PageStore<TPage> : JsonStore<TPage>, IPageStore<TPage>
+    public class PageStore<TPage> : JsonStore<TPage>, IPageStore<TPage>, IPageContentStore<TPage>
         where TPage : JsonPage, new()
     {
         private readonly HttpContext httpContext;
@@ -206,6 +207,44 @@ namespace ChaosCMS.Json.Stores
                 throw new ArgumentNullException(nameof(page));
             }
             page.Type = pageType;
+            return Task.FromResult(0);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task<List<Content>> GetContentAsync(TPage page, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return Task.FromResult(page.Content);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="content"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task SetContentAsync(TPage page, List<Content> content, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            page.Content = content;
             return Task.FromResult(0);
         }
     }

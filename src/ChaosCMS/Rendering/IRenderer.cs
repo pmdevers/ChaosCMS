@@ -1,14 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
+using ChaosCMS.Models.Pages;
 
 namespace ChaosCMS.Rendering
 {
     /// <summary>
     ///
     /// </summary>
-    /// <typeparam name="TContent"></typeparam>
-    public interface IRenderer<TContent>
-        where TContent : class
+    public interface IRenderer
     {
         /// <summary>
         ///
@@ -21,6 +20,6 @@ namespace ChaosCMS.Rendering
         /// <param name="chaos"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        Task<IHtmlContent> RenderAsync(IChaos<TContent> chaos, TContent content);
+        Task<IHtmlContent> RenderAsync(IChaos chaos, Content content);
     }
 }

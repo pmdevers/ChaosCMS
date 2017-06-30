@@ -2,23 +2,4 @@
     Layout = "layout";
 }
 
-<section id="about" class="bgWhite ofsInBottom active" style="display: block;">
-
-    <!--About -->
-    <div class="about">
-
-        @await Html.Chaos().RenderAsync("header1")
-        @await Html.Chaos().RenderAsync("whoami")
-
-        
-        
-        @*@await Html.Chaos().RenderAsync("Header2")
-        @await Html.Chaos().RenderAsync("skills")*@
-
-        @await Html.Chaos().RenderAsync("Header3")
-        @await Html.Chaos().RenderAsync("experience")
-        
-    </div>
-    <!--End about-->
-
-</section>
+@await Html.Chaos().RenderAsync("Test")

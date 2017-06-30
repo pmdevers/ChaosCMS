@@ -6,9 +6,8 @@ using ChaosCMS.Managers;
 namespace ChaosCMS.Validators
 {
     /// <inheritdoc />
-    public class DefaultPageValidator<TPage, TContent> : IPageValidator<TPage, TContent>
+    public class DefaultPageValidator<TPage> : IPageValidator<TPage>
         where TPage : class
-        where TContent : class
     {
         private readonly ChaosErrorDescriber errorDescriber;
 
@@ -22,7 +21,7 @@ namespace ChaosCMS.Validators
         }
 
         /// <inheritdoc />
-        public async Task<ChaosResult> ValidateAsync(PageManager<TPage, TContent> manager, TPage page)
+        public async Task<ChaosResult> ValidateAsync(PageManager<TPage> manager, TPage page)
         {
             if (manager == null)
             {
@@ -55,7 +54,7 @@ namespace ChaosCMS.Validators
         /// <param name="page"></param>
         /// <param name="errors"></param>
         /// <returns></returns>
-        private async Task ValidatePageType(PageManager<TPage, TContent> manager, TPage page, List<ChaosError> errors)
+        private async Task ValidatePageType(PageManager<TPage> manager, TPage page, List<ChaosError> errors)
         {
             var pageType = await manager.GetPageTypeAsync(page);
             if (string.IsNullOrWhiteSpace(pageType))
@@ -64,7 +63,7 @@ namespace ChaosCMS.Validators
             }
         }
 
-        private async Task ValidatePageStatusCode(PageManager<TPage, TContent> manager, TPage page, List<ChaosError> errors)
+        private async Task ValidatePageStatusCode(PageManager<TPage> manager, TPage page, List<ChaosError> errors)
         {
             var status = await manager.GetStatusCodeAsync(page);
             var found = await manager.FindByStatusCodeAsync(status);
@@ -74,7 +73,7 @@ namespace ChaosCMS.Validators
             }
         }
 
-        private async Task ValidatePageUrl(PageManager<TPage, TContent> manager, TPage page, List<ChaosError> errors)
+        private async Task ValidatePageUrl(PageManager<TPage> manager, TPage page, List<ChaosError> errors)
         {
             var url = await manager.GetUrlAsync(page);
             if (string.IsNullOrWhiteSpace(url))
@@ -83,7 +82,7 @@ namespace ChaosCMS.Validators
             }
         }
 
-        private async Task ValidatePageTemplate(PageManager<TPage, TContent> manager, TPage page, List<ChaosError> errors)
+        private async Task ValidatePageTemplate(PageManager<TPage> manager, TPage page, List<ChaosError> errors)
         {
             var template = await manager.GetTemplateAsync(page);
             if (string.IsNullOrWhiteSpace(template))
@@ -92,7 +91,7 @@ namespace ChaosCMS.Validators
             }
         }
 
-        private async Task ValidatePageName(PageManager<TPage, TContent> manager, TPage page, List<ChaosError> errors)
+        private async Task ValidatePageName(PageManager<TPage> manager, TPage page, List<ChaosError> errors)
         {
             var name = await manager.GetNameAsync(page);
             if (string.IsNullOrWhiteSpace(name))

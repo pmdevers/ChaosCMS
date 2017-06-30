@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json.Linq;
+using ChaosCMS.Models.Pages;
 
 namespace ChaosCMS
 {
@@ -31,7 +32,7 @@ namespace ChaosCMS
         /// 
         /// </summary>
         /// <returns></returns>
-        Task<JObject> GetJson();
+        JObject GetJson();
 
         /// <summary>
         ///
@@ -45,20 +46,12 @@ namespace ChaosCMS
         /// <param name="content"></param>
         /// <returns></returns>
         Task AddScript(IHtmlContent content);
-    }
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <typeparam name="TContent"></typeparam>
-    public interface IChaos<TContent> : IChaos
-         where TContent : class
-    {
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
-        Task<IHtmlContent> RenderAsync(TContent content);
+        Task<IHtmlContent> RenderAsync(Content content);
     }
 }

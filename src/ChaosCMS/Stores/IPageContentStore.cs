@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChaosCMS.Models.Pages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,7 @@ namespace ChaosCMS.Stores
     /// 
     /// </summary>
     /// <typeparam name="TPage"></typeparam>
-    /// <typeparam name="TContent"></typeparam>
-    public interface IPageContentStore<TPage, TContent>
+    public interface IPageContentStore<TPage>
         where TPage : class
     {
         /// <summary>
@@ -21,6 +21,14 @@ namespace ChaosCMS.Stores
         /// <param name="page"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<List<TContent>> GetPageContentAsync(TPage page, CancellationToken cancellationToken);
+        Task<List<Content>> GetContentAsync(TPage page, CancellationToken cancellationToken);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="content"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task SetContentAsync(TPage page, List<Content> content, CancellationToken cancellationToken);
     }
 }

@@ -8,6 +8,7 @@ using ChaosCMS.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json.Serialization;
+using ChaosCMS.Converters;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -21,19 +22,19 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <typeparam name="TPage">The type of the page.</typeparam>
         /// <typeparam name="TPageType">The type of the pageType.</typeparam>
-        /// <typeparam name="TContent">the type of the content</typeparam>
         /// <typeparam name="TUser">The type of the user</typeparam>
         /// <typeparam name="TRole">The type of the Role</typeparam>
         /// <param name="service">The service collection</param>
         /// <returns>The instance of the <see cref="ChaosBuilder"/></returns>
-        public static ChaosBuilder AddChaos<TPage, TPageType, TContent, TUser, TRole>(this IServiceCollection service)
+        public static ChaosBuilder AddChaos<TPage, TPageType, TAdminPage, TAdminPageType, TUser, TRole>(this IServiceCollection service)
             where TPage : class, new()
             where TPageType : class, new()
-            where TContent : class, new()
+            where TAdminPage : class, new()
+            where TAdminPageType : class, new()
             where TUser : class, new()
             where TRole : class, new()
         {
-            return service.AddChaos<TPage, TPageType, TContent, TUser, TRole>(options: null);
+            return service.AddChaos<TPage, TPageType, TAdminPage, TAdminPageType, TUser, TRole>(options: null);
         }
 
         /// <summary>
@@ -41,16 +42,18 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <typeparam name="TPage">The type of the page.</typeparam>
         /// <typeparam name="TPageType">The type of the pageType.</typeparam>
-        /// <typeparam name="TContent">the type of the content</typeparam>
+        /// <typeparam name="TAdminPage">The type of the page.</typeparam>
+        /// <typeparam name="TAdminPageType">The type of the pageType.</typeparam>
         /// <typeparam name="TUser">The type of the user</typeparam>
         /// <typeparam name="TRole">The type of the Role</typeparam>
         /// <param name="services">The service collection</param>
         /// <param name="options">The options to configure</param>
         /// <returns>The instance of the <see cref="ChaosBuilder"/></returns>
-        public static ChaosBuilder AddChaos<TPage, TPageType, TContent, TUser, TRole>(this IServiceCollection services, Action<ChaosOptions> options)
+        public static ChaosBuilder AddChaos<TPage, TPageType, TAdminPage, TAdminPageType, TUser, TRole>(this IServiceCollection services, Action<ChaosOptions> options)
             where TPage : class, new()
             where TPageType : class, new()
-            where TContent : class, new()
+            where TAdminPage : class, new()
+            where TAdminPageType : class, new()
             where TUser : class, new()
             where TRole : class, new()
         {
@@ -82,11 +85,10 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     manager.ApplicationParts.Add(
                         new ChaosTypesPart(
-                                typeof(PageController<TPage, TContent>),
-                                typeof(PageTypeController<TPageType>),
-                                typeof(ContentController<TContent>),
-                                typeof(RenderController<TPage, TContent>),
-                                typeof(ErrorController<TPage, TContent>),
+                                typeof(PageController<TAdminPage>),
+                                typeof(PageTypeController<TAdminPageType>),
+                                typeof(RenderController<TPage>),
+                                typeof(ErrorController<TPage>),
                                 typeof(ResourceController),
                                 typeof(AccountController<TUser>),
                                 typeof(UserController<TUser>),
@@ -95,35 +97,41 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 }).AddControllersAsServices();
 
-            services.TryAddScoped<IChaos, DefaultChaosService<TPage, TContent>>();
+            services.TryAddScoped<IChaos, DefaultChaosService<TPage>>();
+            services.TryAddScoped<IChaos, DefaultChaosService<TAdminPage>>();
 
             // Chaos services
             services.TryAddSingleton<ChaosMarkerService>();
             services.TryAddScoped<ChaosErrorDescriber>();
 
-            services.TryAddScoped<PageManager<TPage, TContent>, PageManager<TPage, TContent>>();
+            services.TryAddScoped<PageManager<TPage>, PageManager<TPage>>();
             services.TryAddScoped<PageTypeManager<TPageType>, PageTypeManager<TPageType>>();
-            services.TryAddScoped<ContentManager<TContent>, ContentManager<TContent>>();
+
+            services.TryAddScoped<PageManager<TAdminPage>, PageManager<TAdminPage>>();
+            services.TryAddScoped<PageTypeManager<TAdminPageType>, PageTypeManager<TAdminPageType>>();
 
             services.TryAddScoped<ResourceManager, ResourceManager>();
 
             // Validators
-            services.TryAddScoped<IPageValidator<TPage, TContent>, DefaultPageValidator<TPage, TContent>>();
-            services.TryAddScoped<IContentValidator<TContent>, DefaultContentValidator<TContent>>();
+            services.TryAddScoped<IPageValidator<TPage>, DefaultPageValidator<TPage>>();
+            services.TryAddScoped<IPageValidator<TAdminPage>, DefaultPageValidator<TAdminPage>>();
 
-            services.AddSingleton<IRenderer<TContent>, DefaultRenderer<TContent>>();
-            services.AddSingleton<IRenderer<TContent>, HtmlRenderer<TContent>>();
-            services.AddSingleton<IRenderer<TContent>, StringRenderer<TContent>>();
-            services.AddSingleton<IRenderer<TContent>, MacroRenderer<TContent>>();
-            services.AddSingleton<IRenderer<TContent>, CarouselRenderer<TContent>>();
-            services.AddSingleton<IRenderer<TContent>, LinkContentRenderer<TContent>>();
+            services.TryAddScoped<IConverter<TAdminPage, TPage>, PageConverter<TAdminPage, TPage>>();
+            services.TryAddScoped<IConverter<TAdminPage, TAdminPage>, PageConverter<TAdminPage, TAdminPage>>();
+
+            services.AddSingleton<IRenderer, DefaultRenderer>();
+            services.AddSingleton<IRenderer, HtmlRenderer>();
+            services.AddSingleton<IRenderer, StringRenderer>();
+            services.AddSingleton<IRenderer, MacroRenderer>();
+            services.AddSingleton<IRenderer, CarouselRenderer>();
+            services.AddSingleton<IRenderer, LinkContentRenderer>();
 
             if (options != null)
             {
                 services.Configure(options);
             }
 
-            var builder = new ChaosBuilder(typeof(TPage), typeof(TPageType), typeof(TContent), identityBuilder, mvcBuilder, services);
+            var builder = new ChaosBuilder(typeof(TPage), typeof(TPageType), typeof(TAdminPage), typeof(TAdminPageType), identityBuilder, mvcBuilder, services);
 
             services.TryAddSingleton(builder);
 

@@ -7,10 +7,8 @@ namespace ChaosCMS.Validators
     ///
     /// </summary>
     /// <typeparam name="TPage"></typeparam>
-    /// <typeparam name="TContent"></typeparam>
-    public interface IPageValidator<TPage, TContent>
+    public interface IPageValidator<TPage>
         where TPage : class
-        where TContent : class
     {
         /// <summary>
         ///
@@ -18,6 +16,6 @@ namespace ChaosCMS.Validators
         /// <param name="manager"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        Task<ChaosResult> ValidateAsync(PageManager<TPage, TContent> manager, TPage page);
+        Task<ChaosResult> ValidateAsync(PageManager<TPage> manager, TPage page);
     }
 }

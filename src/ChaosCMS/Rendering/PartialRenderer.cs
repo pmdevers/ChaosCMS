@@ -3,26 +3,15 @@ using ChaosCMS.Extensions;
 using ChaosCMS.Managers;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ChaosCMS.Models.Pages;
 
 namespace ChaosCMS.Rendering
 {
     /// <summary>
     ///
     /// </summary>
-    /// <typeparam name="TContent"></typeparam>
-    public class MacroRenderer<TContent> : IRenderer<TContent>
-        where TContent : class
+    public class MacroRenderer : IRenderer
     {
-        private readonly ContentManager<TContent> manager;
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="manager"></param>
-        public MacroRenderer(ContentManager<TContent> manager)
-        {
-            this.manager = manager;
-        }
 
         /// <summary>
         ///
@@ -35,10 +24,9 @@ namespace ChaosCMS.Rendering
         /// <param name="chaos"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public async Task<IHtmlContent> RenderAsync(IChaos<TContent> chaos, TContent content)
+        public Task<IHtmlContent> RenderAsync(IChaos chaos, Content content)
         {
-            var options = await this.manager.GetValueAsync<MacroOptions, TContent>(content);
-            return await chaos.Helper.PartialAsync(options.ViewName, content);
+            return Task.FromResult<IHtmlContent>(new HtmlString("test"));
         }
 
         /// <summary>

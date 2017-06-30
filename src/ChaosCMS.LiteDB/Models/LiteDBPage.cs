@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ChaosCMS.Models.Pages;
 using LiteDB;
 
 namespace ChaosCMS.LiteDB.Models
@@ -15,5 +16,6 @@ namespace ChaosCMS.LiteDB.Models
         public string PageType { get;  set; }
         public string Template { get;  set; }
         public List<string> Hosts { get; set; } = new List<string>();
+        public List<Content> Content { get; set; } = new List<Content>();
     }
 }

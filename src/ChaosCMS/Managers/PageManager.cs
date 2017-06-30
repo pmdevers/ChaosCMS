@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using ChaosCMS.Models.Pages;
 
 namespace ChaosCMS.Managers
 {
@@ -15,10 +16,8 @@ namespace ChaosCMS.Managers
     /// Provides the APIs for managing pages in a persistence store.
     /// </summary>
     /// <typeparam name="TPage">The type encapsulating a page.</typeparam>
-    /// <typeparam name="TContent">The type encapsulating a page.</typeparam>
-    public class PageManager<TPage, TContent> : IDisposable
+    public class PageManager<TPage> : IDisposable
         where TPage : class
-        where TContent : class
     {
         private readonly HttpContext context;
 
@@ -39,9 +38,9 @@ namespace ChaosCMS.Managers
         public PageManager(IPageStore<TPage> store,
             IOptions<ChaosOptions> optionsAccessor,
             ChaosErrorDescriber errors,
-            IEnumerable<IPageValidator<TPage, TContent>> validators,
+            IEnumerable<IPageValidator<TPage>> validators,
             IServiceProvider services,
-            ILogger<PageManager<TPage, TContent>> logger)
+            ILogger<PageManager<TPage>> logger)
         {
             if (store == null)
             {
@@ -86,7 +85,7 @@ namespace ChaosCMS.Managers
         /// <summary>
         /// The <see cref="IPageValidator{TPage}"/> used to validate pages.
         /// </summary>
-        protected internal IList<IPageValidator<TPage, TContent>> PageValidators { get; } = new List<IPageValidator<TPage, TContent>>();
+        protected internal IList<IPageValidator<TPage>> PageValidators { get; } = new List<IPageValidator<TPage>>();
 
         /// <summary>
         /// The <see cref="ChaosErrorDescriber"/> used to generate error messages.
@@ -97,6 +96,18 @@ namespace ChaosCMS.Managers
         /// The <see cref="ChaosOptions"/> used to configure Chaos.
         /// </summary>
         protected internal ChaosOptions Options { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual bool SupportsContents
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                return this.Store is IPageContentStore<TPage>;
+            }
+        }
 
         /// <summary>
         /// 
@@ -438,6 +449,41 @@ namespace ChaosCMS.Managers
             return this.Store.SetStatusCodeAsync(page, code, CancellationToken);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public virtual Task<List<Content>> GetContentAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var store = this.GetPageContentStore();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return store.GetContentAsync(page, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public virtual Task SetContentAsync(TPage page, List<Content> content)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var store = this.GetPageContentStore();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return store.SetContentAsync(page, content, CancellationToken);
+        }
+
         #region IDisposable Support
 
         private bool isDisposed = false; // To detect redundant calls
@@ -467,13 +513,13 @@ namespace ChaosCMS.Managers
         #endregion IDisposable Support
 
 
-        private IPageContentStore<TPage, TContent> GetPageContentStore()
+        private IPageContentStore<TPage> GetPageContentStore()
         {
             this.ThrowIfDisposed();
-            var store = this.Store as IPageContentStore<TPage, TContent>;
+            var store = this.Store as IPageContentStore<TPage>;
             if(store == null)
             {
-                throw new NotSupportedException(Resources.FormatStoreIsNotOfType(typeof(IPageContentStore<TPage, TContent>).Name));
+                throw new NotSupportedException(Resources.FormatStoreIsNotOfType(typeof(IPageContentStore<TPage>).Name));
             }
 
             return store;

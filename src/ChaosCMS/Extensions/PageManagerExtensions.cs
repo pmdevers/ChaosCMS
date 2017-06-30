@@ -13,13 +13,11 @@ namespace ChaosCMS.Extensions
         ///
         /// </summary>
         /// <typeparam name="TPage"></typeparam>
-        /// <typeparam name="TContent"></typeparam>
         /// <param name="manager"></param>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static TPage FindByUrl<TPage, TContent>(this PageManager<TPage, TContent> manager, string url) 
+        public static TPage FindByUrl<TPage>(this PageManager<TPage> manager, string url) 
             where TPage : class
-            where TContent : class
         {
             if (manager == null)
             {
@@ -32,13 +30,11 @@ namespace ChaosCMS.Extensions
         ///
         /// </summary>
         /// <typeparam name="TPage"></typeparam>
-        /// <typeparam name="TContent"></typeparam>
         /// <param name="manager"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static string GetName<TPage, TContent>(this PageManager<TPage, TContent> manager, TPage page)
+        public static string GetName<TPage>(this PageManager<TPage> manager, TPage page)
             where TPage : class
-            where TContent : class
         {
             if (manager == null)
             {

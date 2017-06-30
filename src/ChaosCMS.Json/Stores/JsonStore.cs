@@ -27,7 +27,7 @@ namespace ChaosCMS.Json.Stores
         protected JsonStore(IOptions<ChaosJsonStoreOptions> optionsAccessor)
         {
             this.Options = optionsAccessor?.Value ?? new ChaosJsonStoreOptions();
-            this.ReadFile();
+            this.collection  = this.ReadFile<TEntity>();
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace ChaosCMS.Json.Stores
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
             this.Collection.Add(entity);
-            this.WriteFile();
+            this.WriteFile(this.collection);
             return Task.FromResult(ChaosResult.Success);
         }
 
@@ -57,7 +57,7 @@ namespace ChaosCMS.Json.Stores
             this.ThrowIfDisposed();
             this.Collection.Remove(entity);
             this.Collection.Add(entity);
-            this.WriteFile();
+            this.WriteFile(this.collection);
             return Task.FromResult(ChaosResult.Success);
         }
 
@@ -67,7 +67,7 @@ namespace ChaosCMS.Json.Stores
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
             this.Collection.Remove(entity);
-            this.WriteFile();
+            this.WriteFile(this.collection);
             return Task.FromResult(ChaosResult.Success);
         }
 
@@ -142,40 +142,39 @@ namespace ChaosCMS.Json.Stores
         ///
         /// </summary>
         /// <returns></returns>
-        protected void ReadFile()
+        protected List<T> ReadFile<T>()
         {
-            if (this.collection == null)
-            {
+            
                 lock (lockObject)
                 {
                     var path = Path.Combine(Directory.GetCurrentDirectory(), this.Options.StoreDirectoryName);
-                    var filename = Path.Combine(path, typeof(TEntity).Name + this.Options.Extension);
+                    var filename = Path.Combine(path, typeof(T).Name + this.Options.Extension);
                     if (!File.Exists(filename))
                     {
-                        this.WriteFile();
+                        this.WriteFile<T>(new List<T>());
                     }
                     var fileContents = File.ReadAllText(filename);
-                    this.collection = JsonConvert.DeserializeObject<List<TEntity>>(fileContents);
+                    return JsonConvert.DeserializeObject<List<T>>(fileContents);
                 }
-            }
+            
         }
 
         /// <summary>
         ///
         /// </summary>
-        protected void WriteFile()
+        protected void WriteFile<T>(List<T> collection)
         {
-            if (this.collection != null)
+            if (collection != null)
             {
                 lock (lockObject)
                 {
                     var path = Path.Combine(Directory.GetCurrentDirectory(), this.Options.StoreDirectoryName);
-                    var filename = Path.Combine(path, typeof(TEntity).Name + this.Options.Extension);
+                    var filename = Path.Combine(path, typeof(T).Name + this.Options.Extension);
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
                     }
-                    File.WriteAllText(filename, JsonConvert.SerializeObject(this.collection, Formatting.Indented));
+                    File.WriteAllText(filename, JsonConvert.SerializeObject(collection, Formatting.Indented));
                 }
             }
         }

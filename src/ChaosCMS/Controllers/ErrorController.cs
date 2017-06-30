@@ -12,17 +12,16 @@ namespace ChaosCMS.Controllers
     /// 
     /// </summary>
     [Route("error", Name ="Error")]
-    public class ErrorController<TPage, TContent> : Controller
+    public class ErrorController<TPage> : Controller
         where TPage : class
-        where TContent : class
     {
-        private readonly PageManager<TPage, TContent> pageManager;
+        private readonly PageManager<TPage> pageManager;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="pageManager"></param>
-        public ErrorController(PageManager<TPage, TContent> pageManager)
+        public ErrorController(PageManager<TPage> pageManager)
         {
             this.pageManager = pageManager;
         }

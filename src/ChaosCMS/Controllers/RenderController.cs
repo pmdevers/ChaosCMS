@@ -8,19 +8,17 @@ namespace ChaosCMS.Controllers
     ///
     /// </summary>
     /// <typeparam name="TPage"></typeparam>
-    /// <typeparam name="TContent"></typeparam>
     [Route("{*url}", Name = "render")]
-    public class RenderController<TPage, TContent> : Controller
+    public class RenderController<TPage> : Controller
         where TPage : class
-        where TContent : class
     {
-        private readonly PageManager<TPage, TContent> pageManager;
+        private readonly PageManager<TPage> pageManager;
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="pageManager"></param>
-        public RenderController(PageManager<TPage, TContent> pageManager)
+        public RenderController(PageManager<TPage> pageManager)
         {
             this.pageManager = pageManager;
         }

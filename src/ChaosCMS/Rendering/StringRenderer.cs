@@ -1,27 +1,15 @@
 ﻿using System.Threading.Tasks;
 using ChaosCMS.Managers;
 using Microsoft.AspNetCore.Html;
+using ChaosCMS.Models.Pages;
 
 namespace ChaosCMS.Rendering
 {
     /// <summary>
     ///
     /// </summary>
-    /// <typeparam name="TContent"></typeparam>
-    public class StringRenderer<TContent> : IRenderer<TContent>
-        where TContent : class
+    public class StringRenderer : IRenderer
     {
-        private readonly ContentManager<TContent> contentManager;
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="contentManager"></param>
-        public StringRenderer(ContentManager<TContent> contentManager)
-        {
-            this.contentManager = contentManager;
-        }
-
         /// <summary>
         ///
         /// </summary>
@@ -33,10 +21,9 @@ namespace ChaosCMS.Rendering
         /// <param name="chaos"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public async Task<IHtmlContent> RenderAsync(IChaos<TContent> chaos, TContent content)
+        public Task<IHtmlContent> RenderAsync(IChaos chaos, Content content)
         {
-            var value = await this.contentManager.GetValueAsync(content);
-            return new HtmlString(value);
+           return Task.FromResult<IHtmlContent>(new HtmlString(content.Value));
         }
     }
 }

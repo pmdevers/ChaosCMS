@@ -10,17 +10,16 @@ namespace ChaosCMS.Controllers
     /// A controller for handling a page
     /// </summary>
     [Route("api/pages", Name = "pages")]
-    public class PageController<TPage, TContent> : Controller 
+    public class PageController<TPage> : Controller 
         where TPage : class
-        where TContent : class
     {
-        private readonly PageManager<TPage, TContent> manager;
+        private readonly PageManager<TPage> manager;
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="manager"></param>
-        public PageController(PageManager<TPage, TContent> manager)
+        public PageController(PageManager<TPage> manager)
         {
             this.manager = manager;
         }

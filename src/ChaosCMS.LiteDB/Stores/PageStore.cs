@@ -6,15 +6,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using ChaosCMS.LiteDB.Models;
+using ChaosCMS.Models.Pages;
 
 namespace ChaosCMS.LiteDB.Stores
 {
-    public class PageStore<TPage> : LiteDBStore<TPage>, IPageStore<TPage>
+    public class PageStore<TPage> : LiteDBStore<TPage>, IPageStore<TPage>, IPageContentStore<TPage>
         where TPage : LiteDBPage
     {
         public PageStore(IOptions<ChaosLiteDBStoreOptions> optionsAccessor) : base(optionsAccessor)
         {
         }
+
+        #region IPageStore<TPage>
 
         public Task<TPage> FindByStatusCodeAsync(int statusCode, CancellationToken cancellationToken)
         {
@@ -31,7 +34,7 @@ namespace ChaosCMS.LiteDB.Stores
             var page = this.Collection.FindOne(x => x.Url.Equals(urlPath));
             return Task.FromResult(page);
         }
-
+        
         public Task<string> GetNameAsync(TPage page, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -146,5 +149,36 @@ namespace ChaosCMS.LiteDB.Stores
             page.Url = url;
             return Task.FromResult(0);
         }
+
+        #endregion
+
+        #region IPageContentStore<TPage>
+
+        public Task<List<Content>> GetContentAsync(TPage page, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return Task.FromResult(page.Content);
+        }
+
+        public Task SetContentAsync(TPage page, List<Content> content, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            page.Content = content;
+
+            return Task.FromResult(0);
+        }
+
+        #endregion
     }
 }
