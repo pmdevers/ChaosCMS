@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using ChaosCMS.Extensions;
 using Newtonsoft.Json;
 
 namespace ChaosCMS.Hal
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class Link
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public const string RelForSelf = "self";
 
@@ -23,7 +21,7 @@ namespace ChaosCMS.Hal
         private readonly bool _replaceParameters;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="rel"></param>
         /// <param name="href"></param>
@@ -42,73 +40,73 @@ namespace ChaosCMS.Hal
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [JsonIgnore]
         public string Rel { get; private set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [JsonIgnore]
         public bool IsRelArray { get; private set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [JsonProperty("href")]
         public string Href { get; private set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [JsonProperty("templated", NullValueHandling = NullValueHandling.Ignore)]
         public bool? Templated => !string.IsNullOrEmpty(Href) && IsTemplatedRegex.IsMatch(Href) ? (bool?)true : null;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [JsonProperty("method", NullValueHandling = NullValueHandling.Ignore)]
         public string Method { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
         public string Type { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [JsonProperty("deprecation", NullValueHandling = NullValueHandling.Ignore)]
         public string Deprecation { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
         public string Name { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [JsonProperty("profile", NullValueHandling = NullValueHandling.Ignore)]
         public string Profile { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [JsonProperty("title", NullValueHandling = NullValueHandling.Ignore)]
         public string Title { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [JsonProperty("hreflang", NullValueHandling = NullValueHandling.Ignore)]
         public string HrefLang { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
@@ -162,7 +160,7 @@ namespace ChaosCMS.Hal
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public Link Clone()

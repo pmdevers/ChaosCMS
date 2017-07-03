@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http.Authentication;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ChaosCMS.Security
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class ChaosJwtDataFormat : ISecureDataFormat<AuthenticationTicket>
     {
@@ -16,7 +16,7 @@ namespace ChaosCMS.Security
         private readonly TokenValidationParameters validationParameters;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="algorithm"></param>
         /// <param name="validationParameters"></param>
@@ -25,15 +25,17 @@ namespace ChaosCMS.Security
             this.algorithm = algorithm;
             this.validationParameters = validationParameters;
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="protectedText"></param>
         /// <returns></returns>
         public AuthenticationTicket Unprotect(string protectedText)
             => Unprotect(protectedText, null);
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="protectedText"></param>
         /// <param name="purpose"></param>
@@ -76,7 +78,7 @@ namespace ChaosCMS.Security
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -85,8 +87,9 @@ namespace ChaosCMS.Security
         {
             throw new NotImplementedException();
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="data"></param>
         /// <param name="purpose"></param>

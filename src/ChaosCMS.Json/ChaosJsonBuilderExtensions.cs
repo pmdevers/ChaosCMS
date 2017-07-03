@@ -1,10 +1,10 @@
-﻿using ChaosCMS;
+﻿using System;
+using ChaosCMS;
+using ChaosCMS.Json;
 using ChaosCMS.Json.Stores;
 using ChaosCMS.Stores;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using System;
-using ChaosCMS.Json;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -14,12 +14,12 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class ChaosJsonBuilderExtensions
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static ChaosBuilder AddJsonStores(this ChaosBuilder builder, Action<ChaosJsonStoreOptions> options = null)
+        public static IChaosBuilder AddJsonStores(this IChaosBuilder builder, Action<ChaosJsonStoreOptions> options = null)
         {
             builder.Services.TryAdd(GetDefaultServices(builder));
 
@@ -31,13 +31,32 @@ namespace Microsoft.Extensions.DependencyInjection
             return builder;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public static IdentityBuilder AddJsonStores(this IdentityBuilder builder)
+        {
+            var userStoreType = typeof(UserStore<>).MakeGenericType(builder.UserType);
+            var roleStoreType = typeof(RoleStore<>).MakeGenericType(builder.RoleType);
 
-        private static IServiceCollection GetDefaultServices(ChaosBuilder builder)
+            builder.Services.AddScoped(
+                typeof(IUserStore<>).MakeGenericType(builder.UserType),
+                userStoreType);
+
+            builder.Services.AddScoped(
+                typeof(IRoleStore<>).MakeGenericType(builder.RoleType),
+                roleStoreType);
+
+            return builder;
+        }
+
+        private static IServiceCollection GetDefaultServices(IChaosBuilder builder)
         {
             var pageStoreType = typeof(PageStore<>).MakeGenericType(builder.PageType);
-            var contentStoreType = typeof(ContentStore<>).MakeGenericType(builder.ContentType);
-            var userStoreType = typeof(UserStore<>).MakeGenericType(builder.IdentityBuilder.UserType);
-            var roleStoreType = typeof(RoleStore<>).MakeGenericType(builder.IdentityBuilder.RoleType);
+            var pageTypeStoreType = typeof(PageTypeStore<>).MakeGenericType(builder.PageTypeType);
+            
 
             var services = new ServiceCollection();
 
@@ -46,16 +65,10 @@ namespace Microsoft.Extensions.DependencyInjection
                 pageStoreType);
 
             services.AddScoped(
-                typeof(IContentStore<>).MakeGenericType(builder.ContentType),
-                contentStoreType);
+                typeof(IPageTypeStore<>).MakeGenericType(builder.PageTypeType),
+                pageTypeStoreType);
 
-            services.AddScoped(
-                typeof(IUserStore<>).MakeGenericType(builder.IdentityBuilder.UserType), 
-                userStoreType);
-
-            services.AddScoped(
-                typeof(IRoleStore<>).MakeGenericType(builder.IdentityBuilder.RoleType),
-                roleStoreType);
+            
 
             return services;
         }

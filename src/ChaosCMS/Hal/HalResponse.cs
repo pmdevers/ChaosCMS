@@ -10,17 +10,18 @@ using Newtonsoft.Json.Linq;
 namespace ChaosCMS.Hal
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [JsonConverter(typeof(JsonHalModelConverter))]
     public class HalResponse
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public const string LinksKey = "_links";
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public const string EmbeddedKey = "_embedded";
 
@@ -30,7 +31,7 @@ namespace ChaosCMS.Hal
         private readonly Dictionary<string, object> embedded = new Dictionary<string, object>();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="config"></param>
         public HalResponse(IHalModelConfig config)
@@ -39,7 +40,7 @@ namespace ChaosCMS.Hal
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="model"></param>
         /// <param name="config"></param>
@@ -54,17 +55,17 @@ namespace ChaosCMS.Hal
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public object Model { get; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IHalModelConfig Config => config;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="rel"></param>
         /// <returns></returns>
@@ -74,7 +75,7 @@ namespace ChaosCMS.Hal
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="links"></param>
         /// <returns></returns>
@@ -85,7 +86,7 @@ namespace ChaosCMS.Hal
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="name"></param>
         /// <param name="resource"></param>
@@ -97,7 +98,7 @@ namespace ChaosCMS.Hal
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="name"></param>
         /// <param name="objects"></param>
@@ -109,7 +110,7 @@ namespace ChaosCMS.Hal
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="serializer"></param>
         /// <param name="attachEmbedded"></param>
@@ -128,7 +129,7 @@ namespace ChaosCMS.Hal
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="serializer"></param>
         /// <returns></returns>
@@ -174,7 +175,6 @@ namespace ChaosCMS.Hal
             var embeddedOutput = new JObject();
             foreach (var embedPair in this.embedded)
             {
-
                 if (embedPair.Value is IEnumerable<HalResponse>)
                 {
                     embeddedOutput.Add(embedPair.Key, JArray.FromObject(((IEnumerable<HalResponse>)embedPair.Value).Select(m => converter(m))));
@@ -194,8 +194,8 @@ namespace ChaosCMS.Hal
 
         private JObject GetBaseJObject(JsonSerializer serializer)
         {
-            var output = this.Model != null ? 
-                JObject.FromObject(this.Model, serializer) : 
+            var output = this.Model != null ?
+                JObject.FromObject(this.Model, serializer) :
                 new JObject();
             return output;
         }

@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ChaosCMS.Test
 {
@@ -20,7 +17,9 @@ namespace ChaosCMS.Test
 
     public class TestContent<TKey> where TKey : IEquatable<TKey>
     {
-        public TestContent() { }
+        public TestContent()
+        {
+        }
 
         public TestContent(string name) : this()
         {

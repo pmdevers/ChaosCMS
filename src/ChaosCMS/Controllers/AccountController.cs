@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
 using ChaosCMS.Models.Account;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 namespace ChaosCMS.Controllers
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="TUser"></typeparam>
     [Route("", Name = "Account")]
@@ -25,12 +21,12 @@ namespace ChaosCMS.Controllers
         private ChaosOptions options;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="userManager"></param>
         /// <param name="signInManager"></param>
         /// <param name="optionsAccessor"></param>
-        public AccountController(UserManager<TUser> userManager,  SignInManager<TUser> signInManager, IOptions<ChaosOptions> optionsAccessor)
+        public AccountController(UserManager<TUser> userManager, SignInManager<TUser> signInManager, IOptions<ChaosOptions> optionsAccessor)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -38,7 +34,7 @@ namespace ChaosCMS.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -64,7 +60,7 @@ namespace ChaosCMS.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="model"></param>
         /// <param name="returnUrl"></param>
@@ -102,7 +98,7 @@ namespace ChaosCMS.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         [HttpPost("logout")]

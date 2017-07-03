@@ -1,0 +1,48 @@
+﻿@using Newtonsoft.Json.Linq
+@{
+    var json = await Html.Chaos().GetJson();
+    var value = (JArray)json["value"];
+    
+}
+
+<div class="content">
+    @foreach (var group in value)
+    {
+        var color = group.Value<string>("color");
+        var title = group.Value<string>("title");
+        var skills = (JArray)group["skills"];
+
+    <!--Block content-->
+    <div class="block-content margBMedium">
+        <!--Skill design-->
+        <div class=" skill">
+            <!--Row-->
+            <div class="row ">
+                <div class="vc">
+                    <div class="col-md-11">
+                        <ul class="skills-list clearfix">
+                            @foreach (var skill in skills)
+                            {
+                                <li>
+                                    <span class="h4">@skill["name"]</span>
+                                    <div class="progress">
+                                        <div class="percentage" style="width: @skill["value"]; background-color: @color"></div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="title semibold" style="border: 1px dashed @color;">
+                            <span>@title</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End row-->
+        </div>
+        <!--End skill design-->
+    </div>
+    }
+    <!--End block content-->
+</div>

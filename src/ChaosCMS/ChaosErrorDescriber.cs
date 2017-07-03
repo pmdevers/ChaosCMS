@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ChaosCMS
 {
@@ -27,7 +24,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public virtual ChaosError NegativePage()
@@ -40,7 +37,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -54,7 +51,35 @@ namespace ChaosCMS
         }
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="pageType"></param>
+        /// <returns></returns>
+        public ChaosError PageTypeIsInvalid(string pageType)
+        {
+            return new ChaosError
+            {
+                Code = nameof(PageTypeIsInvalid),
+                Description = Resources.FormatPageTypeIsInvalid(pageType)
+            };
+        }
+
+        /// <summary>
         /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public ChaosError PageTypeNameIsInvalid(string name)
+        {
+            return new ChaosError
+            {
+                Code = nameof(PageTypeNameIsInvalid),
+                Description = Resources.FormatNameIsInvalid(name)
+            };
+        }
+
+        /// <summary>
+        ///
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
@@ -67,8 +92,17 @@ namespace ChaosCMS
             };
         }
 
+        internal ChaosError PageStatusCodeIsInvalid(int status)
+        {
+            return new ChaosError
+            {
+                Code = nameof(PageStatusCodeIsInvalid),
+                Description = Resources.FormatPageStatusIsInvalid(status)
+            };
+        }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="template"></param>
         /// <returns></returns>
@@ -82,7 +116,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -96,7 +130,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
@@ -110,7 +144,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -122,8 +156,9 @@ namespace ChaosCMS
                 Description = Resources.FormatContentValueIsInvalid(value)
             };
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -137,7 +172,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public ChaosError ConcurrencyFailure()

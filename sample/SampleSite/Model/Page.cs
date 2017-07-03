@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using ChaosCMS.Json.Models;
+﻿using ChaosCMS.Json.Models;
+using ChaosCMS.LiteDB.Models;
 
 namespace SampleSite.Model
 {
-    public class Page : JsonPage
+    public class Page : LiteDBPage // JsonPage
     {
     }
 }

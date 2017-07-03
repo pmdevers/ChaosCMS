@@ -1,0 +1,90 @@
+[
+  {
+    "Id": "a1ac9f0f-6c4e-416f-a7fc-c62bd060fc12",
+    "ParentId": "00000000-0000-0000-0000-000000000000",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "whoami",
+    "Type": "macro",
+    "Value": "{ \"ViewName\" : \"2ColumnBlock\" }"
+  },
+  {
+    "Id": "a1ac9f0f-6c4e-416f-a7fc-c62bd060fc18",
+    "ParentId": "a1ac9f0f-6c4e-416f-a7fc-c62bd060fc12",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "header",
+    "Type": "string",
+    "Value": "Patrick Evers"
+  },
+  {
+    "Id": "b1ac9f0f-6c4e-416f-a7fc-c62bd060fc18",
+    "ParentId": "a1ac9f0f-6c4e-416f-a7fc-c62bd060fc12",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "subheader",
+    "Type": "string",
+    "Value": ".Net Developer"
+  },
+  {
+    "Id": "c1ac9f0f-6c4e-416f-a7fc-c62bd060fc18",
+    "ParentId": "a1ac9f0f-6c4e-416f-a7fc-c62bd060fc12",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "left",
+    "Type": "html",
+    "Value": "<p>Patrick Evers has been employed in the information technology sector since 2000. After MBO Administration graduation and MBO System Management at ROC Westerschelde in Terneuzen, he started working as System Engineer of Butler Systems Hoek where he was involved in Implementation of Multi Site Novell networks and management of Unix Networks.</p>"
+  },
+  {
+    "Id": "d1ac9f0f-6c4e-416f-a7fc-c62bd060fc18",
+    "ParentId": "a1ac9f0f-6c4e-416f-a7fc-c62bd060fc12",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "right",
+    "Type": "html",
+    "Value": "<p>In 2005 he joined eXDe Solutions B.V. / Quistor Enterprises B.V. as Consultant where he was responsible for maintaining financial System J.D. Edwards and developed several web portals and J.D. Edwards Customizations he also studied Java Programming Methodologies and J.D. Edwards Development. In 2010 he joined MapTrace B.V. as Lead Software Developer. In 2011 he joined Pangaea Digital Agency at his current role as Lead .Net Developer.</p>"
+  },
+  {
+    "Id": "a3ac9f0f-6c4e-416f-a7fc-c62bd060fc12",
+    "ParentId": "00000000-0000-0000-0000-000000000000",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "header1",
+    "Type": "macro",
+    "Value": "{ \"ViewName\" : \"maintitle\", \"title\": \"who am i\"  }"
+  },
+  {
+    "Id": "a3ac9f0f-6c4e-416f-a7fc-c62bd060fc18",
+    "ParentId": "a3ac9f0f-6c4e-416f-a7fc-c62bd060fc12",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "title",
+    "Type": "string",
+    "Value": "Who Am I"
+  },
+  {
+    "Id": "a4ac9f0f-6c4e-416f-a7fc-c62bd060fc12",
+    "ParentId": "00000000-0000-0000-0000-000000000000",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "header2",
+    "Type": "macro",
+    "Value": "{ \"ViewName\" : \"maintitle\", \"title\": \"Professional Skills\" }"
+  },
+  {
+    "Id": "a5ac9f0f-6c4e-416f-a7fc-c62bd060fc12",
+    "ParentId": "00000000-0000-0000-0000-000000000000",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "skills",
+    "Type": "macro",
+    "Value": "{ViewName:\"skillblock\",value:[{title:\"Coding\",color:\"#efefef\",skills:[{name:\"c#\",value:\"90%\"},{name:\"HTML/CSS\",value:\"80%\"},{name:\"Javascript\",value:\"80%\"}]},{title:\"Databases\",color:\"#cd5353\",skills:[{name:\"SQL Server\",value:\"90%\"},{name:\"MongoDB\",value:\"60%\"},{name:\"Oracle 10g\",value:\"70%\"},{name:\"MYSQL\",value:\"70%\"}]}]}"
+  },
+  {
+    "Id": "a6ac9f0f-6c4e-416f-a7fc-c62bd060fc12",
+    "ParentId": "00000000-0000-0000-0000-000000000000",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "header3",
+    "Type": "macro",
+    "Value": "{ \"ViewName\" : \"maintitle\", \"title\": \"experience\" }"
+  },
+  {
+    "Id": "a7ac9f0f-6c4e-416f-a7fc-c62bd060fc12",
+    "ParentId": "00000000-0000-0000-0000-000000000000",
+    "PageId": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Name": "experience",
+    "Type": "macro",
+    "Value": "{ \"ViewName\" : \"timeline\", \"title\": \"experience\" }"
+  }
+]

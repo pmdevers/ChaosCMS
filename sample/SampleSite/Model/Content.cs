@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ChaosCMS.Json.Models;
+﻿using ChaosCMS.Json.Models;
+using ChaosCMS.LiteDB.Models;
 
 namespace SampleSite.Model
 {
-    public class Content : JsonContent // ChaosContent<Content, int>
+    public class Content : LiteDBContent<Content> // JsonContent // ChaosContent<Content, int>
     {
     }
 }

@@ -3,7 +3,7 @@
 }
 
 <div>
-    @using(var form = Html.BeginForm(FormMethod.Post)) { 
+    @using(var form = Html.BeginForm(FormMethod.Post)) {
         @Html.AntiForgeryToken()
         <input type="text" name="Email" />
         <input type="password" name="Password" />

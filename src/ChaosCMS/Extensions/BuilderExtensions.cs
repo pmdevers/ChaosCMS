@@ -1,15 +1,9 @@
 using System;
-
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-
 using ChaosCMS;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using ChaosCMS.Security;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -30,6 +24,8 @@ namespace Microsoft.AspNetCore.Builder
                 throw new ArgumentNullException(nameof(app));
             }
 
+            var hosting = app.ApplicationServices.GetService<IHostingEnvironment>();
+
             var marker = app.ApplicationServices.GetService<ChaosMarkerService>();
             if (marker == null)
             {
@@ -39,7 +35,17 @@ namespace Microsoft.AspNetCore.Builder
             var options = app.ApplicationServices.GetRequiredService<IOptions<ChaosOptions>>().Value;
             var builder = app.ApplicationServices.GetService<ChaosBuilder>();
             var exceptionMiddleWare = typeof(ChaosExceptionMiddleware);
-            //var tokenProvider = typeof(TokenProviderMiddleware<>).MakeGenericType(builder.IdentityBuilder.UserType);
+
+            if (hosting.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                //app.UseExceptionHandler("/error");
+                app.UseStatusCodePagesWithReExecute("/{0}");
+            }
+
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
@@ -55,13 +61,15 @@ namespace Microsoft.AspNetCore.Builder
                 policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build();
             });
             app.UseStaticFiles();
-            app.UseMiddleware(exceptionMiddleWare);
-            //app.UseMiddleware(tokenProvider);
+            //app.UseMiddleware(exceptionMiddleWare);
             app.UseIdentity();
             app.UseMvc();
-
-            //app.UseMiddleware(middleware);
             
+            app.Run(async context =>
+            {
+                await context.Response.WriteAsync("Hello, World!");
+            });
+
             return app;
         }
     }

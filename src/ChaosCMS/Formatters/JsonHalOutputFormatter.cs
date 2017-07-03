@@ -10,12 +10,12 @@ using Newtonsoft.Json;
 namespace ChaosCMS.Formatters
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class JsonHalOutputFormatter : IOutputFormatter
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public const string HalJsonType = "application/hal+json";
 
@@ -23,12 +23,15 @@ namespace ChaosCMS.Formatters
         private readonly JsonOutputFormatter _jsonFormatter;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="halJsonMediaTypes"></param>
         public JsonHalOutputFormatter(IEnumerable<string> halJsonMediaTypes = null)
         {
-            if (halJsonMediaTypes == null) halJsonMediaTypes = new string[] { HalJsonType };
+            if (halJsonMediaTypes == null)
+            {
+                halJsonMediaTypes = new string[] { HalJsonType };
+            }
 
             var serializerSettings = JsonSerializerSettingsProvider.CreateSerializerSettings();
 
@@ -36,21 +39,26 @@ namespace ChaosCMS.Formatters
 
             this._halJsonMediaTypes = halJsonMediaTypes;
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="serializerSettings"></param>
         /// <param name="halJsonMediaTypes"></param>
         public JsonHalOutputFormatter(JsonSerializerSettings serializerSettings, IEnumerable<string> halJsonMediaTypes = null)
         {
-            if (halJsonMediaTypes == null) halJsonMediaTypes = new string[] { HalJsonType };
+            if (halJsonMediaTypes == null)
+            {
+                halJsonMediaTypes = new string[] { HalJsonType };
+            }
 
             this._jsonFormatter = new JsonOutputFormatter(serializerSettings, ArrayPool<Char>.Create());
 
             this._halJsonMediaTypes = halJsonMediaTypes;
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
@@ -60,7 +68,7 @@ namespace ChaosCMS.Formatters
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>

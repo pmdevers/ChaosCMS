@@ -1,50 +1,44 @@
-﻿using ChaosCMS.Managers;
-using Microsoft.AspNetCore.Html;
-using System.Threading.Tasks;
-using System;
-using Microsoft.AspNetCore.Http;
-
-using ChaosCMS.Extensions;
-using ChaosCMS.Rendering;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Threading.Tasks;
+using ChaosCMS.Extensions;
+using ChaosCMS.Managers;
+using ChaosCMS.Rendering;
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json.Linq;
+using ChaosCMS.Models.Pages;
 
 namespace ChaosCMS
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="TPage"></typeparam>
-    /// <typeparam name="TContent"></typeparam>
-    public class DefaultChaosService<TPage, TContent> : IChaos<TContent>
+    public class DefaultChaosService<TPage> : IChaos
         where TPage : class
-        where TContent : class
     {
         private readonly PageManager<TPage> pageManager;
-        private readonly ContentManager<TContent> contentManager;
         private readonly HttpContext context;
-        private readonly IEnumerable<IRenderer<TContent>> renderers;
         private readonly IList<IHtmlContent> scripts = new List<IHtmlContent>();
-
+        private readonly IEnumerable<IRenderer> renderers;
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pageManager"></param>
-        /// <param name="contentManager"></param>
         /// <param name="context"></param>
         /// <param name="renderers"></param>
-        public DefaultChaosService(PageManager<TPage> pageManager, ContentManager<TContent> contentManager, IHttpContextAccessor context, IEnumerable<IRenderer<TContent>> renderers)
+        public DefaultChaosService(PageManager<TPage> pageManager, IHttpContextAccessor context, IEnumerable<IRenderer> renderers)
         {
             this.pageManager = pageManager;
-            this.contentManager = contentManager;
             this.context = context.HttpContext;
             this.renderers = renderers;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public TPage CurrentPage
@@ -60,79 +54,92 @@ namespace ChaosCMS
         }
 
         private TPage currentPage;
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Name { get { return this.pageManager.GetName(CurrentPage); } }
 
         /// <summary>
-        /// 
+        ///
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                return this.pageManager.GetName(CurrentPage);
+            }
+        }
+
+        /// <summary>
+        ///
         /// </summary>
         public IHtmlHelper Helper { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
         public async Task<IHtmlContent> RenderAsync(string name)
         {
-            var content = this.Helper.ViewData.Model as TContent;
-            
-            if (content != null)
-            {
-                content = await this.contentManager.FindChildByNameAsync(content, name);
-            }
-            else
-            {
-                var pageId = await this.pageManager.GetIdAsync(CurrentPage);
-                content = await this.contentManager.FindByPageIdAsync(pageId, name);
-            }
-            
+            Content content = await Getcontent(name);
+
             return await this.RenderAsync(content);
         }
 
+        private async Task<Content> Getcontent(string name)
+        {
+            var content = this.Helper.ViewData.Model as Content;
+
+            if (content != null)
+            {
+                content = content.Children.FirstOrDefault(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+            }
+            else
+            {
+                var contents = await this.pageManager.GetContentAsync(CurrentPage);
+                content = contents.FirstOrDefault(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+            }
+
+            return content;
+        }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
-        public async Task<IHtmlContent> RenderAsync(TContent content)
+        public async Task<IHtmlContent> RenderAsync(Content content)
         {
-            if(content == null)
+            if (content == null)
             {
                 return HtmlString.Empty;
             }
-            var type = await this.contentManager.GetTypeAsync(content);
-            var renderer1 = this.renderers.FirstOrDefault(x => x.TypeName.Equals("default"));
-            var renderer = this.renderers.FirstOrDefault(x => x.TypeName.Equals(type));
+            
+            var renderer = this.renderers.FirstOrDefault(x => x.TypeName.Equals(content.Type));
 
             if (renderer == null)
             {
-                renderer = renderer1;
+                renderer = this.renderers.FirstOrDefault(x => x.TypeName.Equals("default")); 
             }
 
             return await renderer.RenderAsync(this, content);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public Task<IHtmlContent> Scripts()
         {
             var script = new TagBuilder("script");
 
-            foreach(var row in scripts)
+            foreach (var row in scripts)
             {
                 script.InnerHtml.AppendHtml(row);
             }
-            
+
             return Task.FromResult<IHtmlContent>(script);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
@@ -140,6 +147,21 @@ namespace ChaosCMS
         {
             scripts.Add(content);
             return Task.FromResult(0);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public JObject GetJson()
+        {
+            var content = this.Helper.ViewData.Model as Content;
+
+            if (content != null)
+            {
+                return JObject.Parse(content.Value);
+            }
+            return new JObject();
         }
     }
 }

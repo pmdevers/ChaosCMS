@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using ChaosCMS.Extensions;
 
 namespace ChaosCMS.Hal.Attributes
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class HalAttributeResolver
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -48,7 +46,7 @@ namespace ChaosCMS.Hal.Attributes
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -68,7 +66,7 @@ namespace ChaosCMS.Hal.Attributes
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="model"></param>
         /// <param name="config"></param>
@@ -81,13 +79,17 @@ namespace ChaosCMS.Hal.Attributes
             foreach (var propertyInfo in embeddedModelProperties)
             {
                 var embeddAttribute = propertyInfo.GetCustomAttribute(typeof(HalEmbeddedAttribute)) as HalEmbeddedAttribute;
-                if (embeddAttribute == null) continue;
+                if (embeddAttribute == null)
+                {
+                    continue;
+                }
 
                 var modelValue = propertyInfo.GetValue(model);
 
                 var embeddedItems = modelValue as IEnumerable<object> ?? new List<object> { modelValue };
 
-                var halResponses = embeddedItems.Select(embeddedModel => {
+                var halResponses = embeddedItems.Select(embeddedModel =>
+                {
                     var response = new HalResponse(embeddedModel, config);
                     response.AddLinks(this.GetLinks(embeddedModel));
                     response.AddEmbeddedCollections(this.GetEmbeddedCollections(embeddedModel, config));

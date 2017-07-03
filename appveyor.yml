@@ -1,26 +1,19 @@
-init:
-  - git config --global core.autocrlf true
 branches:
   only:
     - master
     - release
     - develop
     - /^(.*\/)?ci-.*$/
-environment:
-  nodejs_version: "6"
-# Install scripts. (runs after repo cloning)
 install:
-  # Get the latest stable version of Node.js or io.js
-  - ps: Install-Product node $env:nodejs_version
-  # install modules
-  - npm --version
-  - npm install
-  - npm install webpack -g
+  - set PATH=C:\Program Files\Git\mingw64\bin;%PATH%
+  - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
 build_script:
-  - webpack
-  - ps: .\build.ps1
+  - dotnet --info
+  - dotnet restore ChaosCMS.sln
+  - dotnet build ChaosCMS.sln -c Release
 clone_depth: 1
-test: off
+test_script:
+  - dotnet test test/ChaosCMS.Test/ChaosCMS.Test.csproj -c Release
 artifacts:
 - path: /artifacts/build/*.nupkg
 deploy:
@@ -28,4 +21,6 @@ deploy:
   api_key:
     secure: 82jTc4+tKUmxGnoGfBH1lGkx98G/oE13jaw18hHt2DMcJsF2wGSS6caxNg/6tvN+
   skip_symbols: false
-os: Visual Studio 2017
+  on:
+      branch: master
+image: Visual Studio 2017

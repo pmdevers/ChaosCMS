@@ -1,7 +1,4 @@
-﻿using System;
-
-
-namespace ChaosCMS.Test
+﻿namespace ChaosCMS.Test
 {
     public class TestRole
     {

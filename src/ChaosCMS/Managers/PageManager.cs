@@ -1,14 +1,14 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using ChaosCMS.Stores;
+using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
+using ChaosCMS.Stores;
+using ChaosCMS.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading;
-using ChaosCMS.Validators;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using ChaosCMS.Models.Pages;
 
 namespace ChaosCMS.Managers
 {
@@ -32,24 +32,22 @@ namespace ChaosCMS.Managers
         /// <param name="store">The persistence store the manager will operate over.</param>
         /// <param name="optionsAccessor"></param>
         /// <param name="errors"></param>
+        /// <param name="urlFormatter"></param>
         /// <param name="validators"></param>
         /// <param name="services"></param>
         /// <param name="logger"></param>
         public PageManager(IPageStore<TPage> store,
             IOptions<ChaosOptions> optionsAccessor,
             ChaosErrorDescriber errors,
+            IUrlFormatter urlFormatter,
             IEnumerable<IPageValidator<TPage>> validators,
             IServiceProvider services,
             ILogger<PageManager<TPage>> logger)
         {
-            if (store == null)
-            {
-                throw new ArgumentNullException(nameof(store));
-            }
-
-            this.Store = store;
+            this.Store = store ?? throw new ArgumentNullException(nameof(store)); ;
             this.Options = optionsAccessor?.Value ?? new ChaosOptions();
-            this.ErrorDescriber = errors;
+            this.ErrorDescriber = errors ?? new ChaosErrorDescriber();
+            this.UrlFormatter = urlFormatter ?? new DefaultUrlFormatter(optionsAccessor);
             this.Logger = logger;
 
             if (validators != null)
@@ -97,9 +95,51 @@ namespace ChaosCMS.Managers
         /// </summary>
         protected internal ChaosOptions Options { get; set; }
 
+        /// <summary>
+        /// The <see cref="IUrlFormatter"/> used for formatting urls.
+        /// </summary>
+        protected internal IUrlFormatter UrlFormatter { get; set; }
 
         /// <summary>
         /// 
+        /// </summary>
+        public virtual bool SupportsContents
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                return this.Store is IPageContentStore<TPage>;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public virtual async Task<ChaosResult> CreateAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            var result = await ValidateInternal(page);
+
+            if (!result.Succeeded)
+            {
+                return result;
+            }
+
+            await this.FormatUrlAsync(page);
+
+            return await this.Store.CreateAsync(page, CancellationToken);
+        }
+
+        /// <summary>
+        ///
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
@@ -118,6 +158,8 @@ namespace ChaosCMS.Managers
             {
                 return result;
             }
+
+            await this.FormatUrlAsync(page);
 
             return await this.Store.UpdateAsync(page, CancellationToken);
         }
@@ -143,7 +185,7 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="page"></param>
         /// <param name="itemsPerPage"></param>
@@ -181,6 +223,34 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
+        /// Finds the page with the externalId
+        /// </summary>
+        /// <param name="externalId">the id of the external source.</param>
+        /// <returns>an instance of the page if founce.</returns>
+        public virtual Task<TPage> FindByExternalIdAsync(string externalId)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (externalId == null)
+            {
+                throw new ArgumentNullException(nameof(externalId));
+            }
+            return this.Store.FindByExternalIdAsync(externalId, CancellationToken);
+        }
+
+        /// <summary>
+        /// Finds a page by a statusCode
+        /// </summary>
+        /// <param name="statusCode"></param>
+        /// <returns></returns>
+        public virtual Task<TPage> FindByStatusCodeAsync(int statusCode)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            return this.Store.FindByStatusCodeAsync(statusCode, CancellationToken);
+        }
+
+        /// <summary>
         /// Finds the assosiated page with the urlPath.
         /// </summary>
         /// <param name="urlPath">The url of the page.</param>
@@ -189,16 +259,29 @@ namespace ChaosCMS.Managers
         {
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            if(urlPath == null)
+            if (urlPath == null)
             {
                 throw new ArgumentNullException(nameof(urlPath));
             }
 
-            return Store.FindByUrlAsync(urlPath, CancellationToken);
+            var url = this.FormatUrl(urlPath);
+
+            return Store.FindByUrlAsync(url, CancellationToken);
+        }
+
+        private string FormatUrl(string urlPath)
+        {
+            var segments = urlPath.Split('/');
+            var formatedSegments = new List<string>();
+            foreach(var segment in segments)
+            {
+                formatedSegments.Add(this.UrlFormatter.FormatUrl(segment));
+            }
+            return string.Join("/", formatedSegments);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
@@ -223,12 +306,30 @@ namespace ChaosCMS.Managers
         {
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            if(page == null)
+            if (page == null)
             {
                 throw new ArgumentNullException(nameof(page));
             }
 
             return this.Store.GetNameAsync(page, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public virtual Task SetNameAsync(TPage page, string name)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return this.Store.SetNameAsync(page, name, CancellationToken);
         }
 
         /// <summary>
@@ -240,12 +341,31 @@ namespace ChaosCMS.Managers
         {
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            if(page == null)
+            if (page == null)
             {
                 throw new ArgumentNullException(nameof(page));
             }
 
             return this.Store.GetUrlAsync(page, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public virtual Task SetUrlAsync(TPage page, string url)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            var formattedUrl = FormatUrl(url);
+            return this.Store.SetUrlAsync(page, formattedUrl, CancellationToken);
         }
 
         /// <summary>
@@ -264,7 +384,129 @@ namespace ChaosCMS.Managers
             return this.Store.GetTemplateAsync(page, CancellationToken);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public virtual Task SetTemplateAsync(TPage page, string url)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return this.Store.SetTemplateAsync(page, url, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="pageType"></param>
+        /// <returns></returns>
+        public virtual Task SetPageTypeAsync(TPage page, string pageType)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return this.Store.SetPageTypeAsync(page, pageType, CancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the type of page
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns>the name of the type</returns>
+        public virtual Task<string> GetPageTypeAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return this.Store.GetPageTypeAsync(page, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public Task<int> GetStatusCodeAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return this.Store.GetStatusCodeAsync(page, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public virtual Task SetStatusCodeAsync(TPage page, int code)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return this.Store.SetStatusCodeAsync(page, code, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public virtual Task<List<Content>> GetContentAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var store = this.GetPageContentStore();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return store.GetContentAsync(page, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public virtual Task SetContentAsync(TPage page, List<Content> content)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var store = this.GetPageContentStore();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return store.SetContentAsync(page, content, CancellationToken);
+        }
+
         #region IDisposable Support
+
         private bool isDisposed = false; // To detect redundant calls
 
         /// <summary>
@@ -288,8 +530,27 @@ namespace ChaosCMS.Managers
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        #endregion
 
+        #endregion IDisposable Support
+
+
+        private IPageContentStore<TPage> GetPageContentStore()
+        {
+            this.ThrowIfDisposed();
+            var store = this.Store as IPageContentStore<TPage>;
+            if(store == null)
+            {
+                throw new NotSupportedException(Resources.FormatStoreIsNotOfType(typeof(IPageContentStore<TPage>).Name));
+            }
+
+            return store;
+        }
+
+        private async Task FormatUrlAsync(TPage page)
+        {
+            var formattedUrl = FormatUrl(await this.GetUrlAsync(page));
+            await this.Store.SetUrlAsync(page, formattedUrl, CancellationToken);
+        }
 
         /// <summary>
         /// Throws if this class has been disposed.

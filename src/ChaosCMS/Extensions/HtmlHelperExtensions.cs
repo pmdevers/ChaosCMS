@@ -1,16 +1,14 @@
-﻿
-using ChaosCMS;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using ChaosCMS;
 
 namespace Microsoft.AspNetCore.Mvc.Rendering
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static class HtmlHelperExtensions
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="helper"></param>
         /// <returns></returns>

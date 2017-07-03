@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using ChaosCMS.Hal;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChaosCMS.Extensions
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static class ControllerExtensions
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="controller"></param>
         /// <param name="result"></param>
@@ -27,7 +26,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="controller"></param>
         /// <param name="result"></param>
@@ -44,7 +43,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="controller"></param>
@@ -82,7 +81,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="controller"></param>
         /// <param name="links"></param>
@@ -105,7 +104,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="controller"></param>
         /// <param name="hyperMedia"></param>
@@ -117,7 +116,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="controller"></param>
@@ -133,7 +132,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="controller"></param>
@@ -162,7 +161,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -181,7 +180,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -200,7 +199,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="E"></typeparam>
@@ -230,7 +229,7 @@ namespace ChaosCMS.Extensions
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="controller"></param>
         /// <param name="relativeLinkBase"></param>

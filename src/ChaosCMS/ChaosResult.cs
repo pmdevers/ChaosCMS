@@ -1,35 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ChaosCMS
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class ChaosResult
     {
         private static readonly ChaosResult success = new ChaosResult() { Succeeded = true };
-        private List<ChaosError> errors = new List<ChaosError>();
-
         /// <summary>
         /// 
+        /// </summary>
+        protected List<ChaosError> errors = new List<ChaosError>();
+
+        /// <summary>
+        ///
         /// </summary>
         public bool Succeeded { get; protected set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IEnumerable<ChaosError> Errors => this.errors;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static ChaosResult Success => success;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="errors"></param>
         /// <returns></returns>
@@ -44,7 +45,7 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override string ToString()

@@ -3,18 +3,23 @@
 namespace ChaosCMS
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class ChaosHttpExeption : ChaosException
     {
-        private ChaosHttpExeption() { }
-        private ChaosHttpExeption(string message) : base(message) { }
-        
+        private ChaosHttpExeption()
+        {
+        }
+
+        private ChaosHttpExeption(string message) : base(message)
+        {
+        }
+
         /// <summary>
         /// The <see cref="StatusCodes"/> that occourd.
         /// </summary>
         public int HttpStatusCode { get; private set; }
-        
+
         /// <summary>
         /// Initializes a new <see cref="ChaosHttpExeption"/> with status code 404
         /// </summary>

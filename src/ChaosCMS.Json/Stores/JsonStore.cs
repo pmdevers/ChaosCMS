@@ -10,33 +10,35 @@ using Newtonsoft.Json;
 namespace ChaosCMS.Json.Stores
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public abstract class JsonStore<TEntity> : IDisposable 
+    public abstract class JsonStore<TEntity> : IDisposable
         where TEntity : class, IEntity
     {
         private bool isDisposed = false;
         private static object lockObject = new object();
+        private List<TEntity> collection;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="optionsAccessor"></param>
         protected JsonStore(IOptions<ChaosJsonStoreOptions> optionsAccessor)
         {
             this.Options = optionsAccessor?.Value ?? new ChaosJsonStoreOptions();
-            this.ReadFile();
+            this.collection  = this.ReadFile<TEntity>();
         }
 
         /// <summary>
         /// The <see cref="ChaosJsonStoreOptions"/> used to configure Chaos Json Store.
         /// </summary>
         protected internal ChaosJsonStoreOptions Options { get; }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        protected internal IList<TEntity> Collection { get; set; }
+        protected virtual internal IList<TEntity> Collection { get { return this.collection; } }
 
         /// <inheritdoc />
         public Task<ChaosResult> CreateAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
@@ -44,7 +46,7 @@ namespace ChaosCMS.Json.Stores
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
             this.Collection.Add(entity);
-            this.WriteFile();
+            this.WriteFile(this.collection);
             return Task.FromResult(ChaosResult.Success);
         }
 
@@ -55,7 +57,7 @@ namespace ChaosCMS.Json.Stores
             this.ThrowIfDisposed();
             this.Collection.Remove(entity);
             this.Collection.Add(entity);
-            this.WriteFile();
+            this.WriteFile(this.collection);
             return Task.FromResult(ChaosResult.Success);
         }
 
@@ -65,7 +67,7 @@ namespace ChaosCMS.Json.Stores
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
             this.Collection.Remove(entity);
-            this.WriteFile();
+            this.WriteFile(this.collection);
             return Task.FromResult(ChaosResult.Success);
         }
 
@@ -75,6 +77,15 @@ namespace ChaosCMS.Json.Stores
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
             var item = this.Collection.FirstOrDefault(x => x.Id.Equals(this.ConvertIdFromString(id)));
+            return Task.FromResult(item);
+        }
+
+        /// <inheritdoc />
+        public Task<TEntity> FindByExternalIdAsync(string externalId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var item = this.Collection.FirstOrDefault(x => x.ExternalId.Equals(this.ConvertIdFromString(externalId)));
             return Task.FromResult(item);
         }
 
@@ -90,9 +101,8 @@ namespace ChaosCMS.Json.Stores
             return Task.FromResult(this.ConvertIdToString(entity.Id));
         }
 
-        
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public void Dispose()
         {
@@ -100,7 +110,7 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pageId"></param>
         /// <returns></returns>
@@ -115,7 +125,7 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -129,43 +139,42 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        protected void ReadFile()
+        protected List<T> ReadFile<T>()
         {
-            if (this.Collection == null)
-            {
+            
                 lock (lockObject)
                 {
                     var path = Path.Combine(Directory.GetCurrentDirectory(), this.Options.StoreDirectoryName);
-                    var filename = Path.Combine(path, typeof(TEntity).Name + this.Options.Extension);
+                    var filename = Path.Combine(path, typeof(T).Name + this.Options.Extension);
                     if (!File.Exists(filename))
                     {
-                        this.WriteFile();
+                        this.WriteFile<T>(new List<T>());
                     }
                     var fileContents = File.ReadAllText(filename);
-                    this.Collection = JsonConvert.DeserializeObject<List<TEntity>>(fileContents);
+                    return JsonConvert.DeserializeObject<List<T>>(fileContents);
                 }
-            }
+            
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        protected void WriteFile()
+        protected void WriteFile<T>(List<T> collection)
         {
-            if (this.Collection != null)
+            if (collection != null)
             {
                 lock (lockObject)
                 {
                     var path = Path.Combine(Directory.GetCurrentDirectory(), this.Options.StoreDirectoryName);
-                    var filename = Path.Combine(path, typeof(TEntity).Name + this.Options.Extension);
+                    var filename = Path.Combine(path, typeof(T).Name + this.Options.Extension);
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
                     }
-                    File.WriteAllText(filename, JsonConvert.SerializeObject(this.Collection, Formatting.Indented));
+                    File.WriteAllText(filename, JsonConvert.SerializeObject(collection, Formatting.Indented));
                 }
             }
         }

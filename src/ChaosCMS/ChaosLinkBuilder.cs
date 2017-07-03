@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace ChaosCMS
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static class ChaosLinkBuilder
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="controller"></param>
         /// <param name="manager"></param>
@@ -23,16 +23,16 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="controller"></param>
         /// <param name="manager"></param>
-        /// <param name="content"></param>
-        /// <typeparam name="TContent"></typeparam>
+        /// <param name="page"></param>
+        /// <typeparam name="TPageType"></typeparam>
         /// <returns></returns>
-        public static Link SelfLink<TContent>(this ControllerBase controller, ContentManager<TContent> manager, TContent content) where TContent : class
+        public static Link SelfLink<TPageType>(this ControllerBase controller, PageTypeManager<TPageType> manager, TPageType page) where TPageType : class
         {
-            return new Link("self", controller.Url.RouteUrl("content", new { id = manager.GetIdAsync(content).Result }));
+            return new Link("self", controller.Url.RouteUrl("pagetype", new { id = manager.GetIdAsync(page).Result }));
         }
 
         /// <summary>
@@ -43,7 +43,8 @@ namespace ChaosCMS
         /// <param name="manager"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static HalResponse CreateEmbeddedResponse<TPage>(this ControllerBase controller, PageManager<TPage> manager, TPage page) where TPage : class
+        public static HalResponse CreateEmbeddedResponse<TPage>(this ControllerBase controller, PageManager<TPage> manager, TPage page) 
+            where TPage : class
         {
             var response =
                 new HalResponse(
@@ -57,27 +58,23 @@ namespace ChaosCMS
         }
 
         /// <summary>
-        /// 
+        /// /
         /// </summary>
-        /// <typeparam name="TContent"></typeparam>
+        /// <typeparam name="TPageType"></typeparam>
         /// <param name="controller"></param>
         /// <param name="manager"></param>
-        /// <param name="content"></param>
+        /// <param name="page"></param>
         /// <returns></returns>
-        public static HalResponse CreateEmbeddedResponse<TContent>(this ControllerBase controller, ContentManager<TContent> manager, TContent content) where TContent : class
+        public static HalResponse CreateEmbeddedResponse<TPageType>(this ControllerBase controller, PageTypeManager<TPageType> manager, TPageType page) where TPageType : class
         {
             var response =
                 new HalResponse(
                     new
                     {
-                        id = manager.GetIdAsync(content).Result,
-                        name = manager.GetNameAsync(content).Result
+                        id = manager.GetIdAsync(page).Result,
+                        name = manager.GetNameAsync(page).Result
                     });
-            response.AddLinks(new[]
-                                  {
-                                      controller.SelfLink(manager, content),
-                                      new Link("children", controller.Url.RouteUrl("children", new { id = manager.GetIdAsync(content).Result }))
-                                  });
+            response.AddLinks(new[] { controller.SelfLink(manager, page) });
             return response;
         }
     }

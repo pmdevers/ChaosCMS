@@ -1,22 +1,22 @@
 ﻿using System;
-using Microsoft.Extensions.Options;
-using ChaosCMS.Json.Models;
-using Microsoft.AspNetCore.Identity;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
+using ChaosCMS.Json.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 namespace ChaosCMS.Json.Stores
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="TRole"></typeparam>
     public class RoleStore<TRole> : JsonStore<TRole>, IRoleStore<TRole>
         where TRole : JsonRole
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="optionsAccessor"></param>
         public RoleStore(IOptions<ChaosJsonStoreOptions> optionsAccessor) : base(optionsAccessor)
@@ -31,6 +31,7 @@ namespace ChaosCMS.Json.Stores
             var found = this.Collection.FirstOrDefault(x => x.NormalizedName.Equals(normalizedRoleName));
             return Task.FromResult(found);
         }
+
         /// <inheritdoc />
         public Task<string> GetNormalizedRoleNameAsync(TRole role, CancellationToken cancellationToken)
         {
@@ -43,6 +44,7 @@ namespace ChaosCMS.Json.Stores
 
             return Task.FromResult(role.NormalizedName);
         }
+
         /// <inheritdoc />
         public Task<string> GetRoleIdAsync(TRole role, CancellationToken cancellationToken)
         {
@@ -55,6 +57,7 @@ namespace ChaosCMS.Json.Stores
 
             return Task.FromResult(this.ConvertIdToString(role.Id));
         }
+
         /// <inheritdoc />
         public Task<string> GetRoleNameAsync(TRole role, CancellationToken cancellationToken)
         {
@@ -67,6 +70,7 @@ namespace ChaosCMS.Json.Stores
 
             return Task.FromResult(role.Name);
         }
+
         /// <inheritdoc />
         public Task SetNormalizedRoleNameAsync(TRole role, string normalizedName, CancellationToken cancellationToken)
         {
@@ -81,6 +85,7 @@ namespace ChaosCMS.Json.Stores
 
             return Task.FromResult(false);
         }
+
         /// <inheritdoc />
         public Task SetRoleNameAsync(TRole role, string roleName, CancellationToken cancellationToken)
         {
@@ -95,30 +100,33 @@ namespace ChaosCMS.Json.Stores
 
             return Task.FromResult(false);
         }
+
         /// <inheritdoc />
         async Task<IdentityResult> IRoleStore<TRole>.CreateAsync(TRole role, CancellationToken cancellationToken)
         {
-            var result = await base.CreateAsync(role, cancellationToken);
+            var result = await CreateAsync(role, cancellationToken);
             if (!result.Succeeded)
             {
                 return IdentityResult.Failed(result.Errors.Select(x => new IdentityError { Code = x.Code, Description = x.Description }).ToArray());
             }
             return IdentityResult.Success;
         }
+
         /// <inheritdoc />
         async Task<IdentityResult> IRoleStore<TRole>.DeleteAsync(TRole role, CancellationToken cancellationToken)
         {
-            var result = await base.DeleteAsync(role, cancellationToken);
+            var result = await DeleteAsync(role, cancellationToken);
             if (!result.Succeeded)
             {
                 return IdentityResult.Failed(result.Errors.Select(x => new IdentityError { Code = x.Code, Description = x.Description }).ToArray());
             }
             return IdentityResult.Success;
         }
+
         /// <inheritdoc />
         async Task<IdentityResult> IRoleStore<TRole>.UpdateAsync(TRole role, CancellationToken cancellationToken)
         {
-            var result = await base.UpdateAsync(role, cancellationToken);
+            var result = await UpdateAsync(role, cancellationToken);
             if (!result.Succeeded)
             {
                 return IdentityResult.Failed(result.Errors.Select(x => new IdentityError { Code = x.Code, Description = x.Description }).ToArray());

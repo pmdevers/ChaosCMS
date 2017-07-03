@@ -1,10 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+import chaosTheme from './theme/chaosTheme';
+
 import App from './App';
-import './index.scss';
+import './index.css';
+
+injectTapEventPlugin();
+
+const muiTheme = getMuiTheme(chaosTheme);
 
 ReactDOM.render(
-  <App />,
+  <MuiThemeProvider muiTheme={muiTheme}>
+    <App />
+  </MuiThemeProvider>
+  ,
   document.getElementById('root')
 );

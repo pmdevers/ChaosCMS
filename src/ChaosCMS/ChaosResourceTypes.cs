@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChaosCMS
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static class ChaosResourceTypes
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -21,8 +17,9 @@ namespace ChaosCMS
         {
             return MimeTypes[Path.GetExtension(path)];
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="extension"></param>
         /// <returns></returns>
@@ -30,8 +27,9 @@ namespace ChaosCMS
         {
             return MimeTypes.ContainsKey(extension.ToLowerInvariant());
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static readonly Dictionary<string, string> MimeTypes = new Dictionary<string, string>
         {
@@ -43,6 +41,7 @@ namespace ChaosCMS
             {".xml", "application/xml"},
             {".txt", "text/plain"},
             {".html", "text/html"},
+            {".cshtml", "text/html"},
             {".eot", "application/vnd.ms-fontobject" },
             {".otf", "application/font-otf" },
             {".svg", "image/svg+xml" },

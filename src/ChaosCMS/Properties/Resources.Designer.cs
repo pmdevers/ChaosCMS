@@ -43,6 +43,22 @@ namespace ChaosCMS
         }
 
         /// <summary>
+        /// The store is not of type '{0}'.
+        /// </summary>
+        internal static string FormatStoreIsNotOfType(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("StoreIsNotOfType"), p0);
+        }
+
+        /// <summary>
+        /// The store is not of type '{0}'.
+        /// </summary>
+        internal static string StoreIsNotOfType
+        {
+            get { return GetString("StoreIsNotOfType"); }
+        }
+
+        /// <summary>
         /// Type {0} must derive from {1}&lt;{2}&gt;.
         /// </summary>
         internal static string InvalidManagerType
@@ -96,6 +112,19 @@ namespace ChaosCMS
         internal static string FormatContentNameIsInvalid(object p0)
         {
             return string.Format(CultureInfo.CurrentCulture, GetString("ContentNameIsInvalid"), p0);
+        }
+
+        internal static string FormatPageTypeIsInvalid(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("PageTypeIsInvalid"), p0);
+        }
+
+        /// <summary>
+        /// The name '{0}' is not a valid.
+        /// </summary>
+        internal static string FormatNameIsInvalid(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("NameIsInvalid"), p0);
         }
 
         /// <summary>
@@ -160,6 +189,30 @@ namespace ChaosCMS
         internal static string FormatPageUrlIsInvalid(object p0)
         {
             return string.Format(CultureInfo.CurrentCulture, GetString("PageUrlIsInvalid"), p0);
+        }
+
+        /// <summary>
+        /// The statuscode '{0}' is already used.
+        /// </summary>
+        internal static string FormatPageStatusIsInvalid(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("PageStatusIsInvalid"), p0);
+        }
+
+        /// <summary>
+        /// The statuscode '{0}' is already used.
+        /// </summary>
+        internal static string PageStatusIsInvalid
+        {
+            get { return GetString("PageStatusIsInvalid"); }
+        }
+
+        /// <summary>
+        /// The name '{0}' is not a valid page name.
+        /// </summary>
+        internal static string NameIsInvalid
+        {
+            get { return GetString("NameIsInvalid"); }
         }
 
         /// <summary>

@@ -1,46 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Html;
+﻿using System.Threading.Tasks;
 using ChaosCMS.Managers;
+using Microsoft.AspNetCore.Html;
+using ChaosCMS.Models.Pages;
 
 namespace ChaosCMS.Rendering
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    /// <typeparam name="TContent"></typeparam>
-    public class HtmlRenderer<TContent> : IRenderer<TContent>
-        where TContent : class
+    public class HtmlRenderer: IRenderer
     {
-        private readonly ContentManager<TContent> contentManager;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        /// <param name="contentManager"></param>
-        public HtmlRenderer(ContentManager<TContent> contentManager)
+        public string TypeName
         {
-            this.contentManager = contentManager;
+            get
+            {
+                return "html";
+            }
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public string TypeName { get { return "html"; } }
-
-        /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="chaos"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public async Task<IHtmlContent> RenderAsync(IChaos<TContent> chaos, TContent content)
+        public Task<IHtmlContent> RenderAsync(IChaos chaos, Content content)
         {
-            var value = await this.contentManager.GetValueAsync(content);
-            return new HtmlString(value);
+            return Task.FromResult<IHtmlContent>(new HtmlString(content.Value));
         }
     }
 }
