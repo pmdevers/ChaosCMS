@@ -85,7 +85,7 @@ namespace ChaosCMS.Json.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            var item = this.Collection.FirstOrDefault(x => x.ExternalId.Equals(this.ConvertIdFromString(externalId)));
+            var item = this.Collection.FirstOrDefault(x => x.ExternalId != null && x.ExternalId.Equals(externalId));
             return Task.FromResult(item);
         }
 

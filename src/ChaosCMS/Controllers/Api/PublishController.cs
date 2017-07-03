@@ -14,7 +14,7 @@ namespace ChaosCMS.Controllers
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>
-    [Route("api/publish", Name = "publish")]
+    [Route("api/page", Name = "publish")]
     public class PublishController<TSource, TDestination> : Controller
         where TSource : class, new()
     {
@@ -37,7 +37,7 @@ namespace ChaosCMS.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id}/publish")]
         public async Task<IActionResult> Get(string id)
         {
             var source = await this.pageManager.FindByIdAsync(id);

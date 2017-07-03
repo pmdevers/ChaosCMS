@@ -163,7 +163,7 @@ namespace ChaosCMS.Converters
         {
             var externalId = await this.SourceManager.GetIdAsync(source);
             var destination = await this.DestinationManager.FindByExternalIdAsync(externalId);
-            if(destination == null)
+            if(destination == null || typeof(TSource) == typeof(TDestination))
             {
                 return new TDestination();
             }

@@ -271,7 +271,7 @@ namespace ChaosCMS.Managers
 
         private string FormatUrl(string urlPath)
         {
-            var segments = urlPath.Split('/');
+            var segments = urlPath?.Split('/');
             var formatedSegments = new List<string>();
             foreach(var segment in segments)
             {
@@ -355,7 +355,7 @@ namespace ChaosCMS.Managers
         /// <param name="page"></param>
         /// <param name="url"></param>
         /// <returns></returns>
-        public virtual Task SetUrlAsync(TPage page, string url)
+        public virtual async Task SetUrlAsync(TPage page, string url)
         {
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -364,8 +364,8 @@ namespace ChaosCMS.Managers
                 throw new ArgumentNullException(nameof(page));
             }
 
-            var formattedUrl = FormatUrl(url);
-            return this.Store.SetUrlAsync(page, formattedUrl, CancellationToken);
+            var formattedUrl = FormatUrl(url ?? await this.GetNameAsync(page));
+            await this.Store.SetUrlAsync(page, formattedUrl, CancellationToken);
         }
 
         /// <summary>

@@ -90,6 +90,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 typeof(PageController<TAdminPage>),
                                 typeof(PageTypeController<TAdminPageType>),
                                 typeof(PublishController<TAdminPage, TPage>),
+                                typeof(PageCopyController<TAdminPage>),
                                 typeof(RenderController<TPage>),
                                 typeof(ErrorController<TPage>),
                                 typeof(ResourceController),
