@@ -116,7 +116,8 @@ namespace Microsoft.Extensions.DependencyInjection
             // Validators
             services.TryAddScoped<IPageValidator<TPage>, DefaultPageValidator<TPage>>();
             services.TryAddScoped<IPageValidator<TAdminPage>, DefaultPageValidator<TAdminPage>>();
-
+            
+           
             services.TryAddScoped<IConverter<TAdminPage, TPage>, PageConverter<TAdminPage, TPage>>();
             services.TryAddScoped<IConverter<TAdminPage, TAdminPage>, PageConverter<TAdminPage, TAdminPage>>();
 
@@ -126,6 +127,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IRenderer, MacroRenderer>();
             services.AddSingleton<IRenderer, CarouselRenderer>();
             services.AddSingleton<IRenderer, LinkContentRenderer>();
+
+            // Helper Classes
+            services.AddSingleton<IUrlFormatter, DefaultUrlFormatter>();
 
             if (options != null)
             {

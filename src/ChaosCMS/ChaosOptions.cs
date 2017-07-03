@@ -25,5 +25,10 @@ namespace ChaosCMS
         /// Gets or set the SecurityOptions used.
         /// </summary>
         public ChaosSecurityOptions Security { get; set; } = new ChaosSecurityOptions();
+
+        /// <summary>
+        /// Gets or sets the UrlFormatter options used.
+        /// </summary>
+        public ChaosUrlFormatterOptions UrlFormatter { get; set; } = new ChaosUrlFormatterOptions();
     }
 }

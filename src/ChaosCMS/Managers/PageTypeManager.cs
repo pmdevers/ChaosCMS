@@ -46,12 +46,7 @@ namespace ChaosCMS.Managers
             ILogger<PageTypeManager<TPageType>> logger
             )
         {
-            if(store == null)
-            {
-                throw new ArgumentNullException(nameof(store));
-            }
-
-            this.Store = store;
+            this.Store = store ?? throw new ArgumentNullException(nameof(store));
             this.Options = optionsAccessor?.Value ?? new ChaosOptions();
             this.ErrorDescriber = errorDescriber ?? new ChaosErrorDescriber();
             this.Logger = logger;

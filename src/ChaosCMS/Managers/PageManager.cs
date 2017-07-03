@@ -32,24 +32,22 @@ namespace ChaosCMS.Managers
         /// <param name="store">The persistence store the manager will operate over.</param>
         /// <param name="optionsAccessor"></param>
         /// <param name="errors"></param>
+        /// <param name="urlFormatter"></param>
         /// <param name="validators"></param>
         /// <param name="services"></param>
         /// <param name="logger"></param>
         public PageManager(IPageStore<TPage> store,
             IOptions<ChaosOptions> optionsAccessor,
             ChaosErrorDescriber errors,
+            IUrlFormatter urlFormatter,
             IEnumerable<IPageValidator<TPage>> validators,
             IServiceProvider services,
             ILogger<PageManager<TPage>> logger)
         {
-            if (store == null)
-            {
-                throw new ArgumentNullException(nameof(store));
-            }
-
-            this.Store = store;
+            this.Store = store ?? throw new ArgumentNullException(nameof(store)); ;
             this.Options = optionsAccessor?.Value ?? new ChaosOptions();
             this.ErrorDescriber = errors ?? new ChaosErrorDescriber();
+            this.UrlFormatter = urlFormatter ?? new DefaultUrlFormatter(optionsAccessor);
             this.Logger = logger;
 
             if (validators != null)
@@ -98,6 +96,11 @@ namespace ChaosCMS.Managers
         protected internal ChaosOptions Options { get; set; }
 
         /// <summary>
+        /// The <see cref="IUrlFormatter"/> used for formatting urls.
+        /// </summary>
+        protected internal IUrlFormatter UrlFormatter { get; set; }
+
+        /// <summary>
         /// 
         /// </summary>
         public virtual bool SupportsContents
@@ -130,9 +133,11 @@ namespace ChaosCMS.Managers
                 return result;
             }
 
+            await this.FormatUrlAsync(page);
+
             return await this.Store.CreateAsync(page, CancellationToken);
         }
-        
+
         /// <summary>
         ///
         /// </summary>
@@ -153,6 +158,8 @@ namespace ChaosCMS.Managers
             {
                 return result;
             }
+
+            await this.FormatUrlAsync(page);
 
             return await this.Store.UpdateAsync(page, CancellationToken);
         }
@@ -257,7 +264,20 @@ namespace ChaosCMS.Managers
                 throw new ArgumentNullException(nameof(urlPath));
             }
 
-            return Store.FindByUrlAsync(urlPath, CancellationToken);
+            var url = this.FormatUrl(urlPath);
+
+            return Store.FindByUrlAsync(url, CancellationToken);
+        }
+
+        private string FormatUrl(string urlPath)
+        {
+            var segments = urlPath.Split('/');
+            var formatedSegments = new List<string>();
+            foreach(var segment in segments)
+            {
+                formatedSegments.Add(this.UrlFormatter.FormatUrl(segment));
+            }
+            return string.Join("/", formatedSegments);
         }
 
         /// <summary>
@@ -344,7 +364,8 @@ namespace ChaosCMS.Managers
                 throw new ArgumentNullException(nameof(page));
             }
 
-            return this.Store.SetUrlAsync(page, url, CancellationToken);
+            var formattedUrl = FormatUrl(url);
+            return this.Store.SetUrlAsync(page, formattedUrl, CancellationToken);
         }
 
         /// <summary>
@@ -523,6 +544,12 @@ namespace ChaosCMS.Managers
             }
 
             return store;
+        }
+
+        private async Task FormatUrlAsync(TPage page)
+        {
+            var formattedUrl = FormatUrl(await this.GetUrlAsync(page));
+            await this.Store.SetUrlAsync(page, formattedUrl, CancellationToken);
         }
 
         /// <summary>

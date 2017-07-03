@@ -18,11 +18,6 @@ namespace ChaosCMS.Managers
         /// </summary>
         public ResourceManager()
         {
-            this.Init();
-        }
-
-        private void Init()
-        {
             var assemblies = this.GetAssemblies();
 
             foreach (var assemblyName in assemblies)
