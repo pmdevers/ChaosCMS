@@ -22,6 +22,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <typeparam name="TPage">The type of the page.</typeparam>
         /// <typeparam name="TPageType">The type of the pageType.</typeparam>
+        /// <typeparam name="TAdminPage">The type of the page.</typeparam>
+        /// <typeparam name="TAdminPageType">The type of the pageType.</typeparam>
         /// <typeparam name="TUser">The type of the user</typeparam>
         /// <typeparam name="TRole">The type of the Role</typeparam>
         /// <param name="service">The service collection</param>

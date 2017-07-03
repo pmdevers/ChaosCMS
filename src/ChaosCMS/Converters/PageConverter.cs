@@ -87,7 +87,6 @@ namespace ChaosCMS.Converters
         /// </summary>
         /// <param name="source"></param>
         /// <param name="destination"></param>
-        /// <param name="errors"></param>
         /// <returns></returns>
         protected virtual async Task ConvertContentAsync(TSource source, TDestination destination)
         {
