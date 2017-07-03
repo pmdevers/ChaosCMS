@@ -68,6 +68,11 @@ namespace ChaosCMS.Converters
                 }
                 // todo sub types
             }
+            else
+            {
+                errors.AddRange(result.Errors);
+            }
+            
 
             if (errors.Count > 0)
             {

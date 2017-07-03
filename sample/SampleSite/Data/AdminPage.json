@@ -11,6 +11,7 @@
     "Id": "5807cab3-fabc-42df-b59f-0d30f506765f",
     "Name": "SubPage",
     "Hosts": [ "localhost", "patrick-evers.nl" ],
+    "Type": "default",
     "Url": "/register",
     "Template": "register",
     "StatusCode": 200
