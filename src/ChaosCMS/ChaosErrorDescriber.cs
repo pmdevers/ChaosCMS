@@ -172,6 +172,20 @@ namespace ChaosCMS
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageId"></param>
+        /// <returns></returns>
+        public ChaosError PageIdNotFound(string pageId)
+        {
+            return new ChaosError
+            {
+                Code = nameof(PageIdNotFound),
+                Description = Resources.FormatPageNotFound(pageId)
+            };
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <returns></returns>

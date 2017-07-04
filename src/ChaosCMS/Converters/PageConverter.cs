@@ -36,27 +36,27 @@ namespace ChaosCMS.Converters
         /// </summary>
         public PageManager<TDestination> DestinationManager { get; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public async Task<ConverterResult<TDestination>> Convert(TSource source)
+        /// <inherts />
+        public async Task<ConverterResult<TDestination>> Convert(TSource source, Action<ConverterConfig> configAction = null)
         {
             if(source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
-            
+            var config = new ConverterConfig();
+            configAction?.Invoke(config);
+
             var errors = new List<ChaosError>();
 
-            TDestination destination = await this.GetDestinationAsync(source);
+            TDestination destination = config.AlwaysNew ? new TDestination() : await this.GetDestinationAsync(source);
 
             await this.ConvertNameAsync(source, destination);
             await this.ConvertUrlAsync(source, destination);
             await this.ConvertTemplateAsync(source, destination);
             await this.ConvertStatusCodeAsync(source, destination);
             await this.ConvertPageTypeAsync(source, destination);
+
+            await config?.BeforeCreate();
 
             var result = await this.DestinationManager.CreateAsync(destination);
 

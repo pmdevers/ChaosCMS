@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using ChaosCMS.Extensions;
+
 namespace ChaosCMS.Controllers
 {
     /// <summary>
@@ -20,16 +22,19 @@ namespace ChaosCMS.Controllers
     {
         private readonly IConverter<TSource, TDestination> converter;
         private readonly PageManager<TSource> pageManager;
+        private readonly ChaosErrorDescriber errorDescriber;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="converter"></param>
         /// <param name="pageManager"></param>
-        public PublishController(IConverter<TSource, TDestination> converter, PageManager<TSource> pageManager)
+        /// <param name="errorDescriber"></param>
+        public PublishController(IConverter<TSource, TDestination> converter, PageManager<TSource> pageManager, ChaosErrorDescriber errorDescriber)
         {
             this.converter = converter;
             this.pageManager = pageManager;
+            this.errorDescriber = errorDescriber;
         }
 
         /// <summary>
@@ -41,8 +46,12 @@ namespace ChaosCMS.Controllers
         public async Task<IActionResult> Get(string id)
         {
             var source = await this.pageManager.FindByIdAsync(id);
+            if(source == null)
+            {
+                return this.ChaosResults(errorDescriber.PageIdNotFound(id));
+            }
             var result = await this.converter.Convert(source);
-            return Json(result);
+            return this.ChaosResults(result);
         }
     }
 }

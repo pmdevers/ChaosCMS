@@ -45,6 +45,11 @@ namespace ChaosCMS.Controllers
         {
             var page = await this.manager.FindByIdAsync(id);
 
+            if(page == null)
+            {
+                return this.ChaosResults(this.manager.ErrorDescriber.PageIdNotFound(id));
+            }
+
             return this.Hal(page, new[]
             {
                 this.SelfLink(this.manager, page),
@@ -61,7 +66,7 @@ namespace ChaosCMS.Controllers
         public async Task<IActionResult> Post([FromBody] TPage page)
         {
             var result = await this.manager.CreateAsync(page);
-            return this.Ok(result);
+            return this.ChaosResults(result);
         }
 
         /// <summary>
@@ -82,7 +87,7 @@ namespace ChaosCMS.Controllers
             }
             var result = await this.manager.UpdateAsync(page);
 
-            return this.ChaosResult(result);
+            return this.ChaosResults(result);
         }
     }
 }

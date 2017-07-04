@@ -1,6 +1,6 @@
 [
   {
-    "Id": "5807cab2-fabc-42df-b59f-0d30f506765f",
+    "Id": "1807cab2-fabc-42df-b59f-0d30f506765f",
     "ExternalId": null,
     "Name": "HomePage",
     "Hosts": [
@@ -14,7 +14,7 @@
     "Content": null
   },
   {
-    "Id": "5807cab3-fabc-42df-b59f-0d30f506765f",
+    "Id": "2807cab3-fabc-42df-b59f-0d30f506765f",
     "ExternalId": null,
     "Name": "SubPage",
     "Hosts": [
@@ -28,7 +28,7 @@
     "Content": null
   },
   {
-    "Id": "5807cab3-fabc-42df-b59f-0d30f506765f",
+    "Id": "3807cab3-fabc-42df-b59f-0d30f506765f",
     "ExternalId": null,
     "Name": "Page Not Found",
     "Hosts": [
@@ -42,7 +42,7 @@
     "Content": null
   },
   {
-    "Id": "5807cab4-fabc-42df-b59f-0d30f506765f",
+    "Id": "4807cab4-fabc-42df-b59f-0d30f506765f",
     "ExternalId": null,
     "Name": "SubPage-1",
     "Hosts": [

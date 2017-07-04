@@ -1,4 +1,5 @@
 ﻿using ChaosCMS.Converters;
+using ChaosCMS.Extensions;
 using ChaosCMS.Managers;
 using ChaosCMS.Models.Pages;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,7 @@ namespace ChaosCMS.Controllers
     {
         private readonly IConverter<TPage, TPage> converter;
         private readonly PageManager<TPage> manager;
+        private readonly ChaosErrorDescriber errorDescriber;
 
         /// <summary>
         /// 
@@ -37,10 +39,21 @@ namespace ChaosCMS.Controllers
         /// <param name="id"></param>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpGet("{id}/copy")]
-        public async Task<IActionResult> Get(string id, CopyPageModel model)
+        [HttpPost("{id}/copy")]
+        public async Task<IActionResult> Post(string id, [FromBody] CopyPageModel model)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return BadRequest(this.ModelState);
+            }
+
             var source = await this.manager.FindByIdAsync(id);
+            
+            if(source == null)
+            {
+                return this.ChaosResults(this.manager.ErrorDescriber.PageIdNotFound(id));
+            }
+
             var result = await this.converter.Convert(source);
 
             if (result.Succeeded)
@@ -49,7 +62,7 @@ namespace ChaosCMS.Controllers
                 await this.manager.UpdateAsync(result.Destination);
             }
 
-            return Json(result);
+            return this.Ok(result);
         }
 
     }

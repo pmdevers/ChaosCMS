@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using ChaosCMS.Hal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ChaosCMS.Extensions
 {
@@ -21,17 +22,18 @@ namespace ChaosCMS.Extensions
         {
             foreach (var error in result.Errors)
             {
-                controller.ModelState.AddModelError(string.Empty, error.Description);
+                controller.ModelState.AddModelError(error.Code, error.Description);
             }
         }
 
+       
         /// <summary>
         ///
         /// </summary>
         /// <param name="controller"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        public static IActionResult ChaosResult(this ControllerBase controller, ChaosResult result)
+        public static IActionResult ChaosResults(this ControllerBase controller, ChaosResult result)
         {
             if (!result.Succeeded)
             {
@@ -40,6 +42,21 @@ namespace ChaosCMS.Extensions
             }
 
             return controller.Ok(result);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="errors"></param>
+        /// <returns></returns>
+        public static IActionResult ChaosResults(this ControllerBase controller, params ChaosError[] errors)
+        {
+            if (errors.Count() > 0)
+            {
+                return controller.ChaosResults(ChaosResult.Failed(errors));
+            }
+            return controller.ChaosResults(ChaosResult.Success);
         }
 
         /// <summary>
