@@ -20,7 +20,6 @@ namespace ChaosCMS.Controllers
     {
         private readonly IConverter<TPage, TPage> converter;
         private readonly PageManager<TPage> manager;
-        private readonly ChaosErrorDescriber errorDescriber;
 
         /// <summary>
         /// 
@@ -53,16 +52,13 @@ namespace ChaosCMS.Controllers
             {
                 return this.ChaosResults(this.manager.ErrorDescriber.PageIdNotFound(id));
             }
+                                    
+            var result = await this.converter.Convert(source, config => {
+                config.AlwaysNew = true;
+                config.BeforeCreate = async (dest) => await manager.SetUrlAsync(dest, model.NewUrl);
+            });
 
-            var result = await this.converter.Convert(source);
-
-            if (result.Succeeded)
-            {
-                await this.manager.SetUrlAsync(result.Destination, model.NewUrl);
-                await this.manager.UpdateAsync(result.Destination);
-            }
-
-            return this.Ok(result);
+            return this.ChaosResults(result);
         }
 
     }

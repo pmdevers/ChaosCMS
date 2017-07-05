@@ -37,13 +37,13 @@ namespace ChaosCMS.Converters
         public PageManager<TDestination> DestinationManager { get; }
 
         /// <inherts />
-        public async Task<ConverterResult<TDestination>> Convert(TSource source, Action<ConverterConfig> configAction = null)
+        public async Task<ConverterResult<TDestination>> Convert(TSource source, Action<ConverterConfig<TDestination>> configAction = null)
         {
             if(source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
-            var config = new ConverterConfig();
+            var config = new ConverterConfig<TDestination>();
             configAction?.Invoke(config);
 
             var errors = new List<ChaosError>();
@@ -56,7 +56,10 @@ namespace ChaosCMS.Converters
             await this.ConvertStatusCodeAsync(source, destination);
             await this.ConvertPageTypeAsync(source, destination);
 
-            await config?.BeforeCreate();
+            if (!config.AlwaysNew)
+                await this.ConvertExternalIdAsync(source, destination);
+
+            await config.BeforeCreate(destination);
 
             var result = await this.DestinationManager.CreateAsync(destination);
 
@@ -80,6 +83,18 @@ namespace ChaosCMS.Converters
             }
 
             return ConverterResult<TDestination>.Success(destination);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <returns></returns>
+        protected virtual async Task ConvertExternalIdAsync(TSource source, TDestination destination)
+        {
+            var id = await this.SourceManager.GetIdAsync(source);
+            await this.DestinationManager.SetOriginAsync(destination, id);
         }
 
         /// <summary>
@@ -162,7 +177,7 @@ namespace ChaosCMS.Converters
         protected virtual async Task<TDestination> GetDestinationAsync(TSource source)
         {
             var externalId = await this.SourceManager.GetIdAsync(source);
-            var destination = await this.DestinationManager.FindByExternalIdAsync(externalId);
+            var destination = await this.DestinationManager.FindByOriginAsync(externalId);
             if(destination == null || typeof(TSource) == typeof(TDestination))
             {
                 return new TDestination();

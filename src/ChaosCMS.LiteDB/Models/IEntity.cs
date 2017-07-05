@@ -8,6 +8,6 @@ namespace ChaosCMS.LiteDB.Models
     public interface IEntity
     {
         ObjectId Id { get; set; }
-        string ExternalId { get; set; }
+        string Origin { get; set; }
     }
 }

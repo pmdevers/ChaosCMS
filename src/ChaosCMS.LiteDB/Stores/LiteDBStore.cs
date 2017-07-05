@@ -94,11 +94,11 @@ namespace ChaosCMS.LiteDB.Stores
         }
 
         /// <inheritdoc />
-        public Task<TEntity> FindByExternalIdAsync(string externalId, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<TEntity> FindByOriginAsync(string origin, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            var item = this.Collection.FindOne(x => x.ExternalId.Equals(externalId));
+            var item = this.Collection.FindOne(x => x.Origin.Equals(origin));
             return Task.FromResult(item);
         }
 
@@ -112,6 +112,21 @@ namespace ChaosCMS.LiteDB.Stores
                 throw new ArgumentNullException(nameof(entity));
             }
             return Task.FromResult(this.ConvertIdToString(entity.Id));
+        }
+
+        /// <inheritdoc />
+        public Task SetOriginAsync(TEntity entity, string origin, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            entity.Origin = origin;
+
+            return Task.FromResult(0);
         }
 
         public void Dispose()

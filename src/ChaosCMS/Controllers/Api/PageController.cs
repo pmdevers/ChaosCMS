@@ -1,4 +1,5 @@
 ﻿using ChaosCMS.Extensions;
+using ChaosCMS.Hal;
 using ChaosCMS.Managers;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +54,9 @@ namespace ChaosCMS.Controllers
             return this.Hal(page, new[]
             {
                 this.SelfLink(this.manager, page),
-                //new Link("properties", "/api/page/{id}/properties")
+                new Link("content", "/api/page/{id}/content"),
+                new Link("ac:copy", "/api/page/{id}/copy"),
+                new Link("ac:publish", "/api/page/{id}/publish")
             });
         }
 

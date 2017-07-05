@@ -81,11 +81,11 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <inheritdoc />
-        public Task<TEntity> FindByExternalIdAsync(string externalId, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<TEntity> FindByOriginAsync(string origin, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            var item = this.Collection.FirstOrDefault(x => x.ExternalId != null && x.ExternalId.Equals(externalId));
+            var item = this.Collection.FirstOrDefault(x => x.Origin != null && x.Origin.Equals(origin));
             return Task.FromResult(item);
         }
 
@@ -107,6 +107,7 @@ namespace ChaosCMS.Json.Stores
         public void Dispose()
         {
             this.isDisposed = true;
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>

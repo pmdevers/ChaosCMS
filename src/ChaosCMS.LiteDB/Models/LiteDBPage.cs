@@ -9,7 +9,7 @@ namespace ChaosCMS.LiteDB.Models
     public class LiteDBPage : IEntity
     {
         public ObjectId Id { get; set; }
-        public string ExternalId { get; set; }
+        public string Origin { get; set; }
         public string Name { get;  set; }
         public int StatusCode { get; set; }
         public string Url { get;  set; }

@@ -23,7 +23,7 @@ namespace ChaosCMS.Controllers
         /// <returns></returns>
         [Route("")]
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Index()
         {
             return this.View("admin.index.html");
         }

@@ -1,6 +1,8 @@
 ﻿using System;
 using ChaosCMS.Helpers;
 using ChaosCMS.Managers;
+using ChaosCMS.Models.Pages;
+using System.Collections.Generic;
 
 namespace ChaosCMS.Extensions
 {
@@ -33,6 +35,23 @@ namespace ChaosCMS.Extensions
         /// <param name="manager"></param>
         /// <param name="page"></param>
         /// <returns></returns>
+        public static string GetId<TPage>(this PageManager<TPage> manager, TPage page)
+            where TPage : class
+        {
+            if (manager == null)
+            {
+                throw new ArgumentNullException("manager");
+            }
+            return AsyncHelper.RunSync(() => manager.GetIdAsync(page));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <typeparam name="TPage"></typeparam>
+        /// <param name="manager"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
         public static string GetName<TPage>(this PageManager<TPage> manager, TPage page)
             where TPage : class
         {
@@ -40,7 +59,92 @@ namespace ChaosCMS.Extensions
             {
                 throw new ArgumentNullException("manager");
             }
-            return AsyncHelper.RunSync<string>(() => manager.GetNameAsync(page));
+            return AsyncHelper.RunSync(() => manager.GetNameAsync(page));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <typeparam name="TPage"></typeparam>
+        /// <param name="manager"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public static string GetUrl<TPage>(this PageManager<TPage> manager, TPage page)
+            where TPage : class
+        {
+            if (manager == null)
+            {
+                throw new ArgumentNullException("manager");
+            }
+            return AsyncHelper.RunSync(() => manager.GetUrlAsync(page));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <typeparam name="TPage"></typeparam>
+        /// <param name="manager"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public static int GetStatusCode<TPage>(this PageManager<TPage> manager, TPage page)
+            where TPage : class
+        {
+            if (manager == null)
+            {
+                throw new ArgumentNullException("manager");
+            }
+            return AsyncHelper.RunSync(() => manager.GetStatusCodeAsync(page));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <typeparam name="TPage"></typeparam>
+        /// <param name="manager"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public static string GetTemplate<TPage>(this PageManager<TPage> manager, TPage page)
+            where TPage : class
+        {
+            if (manager == null)
+            {
+                throw new ArgumentNullException("manager");
+            }
+            return AsyncHelper.RunSync(() => manager.GetTemplateAsync(page));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <typeparam name="TPage"></typeparam>
+        /// <param name="manager"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public static string GetPageType<TPage>(this PageManager<TPage> manager, TPage page)
+            where TPage : class
+        {
+            if (manager == null)
+            {
+                throw new ArgumentNullException("manager");
+            }
+            return AsyncHelper.RunSync(() => manager.GetPageTypeAsync(page));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <typeparam name="TPage"></typeparam>
+        /// <param name="manager"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public static List<Content> GetContent<TPage>(this PageManager<TPage> manager, TPage page)
+            where TPage : class
+        {
+            if (manager == null)
+            {
+                throw new ArgumentNullException("manager");
+            }
+            return AsyncHelper.RunSync(() => manager.GetContentAsync(page));
         }
     }
 }

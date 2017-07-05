@@ -9,7 +9,7 @@ namespace ChaosCMS.Converters
     /// <summary>
     /// 
     /// </summary>
-    public class ConverterConfig
+    public class ConverterConfig<TDestination>
     {
         /// <summary>
         /// 
@@ -19,11 +19,11 @@ namespace ChaosCMS.Converters
         /// <summary>
         /// 
         /// </summary>
-        public Func<Task> BeforeCreate { get; set; }
+        public Func<TDestination, Task> BeforeCreate { get; set; } = (dest) => Task.FromResult(0);
 
         /// <summary>
         /// 
         /// </summary>
-        public Func<Task> AfterCreate { get; set; }
+        public Func<TDestination, Task> AfterCreate { get; set; } = (dest) => Task.FromResult(0);
     }
 }

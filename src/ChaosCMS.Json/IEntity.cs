@@ -15,6 +15,6 @@ namespace ChaosCMS.Json
         /// <summary>
         /// 
         /// </summary>
-        string ExternalId { get; set; }
+        string Origin { get; set; }
     }
 }

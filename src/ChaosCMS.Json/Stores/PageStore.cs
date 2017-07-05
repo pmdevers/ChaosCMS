@@ -210,12 +210,7 @@ namespace ChaosCMS.Json.Stores
             return Task.FromResult(0);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public Task<List<Content>> GetContentAsync(TPage page, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -228,13 +223,7 @@ namespace ChaosCMS.Json.Stores
             return Task.FromResult(page.Content);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="content"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public Task SetContentAsync(TPage page, List<Content> content, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -245,6 +234,20 @@ namespace ChaosCMS.Json.Stores
             }
 
             page.Content = content;
+            return Task.FromResult(0);
+        }
+
+        /// <inheritdoc />
+        public Task SetOriginAsync(TPage page, string id, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            page.Origin = id;
             return Task.FromResult(0);
         }
     }

@@ -164,6 +164,23 @@ namespace ChaosCMS.Managers
             return await this.Store.UpdateAsync(page, CancellationToken);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public virtual Task<ChaosResult> DeleteAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return this.Store.DeleteAsync(page, CancellationToken);
+        }
+
         private async Task<ChaosResult> ValidateInternal(TPage page)
         {
             var error = new List<ChaosError>();
@@ -225,17 +242,17 @@ namespace ChaosCMS.Managers
         /// <summary>
         /// Finds the page with the externalId
         /// </summary>
-        /// <param name="externalId">the id of the external source.</param>
+        /// <param name="origin">the origin source.</param>
         /// <returns>an instance of the page if founce.</returns>
-        public virtual Task<TPage> FindByExternalIdAsync(string externalId)
+        public virtual Task<TPage> FindByOriginAsync(string origin)
         {
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            if (externalId == null)
+            if (string.IsNullOrEmpty(origin))
             {
-                throw new ArgumentNullException(nameof(externalId));
+                throw new ArgumentNullException(nameof(origin));
             }
-            return this.Store.FindByExternalIdAsync(externalId, CancellationToken);
+            return this.Store.FindByOriginAsync(origin, CancellationToken);
         }
 
         /// <summary>
@@ -468,6 +485,23 @@ namespace ChaosCMS.Managers
             }
 
             return this.Store.SetStatusCodeAsync(page, code, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public virtual Task SetOriginAsync(TPage page, string id)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return Store.SetOriginAsync(page, id, CancellationToken);
         }
 
         /// <summary>

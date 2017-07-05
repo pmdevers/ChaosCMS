@@ -88,6 +88,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     manager.ApplicationParts.Add(
                         new ChaosTypesPart(
                                 typeof(PageController<TAdminPage>),
+                                typeof(SetupController<TAdminPage>),
                                 typeof(PageTypeController<TAdminPageType>),
                                 typeof(PublishController<TAdminPage, TPage>),
                                 typeof(PageCopyController<TAdminPage>),

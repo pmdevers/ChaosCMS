@@ -25,7 +25,8 @@ namespace ChaosCMS.Json.Models
         /// <summary>
         /// 
         /// </summary>
-        public string ExternalId { get; set; }
+        public string Origin { get; set; }
+
 
         /// <summary>
         ///
@@ -59,6 +60,6 @@ namespace ChaosCMS.Json.Models
         /// <summary>
         /// 
         /// </summary>
-        public List<Content> Content { get; set; }
+        public List<Content> Content { get; set; } = new List<Content>();
     }
 }

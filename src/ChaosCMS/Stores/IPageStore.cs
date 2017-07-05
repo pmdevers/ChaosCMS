@@ -32,10 +32,10 @@ namespace ChaosCMS.Stores
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="externalId"></param>
+        /// <param name="origin"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<TPage> FindByExternalIdAsync(string externalId, CancellationToken cancellationToken);
+        Task<TPage> FindByOriginAsync(string origin, CancellationToken cancellationToken);
 
         /// <summary>
         ///
@@ -176,6 +176,15 @@ namespace ChaosCMS.Stores
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task SetPageTypeAsync(TPage page, string pageType, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task SetOriginAsync(TPage page, string id, CancellationToken cancellationToken);
 
         #endregion
     }
