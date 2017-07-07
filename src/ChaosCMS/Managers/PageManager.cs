@@ -370,6 +370,41 @@ namespace ChaosCMS.Managers
         /// 
         /// </summary>
         /// <param name="page"></param>
+        /// <returns></returns>
+        public virtual Task<IList<string>> GetHostsAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return this.Store.GetHostsAsync(page, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="host"></param>
+        /// <returns></returns>
+        public virtual Task AddHostAsync(TPage page, string host)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return this.Store.AddHostAsync(page, host, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
         /// <param name="url"></param>
         /// <returns></returns>
         public virtual async Task SetUrlAsync(TPage page, string url)
@@ -509,7 +544,7 @@ namespace ChaosCMS.Managers
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-        public virtual Task<List<Content>> GetContentAsync(TPage page)
+        public virtual Task<IList<Content>> GetContentAsync(TPage page)
         {
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -527,7 +562,7 @@ namespace ChaosCMS.Managers
         /// <param name="page"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public virtual Task SetContentAsync(TPage page, List<Content> content)
+        public virtual Task SetContentAsync(TPage page, IEnumerable<Content> content)
         {
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();

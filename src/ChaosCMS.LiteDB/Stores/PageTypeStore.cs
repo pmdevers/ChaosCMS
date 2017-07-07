@@ -12,7 +12,7 @@ namespace ChaosCMS.LiteDB.Stores
     public class PageTypeStore<TPageType> : LiteDBStore<TPageType>, IPageTypeStore<TPageType>
         where TPageType : LiteDBPageType
     {
-        public PageTypeStore(IOptions<ChaosLiteDBStoreOptions> optionsAccessor) : base(optionsAccessor)
+        public PageTypeStore(ChaosLiteDBFactory factory) : base(factory)
         {
         }
 

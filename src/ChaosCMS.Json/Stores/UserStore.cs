@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ChaosCMS.Json.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using ChaosCMS.Extensions;
 
 namespace ChaosCMS.Json.Stores
 {
@@ -651,33 +652,21 @@ namespace ChaosCMS.Json.Stores
         async Task<IdentityResult> IUserStore<TUser>.CreateAsync(TUser user, CancellationToken cancellationToken)
         {
             var result = await CreateAsync(user, cancellationToken);
-            if (!result.Succeeded)
-            {
-                return IdentityResult.Failed(result.Errors.Select(x => new IdentityError { Code = x.Code, Description = x.Description }).ToArray());
-            }
-            return IdentityResult.Success;
+            return result.ToIdentityResult();
         }
 
         /// <inheritdoc />
         async Task<IdentityResult> IUserStore<TUser>.DeleteAsync(TUser user, CancellationToken cancellationToken)
         {
             var result = await DeleteAsync(user, cancellationToken);
-            if (!result.Succeeded)
-            {
-                return IdentityResult.Failed(result.Errors.Select(x => new IdentityError { Code = x.Code, Description = x.Description }).ToArray());
-            }
-            return IdentityResult.Success;
+            return result.ToIdentityResult();
         }
 
         /// <inheritdoc />
         async Task<IdentityResult> IUserStore<TUser>.UpdateAsync(TUser user, CancellationToken cancellationToken)
         {
             var result = await UpdateAsync(user, cancellationToken);
-            if (!result.Succeeded)
-            {
-                return IdentityResult.Failed(result.Errors.Select(x => new IdentityError { Code = x.Code, Description = x.Description }).ToArray());
-            }
-            return IdentityResult.Success;
+            return result.ToIdentityResult();
         }
 
         #endregion IUserStore

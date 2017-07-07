@@ -1,5 +1,9 @@
-﻿using ChaosCMS.Managers;
+﻿using ChaosCMS.Extensions;
+using ChaosCMS.Managers;
+using ChaosCMS.Models.Account;
+using ChaosCMS.Models.Pages;
 using ChaosCMS.Models.Setup;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,18 +17,17 @@ namespace ChaosCMS.Controllers
     /// 
     /// </summary>
     [Route("admin/setup", Name = "Setup")]
-    public class SetupController<TPage> : Controller
-        where TPage : class
+    public class SetupController : Controller
     {
-        private readonly PageManager<TPage> pageManager;
+        private readonly ISiteMaker siteMaker;
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="pageManager"></param>
-        public SetupController(PageManager<TPage> pageManager)
+        
+        public SetupController(ISiteMaker siteMaker)
         {
-            this.pageManager = pageManager;
+            this.siteMaker = siteMaker;
         }
 
         /// <summary>
@@ -43,9 +46,34 @@ namespace ChaosCMS.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Index(SetupModel model)
+        public async Task<IActionResult> Index(SetupModel model)
         {
-            return Ok();
+            var errors = new List<ChaosError>();
+            var result = await this.siteMaker.CreateAdministrator(model.Username, model.Password, model.Email);
+
+
+            if (result.Succeeded)
+            {
+                if (model.HomePage)
+                    result = await this.siteMaker.CreateHomepage();
+
+                errors.AddRange(result.Errors);
+
+                if (model.LoginPage)
+                    result = await this.siteMaker.CreateLoginpage();
+            } 
+                       
+
+            if(errors.Count > 0)
+            {
+                this.AddErrors(ChaosResult.Failed(errors.ToArray()));
+            }
+            else
+            {
+
+            }
+
+            return View("wizzard", model);
         }
     }
 }

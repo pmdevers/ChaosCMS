@@ -21,7 +21,7 @@ namespace ChaosCMS.Stores
         /// <param name="page"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<List<Content>> GetContentAsync(TPage page, CancellationToken cancellationToken);
+        Task<IList<Content>> GetContentAsync(TPage page, CancellationToken cancellationToken);
         /// <summary>
         /// 
         /// </summary>
@@ -29,6 +29,6 @@ namespace ChaosCMS.Stores
         /// <param name="content"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task SetContentAsync(TPage page, List<Content> content, CancellationToken cancellationToken);
+        Task SetContentAsync(TPage page, IEnumerable<Content> content, CancellationToken cancellationToken);
     }
 }

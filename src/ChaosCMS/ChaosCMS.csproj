@@ -16,23 +16,26 @@
     <PreBuildEvent></PreBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="ChaosResourceFile.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Views\wizzard.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="admin\index.html" />
     <EmbeddedResource Include="admin\index.js">
       <ExcludeFromSourceAnalysis>True</ExcludeFromSourceAnalysis>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </EmbeddedResource>
     <EmbeddedResource Include="admin\setup.html" />
+    <EmbeddedResource Include="Resources\bootstrap-wizard.css" />
+    <EmbeddedResource Include="Resources\bootstrap-wizard.js">
+      <ExcludeFromSourceAnalysis>True</ExcludeFromSourceAnalysis>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\chaos.jpg" />
+    <EmbeddedResource Include="Resources\wizard.js">
+      <ExcludeFromSourceAnalysis>True</ExcludeFromSourceAnalysis>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\403.cshtml" />
     <EmbeddedResource Include="Views\404.cshtml" />
     <EmbeddedResource Include="Views\500.cshtml" />
-    <EmbeddedResource Include="Views\wizzard.cshtml" />
+    <EmbeddedResource Include="Views\wizard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.2" />

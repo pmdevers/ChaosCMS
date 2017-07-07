@@ -8,9 +8,15 @@ namespace ChaosCMS.Models.Setup
 {
     public class SetupModel
     {
-        public List<string> Hosts { get; set; }
+        public string Name { get; set; }
+        public string Domain { get; set; }
+        public string Description { get; set; }
+
         public string Username { get; set; }
         public string Password { get; set; }
+        public string Email { get; set; }
 
+        public bool HomePage { get; set; }
+        public bool LoginPage { get; set; }
     }
 }

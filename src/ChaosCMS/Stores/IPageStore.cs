@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -185,6 +186,22 @@ namespace ChaosCMS.Stores
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task SetOriginAsync(TPage page, string id, CancellationToken cancellationToken);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<IList<string>> GetHostsAsync(TPage page, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="host"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task AddHostAsync(TPage page, string host, CancellationToken cancellationToken);
 
         #endregion
     }

@@ -88,7 +88,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     manager.ApplicationParts.Add(
                         new ChaosTypesPart(
                                 typeof(PageController<TAdminPage>),
-                                typeof(SetupController<TAdminPage>),
+                                typeof(SetupController),
                                 typeof(PageTypeController<TAdminPageType>),
                                 typeof(PublishController<TAdminPage, TPage>),
                                 typeof(PageCopyController<TAdminPage>),
@@ -116,6 +116,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<PageTypeManager<TAdminPageType>, PageTypeManager<TAdminPageType>>();
 
             services.TryAddScoped<ResourceManager, ResourceManager>();
+
+            services.TryAddScoped<ISiteMaker, DefaultSiteMaker<TAdminPage, TUser>>();
 
             // Validators
             services.TryAddScoped<IPageValidator<TPage>, DefaultPageValidator<TPage>>();

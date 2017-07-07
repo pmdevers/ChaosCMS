@@ -53,10 +53,13 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static IServiceCollection GetDefaultServices(IChaosBuilder builder)
         {
+            
             var pageStoreType = typeof(PageStore<>).MakeGenericType(builder.PageType);
             var pageTypeStoreType = typeof(PageTypeStore<>).MakeGenericType(builder.PageTypeType);
             
             var services = new ServiceCollection();
+
+            services.AddScoped<ChaosLiteDBFactory>();
 
             services.AddScoped(
                 typeof(IPageStore<>).MakeGenericType(builder.PageType),

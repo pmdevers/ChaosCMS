@@ -211,7 +211,7 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <inheritdoc />
-        public Task<List<Content>> GetContentAsync(TPage page, CancellationToken cancellationToken)
+        public Task<IList<Content>> GetContentAsync(TPage page, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -224,7 +224,7 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <inheritdoc />
-        public Task SetContentAsync(TPage page, List<Content> content, CancellationToken cancellationToken)
+        public Task SetContentAsync(TPage page, IEnumerable<Content> content, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -233,7 +233,11 @@ namespace ChaosCMS.Json.Stores
                 throw new ArgumentNullException(nameof(page));
             }
 
-            page.Content = content;
+            foreach (var item in content)
+            {
+                page.Content.Add(item);
+            }
+
             return Task.FromResult(0);
         }
 
@@ -248,6 +252,30 @@ namespace ChaosCMS.Json.Stores
             }
 
             page.Origin = id;
+            return Task.FromResult(0);
+        }
+
+        /// <Inhertdoc />
+        public Task<IList<string>> GetHostsAsync(TPage page, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            return Task.FromResult(page.Hosts);
+        }
+        /// <inheritdoc />
+        public Task AddHostAsync(TPage page, string host, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            page.Hosts.Add(host);
             return Task.FromResult(0);
         }
     }

@@ -36,7 +36,7 @@ namespace ChaosCMS.Controllers
                 page = await this.pageManager.FindByStatusCodeAsync(404);
                 if (page == null)
                 {
-                    return RedirectToAction("Index", "Setup");
+                    return RedirectToRoute("Setup");
                 }
             }
             var statusCode = await this.pageManager.GetStatusCodeAsync(page);

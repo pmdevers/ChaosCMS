@@ -13,7 +13,7 @@ namespace ChaosCMS.LiteDB.Stores
     public class RoleStore<TRole> : LiteDBStore<TRole>, IRoleStore<TRole>
         where TRole : LiteDBRole
     {
-        public RoleStore(IOptions<ChaosLiteDBStoreOptions> optionsAccessor) : base(optionsAccessor)
+        public RoleStore(ChaosLiteDBFactory factory) : base(factory)
         {
         }
 

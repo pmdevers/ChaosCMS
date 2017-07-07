@@ -16,23 +16,31 @@ namespace ChaosCMS.LiteDB.Stores
     public class LiteDBStore<TEntity> : IDisposable
         where TEntity : class, IEntity
     {
-        private LiteDatabase database;
+        private ChaosLiteDBFactory databaseFactory;
         private bool isDisposed;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="optionsAccessor"></param>
-        public LiteDBStore(IOptions<ChaosLiteDBStoreOptions> optionsAccessor)
+        public LiteDBStore(ChaosLiteDBFactory databaseFactory)
         {
-            this.Options = optionsAccessor?.Value ?? new ChaosLiteDBStoreOptions();
-            database = new LiteDatabase(this.Options.ConnectionString);
+            this.databaseFactory = databaseFactory;
+        }
+
+
+        protected virtual internal LiteDatabase Database
+        {
+            get
+            {
+                return this.databaseFactory.GetInstance();
+            }
         }
 
         /// <summary>
         ///
         /// </summary>
-        protected virtual internal LiteCollection<TEntity> Collection { get { return this.database.GetCollection<TEntity>(); } }
+        protected virtual internal LiteCollection<TEntity> Collection { get { return this.Database.GetCollection<TEntity>(); } }
         
         /// <summary>
         /// The <see cref="ChaosJsonStoreOptions"/> used to configure Chaos Json Store.
@@ -140,7 +148,7 @@ namespace ChaosCMS.LiteDB.Stores
             if(disposing && !this.isDisposed)
             {
                 this.isDisposed = true;
-                database.Dispose();
+                this.Database.Dispose();
             }
         }
 

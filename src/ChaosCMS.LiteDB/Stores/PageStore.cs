@@ -13,7 +13,7 @@ namespace ChaosCMS.LiteDB.Stores
     public class PageStore<TPage> : LiteDBStore<TPage>, IPageStore<TPage>, IPageContentStore<TPage>
         where TPage : LiteDBPage
     {
-        public PageStore(IOptions<ChaosLiteDBStoreOptions> optionsAccessor) : base(optionsAccessor)
+        public PageStore(ChaosLiteDBFactory factory) : base(factory)
         {
         }
 
@@ -154,7 +154,7 @@ namespace ChaosCMS.LiteDB.Stores
 
         #region IPageContentStore<TPage>
 
-        public Task<List<Content>> GetContentAsync(TPage page, CancellationToken cancellationToken)
+        public Task<IList<Content>> GetContentAsync(TPage page, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -165,7 +165,7 @@ namespace ChaosCMS.LiteDB.Stores
             return Task.FromResult(page.Content);
         }
 
-        public Task SetContentAsync(TPage page, List<Content> content, CancellationToken cancellationToken)
+        public Task SetContentAsync(TPage page, IEnumerable<Content> content, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -174,7 +174,36 @@ namespace ChaosCMS.LiteDB.Stores
                 throw new ArgumentNullException(nameof(page));
             }
 
-            page.Content = content;
+            foreach (var item in content)
+            {
+                page.Content.Add(item);
+            }
+
+            return Task.FromResult(0);
+        }
+
+        public Task<IList<string>> GetHostsAsync(TPage page, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return Task.FromResult(page.Hosts);
+        }
+
+        public Task AddHostAsync(TPage page, string host, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            page.Hosts.Add(host);
 
             return Task.FromResult(0);
         }

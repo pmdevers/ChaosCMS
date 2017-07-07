@@ -137,7 +137,7 @@ namespace ChaosCMS.Extensions
         /// <param name="manager"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static List<Content> GetContent<TPage>(this PageManager<TPage> manager, TPage page)
+        public static IList<Content> GetContent<TPage>(this PageManager<TPage> manager, TPage page)
             where TPage : class
         {
             if (manager == null)

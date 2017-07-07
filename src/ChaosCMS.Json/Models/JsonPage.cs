@@ -36,7 +36,7 @@ namespace ChaosCMS.Json.Models
         /// <summary>
         /// 
         /// </summary>
-        public List<string> Hosts { get; set; } = new List<string>();
+        public IList<string> Hosts { get; set; } = new List<string>();
 
         /// <summary>
         ///
@@ -60,6 +60,6 @@ namespace ChaosCMS.Json.Models
         /// <summary>
         /// 
         /// </summary>
-        public List<Content> Content { get; set; } = new List<Content>();
+        public IList<Content> Content { get; set; } = new List<Content>();
     }
 }
