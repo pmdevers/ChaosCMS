@@ -48,31 +48,37 @@ namespace ChaosCMS.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(SetupModel model)
         {
-            var errors = new List<ChaosError>();
-            var result = await this.siteMaker.CreateAdministrator(model.Username, model.Password, model.Email);
-
-
-            if (result.Succeeded)
+            if (this.ModelState.IsValid)
             {
-                if (model.HomePage)
-                    result = await this.siteMaker.CreateHomepage();
+                var errors = new List<ChaosError>();
+                var result = await this.siteMaker.CreateAdministrator(model.Username, model.Password, model.Email);
 
                 errors.AddRange(result.Errors);
 
-                if (model.LoginPage)
-                    result = await this.siteMaker.CreateLoginpage();
-            } 
-                       
+                if (result.Succeeded)
+                {
+                    if (model.HomePage)
+                        result = await this.siteMaker.CreateHomepage();
 
-            if(errors.Count > 0)
-            {
-                this.AddErrors(ChaosResult.Failed(errors.ToArray()));
+                    errors.AddRange(result.Errors);
+
+                    if (model.LoginPage)
+                        result = await this.siteMaker.CreateLoginpage();
+
+                    errors.AddRange(result.Errors);
+                } 
+
+
+
+                if (errors.Count > 0)
+                {
+                    this.AddErrors(ChaosResult.Failed(errors.ToArray()));
+                }
+                else
+                {
+
+                }
             }
-            else
-            {
-
-            }
-
             return View("wizzard", model);
         }
     }
