@@ -92,5 +92,25 @@ namespace ChaosCMS
 
             return result;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ChaosResult> CreateLoginpage()
+        {
+            var login = new TPage();
+
+            await this.pageManager.SetNameAsync(login, "Login");
+            await this.pageManager.SetPageTypeAsync(login, "Default");
+            await this.pageManager.SetStatusCodeAsync(login, 403);
+            await this.pageManager.SetTemplateAsync(login, "Login");
+            await this.pageManager.SetUrlAsync(login, "/login");
+            await this.pageManager.AddHostAsync(login, this.context.Request.Host.Host);
+
+            var result = await this.pageManager.CreateAsync(login);
+
+            return result;
+        }
     }
 }
