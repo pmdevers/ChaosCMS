@@ -24,6 +24,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\ChaosCMS.AzureCosmosDB\ChaosCMS.AzureCosmosDB.csproj" />
     <ProjectReference Include="..\..\src\ChaosCMS.Json\ChaosCMS.Json.csproj" />
     <ProjectReference Include="..\..\src\ChaosCMS.LiteDB\ChaosCMS.LiteDB.csproj" />
     <ProjectReference Include="..\..\src\ChaosCMS\ChaosCMS.csproj" />

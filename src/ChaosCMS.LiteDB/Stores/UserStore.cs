@@ -294,7 +294,7 @@ namespace ChaosCMS.LiteDB.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            return Task.FromResult(user.PasswordHash);
+            return Task.FromResult(user.Username);
         }
 
         public Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
@@ -590,7 +590,7 @@ namespace ChaosCMS.LiteDB.Stores
                 throw new ArgumentNullException(nameof(user));
             }
 
-            user.PasswordHash = userName;
+            user.Username = userName;
 
             return Task.FromResult(0);
         }

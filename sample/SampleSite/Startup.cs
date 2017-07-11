@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using ChaosCMS.AzureCosmosDB;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +30,13 @@ namespace SampleSite
         public void ConfigureServices(IServiceCollection services)
         {
             var builder = services.AddChaos<Page, PageType, AdminPage, AdminPageType, User, Role>();
-            builder.AdminBuilder.AddJsonStores();
+
+            builder.AdminBuilder.AddCosmosDBStores(options =>
+            {
+                options.DatabaseId = "ChaosCMS";
+                options.EndPoint = "https://chaoscms.documents.azure.com:443/";
+                options.Key = "Pu8QH1mw8BADm82DBFJDSp8ZR6wVzrIfx6ohyGD7pSxwaBA8VUqEmHlulc1ve0rqMxka8LESHJoo0i58HszWYw==";
+            });
             builder.FrontBuilder.AddLiteDBStores();
             builder.IdentityBuilder.AddLiteDBStores();
 

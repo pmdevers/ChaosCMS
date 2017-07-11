@@ -1,4 +1,5 @@
-﻿using ChaosCMS.Stores;
+﻿using ChaosCMS.AzureCosmosDB.Stores;
+using ChaosCMS.Stores;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -33,10 +34,15 @@ namespace ChaosCMS.AzureCosmosDB
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
-        public static IdentityBuilder AddCosmosDBStores(this IdentityBuilder builder)
+        public static IdentityBuilder AddCosmosDBStores(this IdentityBuilder builder, Action<CosmosDBOptions> options = null)
         {
-            var userStoreType = typeof(UserStore<>).MakeGenericType(builder.UserType);
-            var roleStoreType = typeof(RoleStore<>).MakeGenericType(builder.RoleType);
+            var userStoreType = typeof(CosmosUserStore<>).MakeGenericType(builder.UserType);
+            var roleStoreType = typeof(CosmosRoleStore<>).MakeGenericType(builder.RoleType);
+
+            if (options != null)
+            {
+                builder.Services.Configure(options);
+            }
 
             builder.Services.AddScoped(
                 typeof(IUserStore<>).MakeGenericType(builder.UserType),
@@ -52,12 +58,10 @@ namespace ChaosCMS.AzureCosmosDB
         private static IServiceCollection GetDefaultServices(IChaosBuilder builder)
         {
 
-            var pageStoreType = typeof(PageStore<>).MakeGenericType(builder.PageType);
-            var pageTypeStoreType = typeof(PageTypeStore<>).MakeGenericType(builder.PageTypeType);
+            var pageStoreType = typeof(CosmosPageStore<>).MakeGenericType(builder.PageType);
+            var pageTypeStoreType = typeof(CosmosPageTypeStore<>).MakeGenericType(builder.PageTypeType);
 
             var services = new ServiceCollection();
-
-            services.AddScoped<CosmosDBFactory>();
 
             services.AddScoped(
                 typeof(IPageStore<>).MakeGenericType(builder.PageType),

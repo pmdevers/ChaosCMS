@@ -15,7 +15,7 @@ namespace ChaosCMS.LiteDB.Models
         }
         public ObjectId Id { get; set; }
         public string Origin { get; set; }
-
+        public string Username { get; set; }
         public int StatusCode { get; set; }
         public string NormalizedName { get; set; }
         public string PasswordHash { get; set; }
@@ -35,7 +35,7 @@ namespace ChaosCMS.LiteDB.Models
         public IList<string> Roles { get; set; } = new List<string>();
         public IList<Claim> Claims { get; set; } = new List<Claim>();
         public IList<UserToken> Tokens { get; set; }
-
+        
     }
 
 

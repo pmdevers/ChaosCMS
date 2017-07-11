@@ -39,7 +39,7 @@ namespace ChaosCMS.Converters
         /// <inherts />
         public async Task<ConverterResult<TDestination>> Convert(TSource source, Action<ConverterConfig<TDestination>> configAction = null)
         {
-            if(source == null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -61,28 +61,40 @@ namespace ChaosCMS.Converters
 
             await config.BeforeCreate(destination);
 
-            var result = await this.DestinationManager.CreateAsync(destination);
+            var result = await Upsert(destination);
 
-            if(result.Succeeded)
-            {
-                if(SourceManager.SupportsContents && DestinationManager.SupportsContents)
-                {
-                    await this.ConvertContentAsync(source, destination);
-                }
-                // todo sub types
-            }
-            else
+            if (!result.Succeeded)
             {
                 errors.AddRange(result.Errors);
             }
-            
+
+            if (result.Succeeded && (SourceManager.SupportsContents && DestinationManager.SupportsContents))
+            {
+                await this.ConvertContentAsync(source, destination);
+                result = await this.DestinationManager.UpdateAsync(destination);
+                if (!result.Succeeded)
+                {
+                    errors.AddRange(result.Errors);
+                }
+            }
 
             if (errors.Count > 0)
             {
-                return ConverterResult<TDestination>.Failed(destination,  errors.ToArray());
+                return ConverterResult<TDestination>.Failed(destination, errors.ToArray());
             }
 
             return ConverterResult<TDestination>.Success(destination);
+        }
+
+        private async Task<ChaosResult> Upsert(TDestination destination)
+        {
+            var id = await this.DestinationManager.GetIdAsync(destination);
+            if (string.IsNullOrEmpty(id))
+            {
+                return await this.DestinationManager.CreateAsync(destination);
+            }
+            
+            return await this.DestinationManager.UpdateAsync(destination);
         }
 
         /// <summary>

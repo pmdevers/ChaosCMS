@@ -41,6 +41,9 @@ namespace ChaosCMS.AzureCosmosDB.Stores
             }
 
             var results = await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(this.Options.DatabaseId, this.CollectionId), entity);
+
+            entity.Id = results.Resource.Id;
+
             return ChaosResult.Success;
         }
 
@@ -53,7 +56,7 @@ namespace ChaosCMS.AzureCosmosDB.Stores
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            var results = await client.UpsertDocumentAsync(UriFactory.CreateDocumentUri(this.Options.DatabaseId, this.CollectionId, entity.Id), entity);
+            var results = await client.UpsertDocumentAsync(UriFactory.CreateDocumentCollectionUri(this.Options.DatabaseId, this.CollectionId), entity);
             return ChaosResult.Success;
         }
 
@@ -75,10 +78,10 @@ namespace ChaosCMS.AzureCosmosDB.Stores
         {
             throw new NotImplementedException();
 
-            cancellationToken.ThrowIfCancellationRequested();
-            this.ThrowIfDisposed();
+            //cancellationToken.ThrowIfCancellationRequested();
+            //this.ThrowIfDisposed();
 
-            var query = this.client.CreateDocumentQuery<TEntity>(UriFactory.CreateDocumentCollectionUri(this.Options.DatabaseId, this.CollectionId));
+            //var query = this.client.CreateDocumentQuery<TEntity>(UriFactory.CreateDocumentCollectionUri(this.Options.DatabaseId, this.CollectionId));
         }
 
         public async Task<TEntity> FindByIdAsync(string id, CancellationToken cancellationToken = default(CancellationToken))

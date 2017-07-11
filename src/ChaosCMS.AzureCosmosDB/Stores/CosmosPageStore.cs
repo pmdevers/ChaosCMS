@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ChaosCMS.Models.Pages;
 
 namespace ChaosCMS.AzureCosmosDB.Stores
 {
-    public class CosmosPageStore<TPage> : CosmosDBStore<TPage>, IPageStore<TPage>
+    public class CosmosPageStore<TPage> : CosmosDBStore<TPage>, IPageStore<TPage>, IPageContentStore<TPage>
         where TPage : CosmosPage
     {
         public CosmosPageStore(IOptions<CosmosDBOptions> optionsAccessor)
@@ -43,6 +44,18 @@ namespace ChaosCMS.AzureCosmosDB.Stores
         {
             var query = await this.FindByPredicateAsync(x => x.Url == urlPath, cancellationToken);
             return query.FirstOrDefault();
+        }
+
+        public Task<IList<Content>> GetContentAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return Task.FromResult(page.Content);
         }
 
         public Task<IList<string>> GetHostsAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))
@@ -117,6 +130,25 @@ namespace ChaosCMS.AzureCosmosDB.Stores
             return Task.FromResult(page.Url);
         }
 
+        public Task SetContentAsync(TPage page, IEnumerable<Content> content, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            page.Content.Clear();
+
+            foreach(var c in content)
+            {
+                page.Content.Add(c);
+            }
+
+            return Task.FromResult(0);
+        }
+
         public Task SetNameAsync(TPage page, string name, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -125,6 +157,8 @@ namespace ChaosCMS.AzureCosmosDB.Stores
             {
                 throw new ArgumentNullException(nameof(page));
             }
+
+            page.Name = name;
 
             return Task.FromResult(0);
         }
@@ -137,6 +171,7 @@ namespace ChaosCMS.AzureCosmosDB.Stores
             {
                 throw new ArgumentNullException(nameof(page));
             }
+            page.Type = pageType;
 
             return Task.FromResult(0);
         }
@@ -150,6 +185,8 @@ namespace ChaosCMS.AzureCosmosDB.Stores
                 throw new ArgumentNullException(nameof(page));
             }
 
+            page.StatusCode = code;
+
             return Task.FromResult(0);
         }
 
@@ -162,6 +199,8 @@ namespace ChaosCMS.AzureCosmosDB.Stores
                 throw new ArgumentNullException(nameof(page));
             }
 
+            page.Template = template;
+
             return Task.FromResult(0);
         }
 
@@ -173,6 +212,8 @@ namespace ChaosCMS.AzureCosmosDB.Stores
             {
                 throw new ArgumentNullException(nameof(page));
             }
+
+            page.Url = url;
 
             return Task.FromResult(0);
         }

@@ -1,21 +1,18 @@
-﻿using System;
+﻿using ChaosCMS.AzureCosmosDB.Models;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+using System.Text;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
-using ChaosCMS.Json.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
+using System.Security.Claims;
+using System.Linq;
 using ChaosCMS.Extensions;
 
-namespace ChaosCMS.Json.Stores
+namespace ChaosCMS.AzureCosmosDB.Stores
 {
-    /// <summary>
-    ///
-    /// </summary>
-    /// <typeparam name="TUser"></typeparam>
-    public class UserStore<TUser> : JsonStore<TUser>,
+    public class CosmosUserStore<TUser> : CosmosDBStore<TUser>,
         IUserStore<TUser>,
         IUserLoginStore<TUser>,
         IUserRoleStore<TUser>,
@@ -27,17 +24,12 @@ namespace ChaosCMS.Json.Stores
         IUserPhoneNumberStore<TUser>,
         IUserTwoFactorStore<TUser>,
         IUserAuthenticationTokenStore<TUser>
-        where TUser : JsonUser
+        where TUser : CosmosUser
     {
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="optionsAccessor"></param>
-        public UserStore(IOptions<ChaosJsonStoreOptions> optionsAccessor) : base(optionsAccessor)
+        public CosmosUserStore(IOptions<CosmosDBOptions> optionsAccessor) : base(optionsAccessor)
         {
         }
 
-        /// <inhertdoc />
         public Task AddClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -47,17 +39,14 @@ namespace ChaosCMS.Json.Stores
                 throw new ArgumentNullException(nameof(user));
             }
 
-            foreach (var claim in claims)
+            foreach(var claim in claims)
             {
                 user.Claims.Add(claim);
             }
-
-            return Task.FromResult(false);
+            
+            return Task.FromResult(0);
         }
 
-        #region IUserLoginStore
-
-        /// <inhertdoc />
         public Task AddLoginAsync(TUser user, UserLoginInfo login, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -66,15 +55,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            if (login == null)
-            {
-                throw new ArgumentNullException(nameof(login));
-            }
+
             user.Logins.Add(login);
-            return Task.FromResult(false);
+            
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task AddToRoleAsync(TUser user, string roleName, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -86,41 +72,27 @@ namespace ChaosCMS.Json.Stores
 
             user.Roles.Add(roleName);
 
-            return Task.FromResult(false);
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
-        public Task<TUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<TUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken = default(CancellationToken))
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            this.ThrowIfDisposed();
-            var found = this.Collection.FirstOrDefault(x => x.NormalizedEmail.Equals(normalizedEmail));
-            return Task.FromResult(found);
+            var result = await this.FindByPredicateAsync(x => x.NormalizedEmail == normalizedEmail);
+            return result.FirstOrDefault();
         }
 
-        /// <inhertdoc />
-        public Task<TUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<TUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken = default(CancellationToken))
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            this.ThrowIfDisposed();
-            var found = this.Collection.FirstOrDefault(x => x.Logins.Any(y => y.LoginProvider == loginProvider && y.ProviderKey == providerKey));
-            return Task.FromResult(found);
+            var result = await this.FindByPredicateAsync(x => x.Logins.Any(y => y.LoginProvider == loginProvider && y.ProviderKey == providerKey));
+            return result.FirstOrDefault();
         }
 
-        #endregion IUserLoginStore
-
-        #region IUserStore
-
-        /// <inheritdoc />
-        public Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken = default(CancellationToken))
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            this.ThrowIfDisposed();
-            var found = this.Collection.FirstOrDefault(x => x.Username.Equals(normalizedUserName, StringComparison.CurrentCultureIgnoreCase));
-            return Task.FromResult(found);
+            var result = await this.FindByPredicateAsync(x => x.NormalizedUsername == normalizedUserName);
+            return result.FirstOrDefault();
         }
 
-        /// <inheritdoc />
         public Task<int> GetAccessFailedCountAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -129,10 +101,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            return Task.FromResult(user.FailedAttempts);
+
+           return Task.FromResult(user.AccessFailedCount);
         }
 
-        /// <inheritdoc />
         public Task<IList<Claim>> GetClaimsAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -141,10 +113,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             return Task.FromResult(user.Claims);
         }
 
-        /// <inheritdoc />
         public Task<string> GetEmailAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -153,10 +125,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            return Task.FromResult(user.NormalizedEmail);
+
+            return Task.FromResult(user.Email);
         }
 
-        /// <inheritdoc />
         public Task<bool> GetEmailConfirmedAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -165,10 +137,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             return Task.FromResult(user.EmailConfirmed);
         }
 
-        /// <inheritdoc />
         public Task<bool> GetLockoutEnabledAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -177,10 +149,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            return Task.FromResult(user.LockOutEnabled);
+
+            return Task.FromResult(user.LockoutEnabled);
         }
 
-        /// <inheritdoc />
         public Task<DateTimeOffset?> GetLockoutEndDateAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -189,10 +161,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            return Task.FromResult(user.LockOutEndDate);
+
+            return Task.FromResult(user.LockoutEndDate);
         }
 
-        /// <inheritdoc />
         public Task<IList<UserLoginInfo>> GetLoginsAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -201,10 +173,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             return Task.FromResult(user.Logins);
         }
 
-        /// <inheritdoc />
         public Task<string> GetNormalizedEmailAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -213,10 +185,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             return Task.FromResult(user.NormalizedEmail);
         }
 
-        /// <inheritdoc />
         public Task<string> GetNormalizedUserNameAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -225,10 +197,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            return Task.FromResult(user.Username);
+
+            return Task.FromResult(user.NormalizedUsername);
         }
 
-        /// <inheritdoc />
         public Task<string> GetPasswordHashAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -237,10 +209,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             return Task.FromResult(user.PasswordHash);
         }
 
-        /// <inheritdoc />
         public Task<string> GetPhoneNumberAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -249,10 +221,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             return Task.FromResult(user.PhoneNumber);
         }
 
-        /// <inheritdoc />
         public Task<bool> GetPhoneNumberConfirmedAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -261,10 +233,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             return Task.FromResult(user.PhoneNumberConfirmed);
         }
 
-        /// <inheritdoc />
         public Task<IList<string>> GetRolesAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -273,10 +245,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             return Task.FromResult(user.Roles);
         }
 
-        /// <inheritdoc />
         public Task<string> GetSecurityStampAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -285,10 +257,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             return Task.FromResult(user.SecurityStamp);
         }
 
-        /// <inheritdoc />
         public Task<string> GetTokenAsync(TUser user, string loginProvider, string name, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -298,12 +270,9 @@ namespace ChaosCMS.Json.Stores
                 throw new ArgumentNullException(nameof(user));
             }
 
-            var loginInfo = user.Logins.FirstOrDefault(x => x.LoginProvider == loginProvider && x.ProviderDisplayName == name);
-
-            return Task.FromResult(loginInfo?.ProviderKey);
+            return Task.FromResult(user.Tokens[loginProvider+name]);
         }
 
-        /// <inheritdoc />
         public Task<bool> GetTwoFactorEnabledAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -312,10 +281,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             return Task.FromResult(user.TwoFactorEnabled);
         }
 
-        /// <inheritdoc />
         public Task<string> GetUserIdAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -324,10 +293,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            return Task.FromResult(user.Id.ToString());
+
+            return Task.FromResult(user.Id);
         }
 
-        /// <inheritdoc />
         public Task<string> GetUserNameAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -336,28 +305,22 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             return Task.FromResult(user.Username);
         }
 
-        /// <inheritdoc />
-        public Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken = default(CancellationToken))
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            this.ThrowIfDisposed();
-            var found = this.Collection.Where(x => x.Claims.Contains(claim));
-            return Task.FromResult<IList<TUser>>(found.ToList());
+            var result = await this.FindByPredicateAsync(x => x.Claims.Contains(claim));
+            return result.ToList();
         }
 
-        /// <inheritdoc />
-        public Task<IList<TUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IList<TUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken = default(CancellationToken))
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            this.ThrowIfDisposed();
-            var found = this.Collection.Where(x => x.Roles.Contains(roleName));
-            return Task.FromResult<IList<TUser>>(found.ToList());
+            var result = await this.FindByPredicateAsync(x => x.Roles.Contains(roleName));
+            return result.ToList();
         }
 
-        /// <inheritdoc />
         public Task<bool> HasPasswordAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -366,10 +329,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             return Task.FromResult(!string.IsNullOrEmpty(user.PasswordHash));
         }
 
-        /// <inheritdoc />
         public Task<int> IncrementAccessFailedCountAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -378,10 +341,9 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            return Task.FromResult(user.FailedAttempts += 1);
+            return Task.FromResult(user.AccessFailedCount++);
         }
 
-        /// <inheritdoc />
         public Task<bool> IsInRoleAsync(TUser user, string roleName, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -393,7 +355,6 @@ namespace ChaosCMS.Json.Stores
             return Task.FromResult(user.Roles.Contains(roleName));
         }
 
-        /// <inheritdoc />
         public Task RemoveClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -403,14 +364,13 @@ namespace ChaosCMS.Json.Stores
                 throw new ArgumentNullException(nameof(user));
             }
 
-            foreach (var claim in claims)
+            foreach(var claim in claims)
             {
                 user.Claims.Remove(claim);
             }
-            return Task.FromResult(false);
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task RemoveFromRoleAsync(TUser user, string roleName, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -419,11 +379,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             user.Roles.Remove(roleName);
-            return Task.FromResult(false);
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task RemoveLoginAsync(TUser user, string loginProvider, string providerKey, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -432,12 +393,13 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            var loginInfo = user.Logins.FirstOrDefault(x => x.LoginProvider.Equals(loginProvider) && x.ProviderKey.Equals(providerKey));
-            user.Logins.Remove(loginInfo);
-            return Task.FromResult(false);
+
+            var login = user.Logins.FirstOrDefault(x => x.LoginProvider == loginProvider && x.ProviderKey == providerKey);
+            user.Logins.Remove(login);
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task RemoveTokenAsync(TUser user, string loginProvider, string name, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -446,12 +408,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            var loginInfo = user.Logins.FirstOrDefault(x => x.LoginProvider.Equals(loginProvider) && x.ProviderDisplayName.Equals(name));
-            user.Logins.Remove(loginInfo);
-            return Task.FromResult(false);
+
+            var login = user.Tokens.Remove(loginProvider + name);
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task ReplaceClaimAsync(TUser user, Claim claim, Claim newClaim, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -460,12 +422,13 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             user.Claims.Remove(claim);
             user.Claims.Add(newClaim);
-            return Task.FromResult(false);
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task ResetAccessFailedCountAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -474,11 +437,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            user.FailedAttempts = 0;
-            return Task.FromResult(false);
+
+            user.AccessFailedCount = 0;
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task SetEmailAsync(TUser user, string email, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -487,11 +451,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             user.Email = email;
-            return Task.FromResult(false);
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task SetEmailConfirmedAsync(TUser user, bool confirmed, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -500,11 +465,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             user.EmailConfirmed = confirmed;
-            return Task.FromResult(false);
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task SetLockoutEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -513,11 +479,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            user.LockOutEnabled = enabled;
-            return Task.FromResult(false);
+
+            user.LockoutEnabled = enabled;
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task SetLockoutEndDateAsync(TUser user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -526,11 +493,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            user.LockOutEndDate = lockoutEnd;
-            return Task.FromResult(false);
+
+            user.LockoutEndDate = lockoutEnd;
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task SetNormalizedEmailAsync(TUser user, string normalizedEmail, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -539,11 +507,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             user.NormalizedEmail = normalizedEmail;
-            return Task.FromResult(false);
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task SetNormalizedUserNameAsync(TUser user, string normalizedName, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -552,11 +521,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            user.NormalizedUserName = normalizedName;
-            return Task.FromResult(false);
+
+            user.NormalizedUsername = normalizedName;
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -565,11 +535,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             user.PasswordHash = passwordHash;
-            return Task.FromResult(false);
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task SetPhoneNumberAsync(TUser user, string phoneNumber, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -578,11 +549,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             user.PhoneNumber = phoneNumber;
-            return Task.FromResult(false);
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task SetPhoneNumberConfirmedAsync(TUser user, bool confirmed, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -591,11 +563,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             user.PhoneNumberConfirmed = confirmed;
-            return Task.FromResult(false);
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -604,11 +577,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             user.SecurityStamp = stamp;
-            return Task.FromResult(false);
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task SetTokenAsync(TUser user, string loginProvider, string name, string value, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -617,12 +591,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            var loginInfo = user.Logins.FirstOrDefault(x => x.LoginProvider.Equals(loginProvider) && x.ProviderDisplayName.Equals(name));
-            loginInfo.ProviderKey = value;
-            return Task.FromResult(false);
+
+            user.Tokens[loginProvider+name] = value;
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task SetTwoFactorEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -631,11 +605,12 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             user.TwoFactorEnabled = enabled;
-            return Task.FromResult(false);
+
+            return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         public Task SetUserNameAsync(TUser user, string userName, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -644,31 +619,46 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             user.Username = userName;
+
             return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
         async Task<IdentityResult> IUserStore<TUser>.CreateAsync(TUser user, CancellationToken cancellationToken)
         {
-            var result = await CreateAsync(user, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+            var result = await this.CreateAsync(user, cancellationToken);
             return result.ToIdentityResult();
         }
 
-        /// <inheritdoc />
         async Task<IdentityResult> IUserStore<TUser>.DeleteAsync(TUser user, CancellationToken cancellationToken)
         {
-            var result = await DeleteAsync(user, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+            var result = await this.DeleteAsync(user, cancellationToken);
             return result.ToIdentityResult();
         }
 
-        /// <inheritdoc />
         async Task<IdentityResult> IUserStore<TUser>.UpdateAsync(TUser user, CancellationToken cancellationToken)
         {
-            var result = await UpdateAsync(user, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+            var result = await this.UpdateAsync(user, cancellationToken);
             return result.ToIdentityResult();
         }
-
-        #endregion IUserStore
     }
 }
