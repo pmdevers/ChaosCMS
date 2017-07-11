@@ -68,15 +68,13 @@ namespace ChaosCMS.Controllers
                     errors.AddRange(result.Errors);
                 } 
 
-
-
                 if (errors.Count > 0)
                 {
                     this.AddErrors(ChaosResult.Failed(errors.ToArray()));
                 }
                 else
                 {
-
+                    return RedirectToRoute("admin");
                 }
             }
             return View("wizzard", model);
