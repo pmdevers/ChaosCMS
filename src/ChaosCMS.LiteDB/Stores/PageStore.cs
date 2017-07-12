@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using ChaosCMS.LiteDB.Models;
 using ChaosCMS.Models.Pages;
+using Microsoft.AspNetCore.Http;
 
 namespace ChaosCMS.LiteDB.Stores
 {
@@ -34,7 +35,31 @@ namespace ChaosCMS.LiteDB.Stores
             var page = this.Collection.FindOne(x => x.Url.Equals(urlPath));
             return Task.FromResult(page);
         }
-        
+
+        public override Task<ChaosPaged<TPage>> FindPagedAsync(HttpRequest request, int page, int itemsPerPage, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var total = this.Collection.Count(x => x.Host == request.Host.Host);
+            var results = this.Collection.Find(x => x.Host == request.Host.Host, page * itemsPerPage, itemsPerPage);
+
+            return Task.FromResult(new ChaosPaged<TPage>
+            {
+                TotalItems = total,
+                CurrentPage = page,
+                ItemsPerPage = itemsPerPage,
+                Items = results
+            });
+        }
+
+        public Task<TPage> FindByRequestAsync(HttpRequest request, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var page = this.Collection.FindOne(x => x.Url.Equals(request.Path.Value) && x.Host == request.Host.Host);
+            return Task.FromResult(page);
+        }
+
         public Task<string> GetNameAsync(TPage page, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -182,7 +207,7 @@ namespace ChaosCMS.LiteDB.Stores
             return Task.FromResult(0);
         }
 
-        public Task<IList<string>> GetHostsAsync(TPage page, CancellationToken cancellationToken)
+        public Task<string> GetHostAsync(TPage page, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -191,10 +216,10 @@ namespace ChaosCMS.LiteDB.Stores
                 throw new ArgumentNullException(nameof(page));
             }
 
-            return Task.FromResult(page.Hosts);
+            return Task.FromResult(page.Host);
         }
 
-        public Task AddHostAsync(TPage page, string host, CancellationToken cancellationToken)
+        public Task SetHostAsync(TPage page, string host, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -203,10 +228,12 @@ namespace ChaosCMS.LiteDB.Stores
                 throw new ArgumentNullException(nameof(page));
             }
 
-            page.Hosts.Add(host);
+            page.Host = host;
 
             return Task.FromResult(0);
         }
+
+
 
         #endregion
     }

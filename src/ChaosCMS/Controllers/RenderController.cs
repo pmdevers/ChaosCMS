@@ -30,7 +30,7 @@ namespace ChaosCMS.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var page = await this.pageManager.FindByUrlAsync(this.Request.Path.Value);
+            var page = await this.pageManager.FindCurrentAsync();
             if (page == null)
             {
                 page = await this.pageManager.FindByStatusCodeAsync(404);

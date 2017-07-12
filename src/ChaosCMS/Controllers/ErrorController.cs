@@ -51,7 +51,7 @@ namespace ChaosCMS.Controllers
 
             if (page == null)
             {
-                return View(statuscode);
+                return View(statuscode.ToString());
             }
             var statusCode = this.pageManager.GetStatusCodeAsync(page);
             var template = await this.pageManager.GetTemplateAsync(page);

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ChaosCMS.Models.Pages;
+using Microsoft.AspNetCore.Http;
 
 namespace ChaosCMS.AzureCosmosDB.Stores
 {
@@ -20,7 +21,7 @@ namespace ChaosCMS.AzureCosmosDB.Stores
         }
 
 
-        public Task AddHostAsync(TPage page, string host, CancellationToken cancellationToken = default(CancellationToken))
+        public Task SetHostAsync(TPage page, string host, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -29,7 +30,7 @@ namespace ChaosCMS.AzureCosmosDB.Stores
                 throw new ArgumentNullException(nameof(page));
             }
 
-            page.Hosts.Add(host);
+            page.Host = host;
 
             return Task.FromResult(0);
         }
@@ -40,9 +41,9 @@ namespace ChaosCMS.AzureCosmosDB.Stores
             return query.FirstOrDefault();
         }
 
-        public async Task<TPage> FindByUrlAsync(string urlPath, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<TPage> FindByRequestAsync(HttpRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var query = await this.FindByPredicateAsync(x => x.Url == urlPath, cancellationToken);
+            var query = await this.FindByPredicateAsync(x => x.Host == request.Host.Host &&  x.Url == request.Path.Value, cancellationToken);
             return query.FirstOrDefault();
         }
 
@@ -58,7 +59,7 @@ namespace ChaosCMS.AzureCosmosDB.Stores
             return Task.FromResult(page.Content);
         }
 
-        public Task<IList<string>> GetHostsAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<string> GetHostAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -67,7 +68,7 @@ namespace ChaosCMS.AzureCosmosDB.Stores
                 throw new ArgumentNullException(nameof(page));
             }
 
-            return Task.FromResult(page.Hosts);
+            return Task.FromResult(page.Host);
         }
 
         public Task<string> GetNameAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))

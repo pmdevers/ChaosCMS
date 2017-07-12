@@ -219,7 +219,7 @@ namespace ChaosCMS.Managers
             {
                 throw new InvalidOperationException(Resources.FormatMaxItemsPerPage(this.Options.MaxItemsPerPage));
             }
-            return this.Store.FindPagedAsync(page, itemsPerPage, this.CancellationToken);
+            return this.Store.FindPagedAsync(this.context.Request, page, itemsPerPage, this.CancellationToken);
         }
 
         /// <summary>
@@ -268,22 +268,18 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
-        /// Finds the assosiated page with the urlPath.
+        /// 
         /// </summary>
-        /// <param name="urlPath">The url of the page.</param>
         /// <returns></returns>
-        public virtual Task<TPage> FindByUrlAsync(string urlPath)
+        public virtual Task<TPage> FindCurrentAsync()
         {
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            if (urlPath == null)
+            if(context == null)
             {
-                throw new ArgumentNullException(nameof(urlPath));
+                throw new ArgumentNullException(nameof(context));
             }
-
-            var url = this.FormatUrl(urlPath);
-
-            return Store.FindByUrlAsync(url, CancellationToken);
+            return this.Store.FindByRequestAsync(context.Request, CancellationToken);
         }
 
         private string FormatUrl(string urlPath)
@@ -371,7 +367,7 @@ namespace ChaosCMS.Managers
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-        public virtual Task<IList<string>> GetHostsAsync(TPage page)
+        public virtual Task<string> GetHostAsync(TPage page)
         {
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -380,7 +376,7 @@ namespace ChaosCMS.Managers
                 throw new ArgumentNullException(nameof(page));
             }
 
-            return this.Store.GetHostsAsync(page, CancellationToken);
+            return this.Store.GetHostAsync(page, CancellationToken);
         }
 
         /// <summary>
@@ -389,7 +385,7 @@ namespace ChaosCMS.Managers
         /// <param name="page"></param>
         /// <param name="host"></param>
         /// <returns></returns>
-        public virtual Task AddHostAsync(TPage page, string host)
+        public virtual Task SetHostAsync(TPage page, string host)
         {
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -398,7 +394,7 @@ namespace ChaosCMS.Managers
                 throw new ArgumentNullException(nameof(page));
             }
 
-            return this.Store.AddHostAsync(page, host, CancellationToken);
+            return this.Store.SetHostAsync(page, host, CancellationToken);
         }
 
         /// <summary>

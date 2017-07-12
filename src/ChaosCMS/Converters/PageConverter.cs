@@ -55,6 +55,7 @@ namespace ChaosCMS.Converters
             await this.ConvertTemplateAsync(source, destination);
             await this.ConvertStatusCodeAsync(source, destination);
             await this.ConvertPageTypeAsync(source, destination);
+            await this.ConvertHostAsync(source, destination);
 
             if (!config.AlwaysNew)
                 await this.ConvertExternalIdAsync(source, destination);
@@ -179,6 +180,18 @@ namespace ChaosCMS.Converters
         {
             var name = await this.SourceManager.GetNameAsync(source);
             await this.DestinationManager.SetNameAsync(destination, name);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <returns></returns>
+        protected virtual async Task ConvertHostAsync(TSource source, TDestination destination)
+        {
+            var host = await this.SourceManager.GetHostAsync(source);
+            await this.DestinationManager.SetHostAsync(destination, host);
         }
 
         /// <summary>

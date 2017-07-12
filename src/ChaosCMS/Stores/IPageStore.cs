@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace ChaosCMS.Stores
 {
@@ -39,18 +40,18 @@ namespace ChaosCMS.Stores
         Task<TPage> FindByOriginAsync(string origin, CancellationToken cancellationToken);
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
-        /// <param name="urlPath"></param>
+        /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<TPage> FindByUrlAsync(string urlPath, CancellationToken cancellationToken);
+        Task<TPage> FindByRequestAsync(HttpRequest request, CancellationToken cancellationToken);
 
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
-        Task<ChaosPaged<TPage>> FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken);
+        Task<ChaosPaged<TPage>> FindPagedAsync(HttpRequest request, int page, int itemsPerPage, CancellationToken cancellationToken);
 
         #endregion
 
@@ -192,7 +193,7 @@ namespace ChaosCMS.Stores
         /// <param name="page"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IList<string>> GetHostsAsync(TPage page, CancellationToken cancellationToken);
+        Task<string> GetHostAsync(TPage page, CancellationToken cancellationToken);
 
         /// <summary>
         /// 
@@ -201,7 +202,7 @@ namespace ChaosCMS.Stores
         /// <param name="host"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task AddHostAsync(TPage page, string host, CancellationToken cancellationToken);
+        Task SetHostAsync(TPage page, string host, CancellationToken cancellationToken);        
 
         #endregion
     }

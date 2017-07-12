@@ -4,36 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChaosCMS.Json.Models
+namespace ChaosCMS.Models.Website
 {
     /// <summary>
     /// 
     /// </summary>
-    public class JsonPageType : IEntity
+    public class Site
     {
         /// <summary>
         /// 
         /// </summary>
-        public JsonPageType()
-        {
-            Id = Guid.NewGuid();
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Guid Id { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Origin { get; set; }
+        public string Id { get; set; }
         /// <summary>
         /// 
         /// </summary>
         public string Name { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
-        public string Host { get; set; }
+        public string Description { get; set; }
     }
 }

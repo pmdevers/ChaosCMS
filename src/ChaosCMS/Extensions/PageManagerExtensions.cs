@@ -16,16 +16,15 @@ namespace ChaosCMS.Extensions
         /// </summary>
         /// <typeparam name="TPage"></typeparam>
         /// <param name="manager"></param>
-        /// <param name="url"></param>
         /// <returns></returns>
-        public static TPage FindByUrl<TPage>(this PageManager<TPage> manager, string url) 
+        public static TPage FindCurrent<TPage>(this PageManager<TPage> manager) 
             where TPage : class
         {
             if (manager == null)
             {
                 throw new ArgumentNullException("manager");
             }
-            return AsyncHelper.RunSync<TPage>(() => manager.FindByUrlAsync(url));
+            return AsyncHelper.RunSync<TPage>(() => manager.FindCurrentAsync());
         }
 
         /// <summary>

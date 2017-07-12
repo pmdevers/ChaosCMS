@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,11 +30,12 @@ namespace ChaosCMS.Stores
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="request"></param>
         /// <param name="page"></param>
         /// <param name="itemsPerPage"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ChaosPaged<TPageType>> FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken);
+        Task<ChaosPaged<TPageType>> FindPagedAsync(HttpRequest request, int page, int itemsPerPage, CancellationToken cancellationToken);
 
         /// <summary>
         /// 

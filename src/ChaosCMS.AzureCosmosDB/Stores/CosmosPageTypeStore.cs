@@ -16,7 +16,7 @@ namespace ChaosCMS.AzureCosmosDB.Stores
             : base(optionsAccessor)
         {
         }
-
+        
         public Task<string> GetNameAsync(TEntity pageType, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();

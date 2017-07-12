@@ -79,7 +79,7 @@ namespace ChaosCMS
             await this.pageManager.SetStatusCodeAsync(homepage, 200);
             await this.pageManager.SetTemplateAsync(homepage, "Index");
             await this.pageManager.SetUrlAsync(homepage, "/");
-            await this.pageManager.AddHostAsync(homepage, this.context.Request.Host.Host);
+            await this.pageManager.SetHostAsync(homepage, this.context.Request.Host.Host);
 
             var result = await this.pageManager.CreateAsync(homepage);
 
@@ -106,7 +106,7 @@ namespace ChaosCMS
             await this.pageManager.SetStatusCodeAsync(login, 403);
             await this.pageManager.SetTemplateAsync(login, "Login");
             await this.pageManager.SetUrlAsync(login, "/login");
-            await this.pageManager.AddHostAsync(login, this.context.Request.Host.Host);
+            await this.pageManager.SetHostAsync(login, this.context.Request.Host.Host);
 
             var result = await this.pageManager.CreateAsync(login);
 

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using ChaosCMS.Json.Models;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Http;
 
 namespace ChaosCMS.Json.Stores
 {
@@ -29,21 +30,24 @@ namespace ChaosCMS.Json.Stores
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="request"></param>
         /// <param name="page"></param>
         /// <param name="itemsPerPage"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task<ChaosPaged<TPageType>> FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken)
+        public Task<ChaosPaged<TPageType>> FindPagedAsync(HttpRequest request, int page, int itemsPerPage, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            var items = this.Collection.Skip((page - 1) * itemsPerPage).Take(itemsPerPage);
+
+            var count = this.Collection.Where(x => x.Host == request.Host.Host).Count();
+            var items = this.Collection.Where(x => x.Host == request.Host.Host).Skip((page - 1) * itemsPerPage).Take(itemsPerPage);
 
             return Task.FromResult(new ChaosPaged<TPageType>
             {
                 CurrentPage = page,
                 ItemsPerPage = itemsPerPage,
-                TotalItems = this.Collection.Count(),
+                TotalItems = count,
                 Items = items
             });
         }

@@ -47,7 +47,7 @@ namespace ChaosCMS
             {
                 if (currentPage == null)
                 {
-                    currentPage = this.pageManager.FindByUrl(context.Request.Path);
+                    currentPage = this.pageManager.FindCurrent();
                 }
                 return currentPage;
             }
@@ -85,9 +85,8 @@ namespace ChaosCMS
 
         private async Task<Content> Getcontent(string name)
         {
-            var content = this.Helper.ViewData.Model as Content;
 
-            if (content != null)
+            if (this.Helper.ViewData.Model is Content content)
             {
                 content = content.Children.FirstOrDefault(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
             }
@@ -155,9 +154,7 @@ namespace ChaosCMS
         /// <returns></returns>
         public JObject GetJson()
         {
-            var content = this.Helper.ViewData.Model as Content;
-
-            if (content != null)
+            if (this.Helper.ViewData.Model is Content content)
             {
                 return JObject.Parse(content.Value);
             }

@@ -18,52 +18,21 @@ namespace ChaosCMS.Json.Stores
     public class PageStore<TPage> : JsonStore<TPage>, IPageStore<TPage>, IPageContentStore<TPage>
         where TPage : JsonPage, new()
     {
-        private readonly HttpContext httpContext;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected internal override IList<TPage> Collection
-        {
-            get
-            {
-                var host = httpContext.Request.Host.Host;
-                return base.Collection.Where(x => x.Hosts.Contains(host)).ToList();
-            }
-        }
-
         /// <summary>
         ///
         /// </summary>
-        public PageStore(IOptions<ChaosJsonStoreOptions> optionsAccessor, IHttpContextAccessor httpContextAccessor)
+        public PageStore(IOptions<ChaosJsonStoreOptions> optionsAccessor)
             : base(optionsAccessor)
         {
-            this.httpContext = httpContextAccessor.HttpContext;
         }
 
+        
         /// <inheritdoc />
-        public Task<ChaosPaged<TPage>> FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken)
+        public Task<TPage> FindByRequestAsync(HttpRequest request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            var items = this.Collection.Skip((page - 1) * itemsPerPage).Take(itemsPerPage);
-
-            return Task.FromResult(new ChaosPaged<TPage>
-            {
-                CurrentPage = page,
-                ItemsPerPage = itemsPerPage,
-                TotalItems = this.Collection.Count(),
-                Items = items
-            });
-        }
-
-        /// <inheritdoc />
-        public virtual Task<TPage> FindByUrlAsync(string urlPath, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            this.ThrowIfDisposed();
-
-            var item = this.FilterCollection().FirstOrDefault(x => x.Url.Equals(urlPath, StringComparison.CurrentCultureIgnoreCase));
+            var item = this.Collection.FirstOrDefault(x => x.Host == request.Host.Host && x.Url == request.Path.Value);
             return Task.FromResult(item);
         }
 
@@ -74,6 +43,22 @@ namespace ChaosCMS.Json.Stores
             this.ThrowIfDisposed();
             var item = this.Collection.FirstOrDefault(x => x.StatusCode == statusCode);
             return Task.FromResult(item);
+        }
+
+        /// <inheritdoc />
+        public Task<ChaosPaged<TPage>> FindPagedAsync(HttpRequest request, int page, int itemsPerPage, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var items = this.Collection.Where(x => x.Host == request.Host.Host).Skip((page - 1) * itemsPerPage).Take(itemsPerPage);
+
+            return Task.FromResult(new ChaosPaged<TPage>
+            {
+                CurrentPage = page,
+                ItemsPerPage = itemsPerPage,
+                TotalItems = this.Collection.Count(),
+                Items = items
+            });
         }
 
         /// <inheritdoc />
@@ -102,6 +87,8 @@ namespace ChaosCMS.Json.Stores
 
             return Task.FromResult(0);
         }
+
+
 
         /// <inheritdoc />
         public virtual Task<string> GetUrlAsync(TPage page, CancellationToken cancellationToken = default(CancellationToken))
@@ -150,12 +137,6 @@ namespace ChaosCMS.Json.Stores
             }
 
             return Task.FromResult(page.Type);
-        }
-
-        private List<TPage> FilterCollection()
-        {
-            var host = this.httpContext.Request.Host.Host;
-            return this.Collection.Where(x => x.Hosts.Contains(host)).ToList();
         }
 
         /// <inhertdoc />
@@ -256,7 +237,7 @@ namespace ChaosCMS.Json.Stores
         }
 
         /// <Inhertdoc />
-        public Task<IList<string>> GetHostsAsync(TPage page, CancellationToken cancellationToken)
+        public Task<string> GetHostAsync(TPage page, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -264,10 +245,10 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(page));
             }
-            return Task.FromResult(page.Hosts);
+            return Task.FromResult(page.Host);
         }
         /// <inheritdoc />
-        public Task AddHostAsync(TPage page, string host, CancellationToken cancellationToken)
+        public Task SetHostAsync(TPage page, string host, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -275,7 +256,7 @@ namespace ChaosCMS.Json.Stores
             {
                 throw new ArgumentNullException(nameof(page));
             }
-            page.Hosts.Add(host);
+            page.Host = host;
             return Task.FromResult(0);
         }
     }

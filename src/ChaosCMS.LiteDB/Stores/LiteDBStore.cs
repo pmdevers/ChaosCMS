@@ -1,5 +1,6 @@
 ﻿using ChaosCMS.LiteDB.Models;
 using LiteDB;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace ChaosCMS.LiteDB.Stores
         protected internal ChaosLiteDBStoreOptions Options { get; }
 
         /// <inheritdoc />
-        public Task<ChaosResult> CreateAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task<ChaosResult> CreateAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -57,7 +58,7 @@ namespace ChaosCMS.LiteDB.Stores
         }
 
         /// <inheritdoc />
-        public Task<ChaosResult> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task<ChaosResult> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -66,7 +67,7 @@ namespace ChaosCMS.LiteDB.Stores
         }
 
         /// <inheritdoc />
-        public Task<ChaosResult> DeleteAsync(TEntity entity, CancellationToken cancellationToken)
+        public virtual Task<ChaosResult> DeleteAsync(TEntity entity, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -75,7 +76,7 @@ namespace ChaosCMS.LiteDB.Stores
         }
 
         /// <inheritdoc />
-        public Task<ChaosPaged<TEntity>> FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken)
+        public virtual Task<ChaosPaged<TEntity>> FindPagedAsync(HttpRequest request, int page, int itemsPerPage, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -93,7 +94,7 @@ namespace ChaosCMS.LiteDB.Stores
         }
 
         /// <inheritdoc />
-        public Task<TEntity> FindByIdAsync(string id, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task<TEntity> FindByIdAsync(string id, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -102,7 +103,7 @@ namespace ChaosCMS.LiteDB.Stores
         }
 
         /// <inheritdoc />
-        public Task<TEntity> FindByOriginAsync(string origin, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task<TEntity> FindByOriginAsync(string origin, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -111,7 +112,7 @@ namespace ChaosCMS.LiteDB.Stores
         }
 
         /// <inheritdoc />
-        public Task<string> GetIdAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task<string> GetIdAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -123,7 +124,7 @@ namespace ChaosCMS.LiteDB.Stores
         }
 
         /// <inheritdoc />
-        public Task SetOriginAsync(TEntity entity, string origin, CancellationToken cancellationToken)
+        public virtual Task SetOriginAsync(TEntity entity, string origin, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
@@ -174,7 +175,7 @@ namespace ChaosCMS.LiteDB.Stores
         /// <returns></returns>
         protected string ConvertIdToString(ObjectId id)
         {
-            if (Equals(id, ObjectId.NewObjectId()))
+            if (id == null)
             {
                 return null;
             }

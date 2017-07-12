@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json.Serialization;
 using ChaosCMS.Converters;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -101,6 +102,12 @@ namespace Microsoft.Extensions.DependencyInjection
                                 ));
 
                 }).AddControllersAsServices();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
+
 
             services.TryAddScoped<IChaos, DefaultChaosService<TPage>>();
             services.TryAddScoped<IChaos, DefaultChaosService<TAdminPage>>();

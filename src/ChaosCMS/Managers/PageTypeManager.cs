@@ -140,7 +140,7 @@ namespace ChaosCMS.Managers
             {
                 throw new InvalidOperationException(Resources.FormatMaxItemsPerPage(this.Options.MaxItemsPerPage));
             }
-            return this.Store.FindPagedAsync(page, itemsPerPage, this.CancellationToken);
+            return this.Store.FindPagedAsync(context.Request, page, itemsPerPage, this.CancellationToken);
         }
 
         /// <summary>

@@ -46,7 +46,6 @@ namespace Microsoft.AspNetCore.Builder
                 app.UseStatusCodePagesWithReExecute("/{0}");
             }
 
-
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
                 AutomaticAuthenticate = true,
@@ -62,6 +61,17 @@ namespace Microsoft.AspNetCore.Builder
             });
             app.UseStaticFiles();
             //app.UseMiddleware(exceptionMiddleWare);
+
+            app.UseSwagger();
+
+            if (hosting.IsDevelopment())
+            {
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                });
+            }
+
             app.UseIdentity();
             app.UseMvc();
             

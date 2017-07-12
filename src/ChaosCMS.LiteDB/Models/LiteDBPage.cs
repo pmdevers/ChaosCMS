@@ -15,7 +15,7 @@ namespace ChaosCMS.LiteDB.Models
         public string Url { get;  set; }
         public string PageType { get;  set; }
         public string Template { get;  set; }
-        public IList<string> Hosts { get; set; } = new List<string>();
+        public string Host { get; set; }
         public IList<Content> Content { get; set; } = new List<Content>();
     }
 }

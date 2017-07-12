@@ -10,6 +10,7 @@ using ChaosCMS.AzureCosmosDB.Models;
 using Microsoft.Azure.Documents.Linq;
 using System.Linq;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Http;
 
 namespace ChaosCMS.AzureCosmosDB.Stores
 {
@@ -74,7 +75,7 @@ namespace ChaosCMS.AzureCosmosDB.Stores
             return ChaosResult.Success;
         }
 
-        public Task<ChaosPaged<TEntity>> FindPagedAsync(int page, int itemsPerPage, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<ChaosPaged<TEntity>> FindPagedAsync(HttpRequest request, int page, int itemsPerPage, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
 
