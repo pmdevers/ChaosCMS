@@ -28,7 +28,7 @@ namespace ChaosCMS.Controllers
         ///
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet( Name = "currentuser")]
         public IActionResult Get()
         {
             return Ok(this.User);

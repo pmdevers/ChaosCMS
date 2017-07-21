@@ -202,7 +202,16 @@ namespace ChaosCMS.Stores
         /// <param name="host"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task SetHostAsync(TPage page, string host, CancellationToken cancellationToken);        
+        Task SetHostAsync(TPage page, string host, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<TPage> FindByRootAsync(HttpRequest request, CancellationToken cancellationToken);
+
 
         #endregion
     }

@@ -27,7 +27,7 @@ namespace ChaosCMS
         /// <summary>
         ///
         /// </summary>
-        public int TotalPages => TotalItems / ItemsPerPage;
+        public int TotalPages => (TotalItems / ItemsPerPage) + 1;
 
         /// <summary>
         ///

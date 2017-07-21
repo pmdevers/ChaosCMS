@@ -41,6 +41,12 @@ namespace ChaosCMS.AzureCosmosDB.Stores
             return query.FirstOrDefault();
         }
 
+        public async Task<TPage> FindByRootAsync(HttpRequest request, CancellationToken cancellationToken)
+        {
+            var query = await this.FindByPredicateAsync(x => x.Host == request.Host.Host && x.Url == "/", cancellationToken);
+            return query.FirstOrDefault();
+        }
+
         public async Task<TPage> FindByRequestAsync(HttpRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             var query = await this.FindByPredicateAsync(x => x.Host == request.Host.Host &&  x.Url == request.Path.Value, cancellationToken);

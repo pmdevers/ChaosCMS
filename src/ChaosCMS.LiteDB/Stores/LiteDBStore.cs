@@ -98,7 +98,7 @@ namespace ChaosCMS.LiteDB.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
-            var item = this.Collection.FindById(id);
+            var item = this.Collection.FindById(this.ConvertIdFromString(id));
             return Task.FromResult(item);
         }
 

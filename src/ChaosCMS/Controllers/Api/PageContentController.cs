@@ -33,7 +33,7 @@ namespace ChaosCMS.Controllers.Api
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id}/content", Name = "page-content")]
         public async Task<IActionResult> Get(string id)
         {
             var page = await this.manager.FindByIdAsync(id);

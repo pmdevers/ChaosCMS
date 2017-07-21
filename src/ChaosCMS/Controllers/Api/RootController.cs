@@ -6,6 +6,9 @@ using ChaosCMS.Hal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Routing;
+using ChaosCMS.Models.Root;
+using ChaosCMS.Managers;
+using System.Threading.Tasks;
 
 namespace ChaosCMS.Controllers
 {
@@ -13,17 +16,21 @@ namespace ChaosCMS.Controllers
     ///
     /// </summary>
     [Route("api")]
-    public class RootController : Controller
+    public class RootController<TPage> : Controller
+        where TPage : class
     {
-        private readonly ApplicationPartManager manager;
+        private readonly PageManager<TPage> pageManager;
+        private readonly ApplicationPartManager partManager;
 
         /// <summary>
         ///
         /// </summary>
+        /// <param name="pageManager"></param>
         /// <param name="partManager"></param>
-        public RootController(ApplicationPartManager partManager)
+        public RootController(PageManager<TPage> pageManager, ApplicationPartManager partManager)
         {
-            manager = partManager;
+            this.pageManager = pageManager;
+            this.partManager = partManager;
         }
 
         /// <summary>
@@ -31,19 +38,34 @@ namespace ChaosCMS.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var parts = manager.ApplicationParts.FirstOrDefault(x => x is ChaosTypesPart) as ChaosTypesPart;
+            //var parts = partManager.ApplicationParts.FirstOrDefault(x => x is ChaosTypesPart) as ChaosTypesPart;
             var links = new List<Link>();
-            if (parts != null)
-            {
-                foreach (var typeInfo in parts.Types)
-                {
-                    var attribute = (RouteAttribute)typeInfo.GetCustomAttribute(typeof(RouteAttribute));
-                    if(attribute.Template.StartsWith("api"))
-                        links.Add(new Link(attribute.Name, attribute.Template));
-                }
-            }
+            //if (parts != null)
+            //{
+            //    foreach (var typeInfo in parts.Types)
+            //    {
+            //        var attribute = (RouteAttribute)typeInfo.GetCustomAttribute(typeof(RouteAttribute));
+            //        if (attribute.Template.StartsWith("api"))
+            //            links.Add(new Link(attribute.Name, attribute.Template));
+            //    }
+            //}
+            var homepage = await this.pageManager.FindRootAsync();
+            var id = await this.pageManager.GetIdAsync(homepage);
+
+            links.Add(new Link("Homepage", Url.RouteUrl("page", new { id = id })));
+            links.Add(new Link("User", Url.RouteUrl("currentuser")));
+            links.Add(new Link("Pages", Url.RouteUrl("pages")));
+
+
+            //var model = new ApiRoot
+            //{
+            //    CurrentUserUrl = "/api/user",
+            //    GetHomepageUrl = this.SelfLink(pageManager, homepage).Href
+            //};
+
+
 
             return this.Hal(links);
         }

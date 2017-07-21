@@ -26,7 +26,15 @@ namespace ChaosCMS.Json.Stores
         {
         }
 
-        
+        /// <inheritdoc />
+        public Task<TPage> FindByRootAsync(HttpRequest request, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var item = this.Collection.FirstOrDefault(x => x.Host == request.Host.Host && x.Url == "/");
+            return Task.FromResult(item);
+        }
+
         /// <inheritdoc />
         public Task<TPage> FindByRequestAsync(HttpRequest request, CancellationToken cancellationToken)
         {

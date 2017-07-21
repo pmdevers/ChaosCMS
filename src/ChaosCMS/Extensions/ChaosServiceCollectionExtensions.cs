@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json.Serialization;
 using ChaosCMS.Converters;
 using Swashbuckle.AspNetCore.Swagger;
+using ChaosCMS.Controllers.Api;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -88,7 +89,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     manager.ApplicationParts.Add(
                         new ChaosTypesPart(
+                                typeof(RootController<TAdminPage>),
                                 typeof(PageController<TAdminPage>),
+                                typeof(PageContentController<TAdminPage>),
                                 typeof(SetupController),
                                 typeof(PageTypeController<TAdminPageType>),
                                 typeof(PublishController<TAdminPage, TPage>),

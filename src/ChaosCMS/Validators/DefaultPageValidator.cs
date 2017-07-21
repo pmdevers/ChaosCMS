@@ -67,9 +67,17 @@ namespace ChaosCMS.Validators
         {
             var status = await manager.GetStatusCodeAsync(page);
             var found = await manager.FindByStatusCodeAsync(status);
+            
+
             if(status != 200 && found != null)
             {
-                errors.Add(errorDescriber.PageStatusCodeIsInvalid(status));
+                var foundId = await manager.GetIdAsync(found);
+                var pageId = await manager.GetIdAsync(page);
+
+                if (pageId != foundId)
+                {
+                    errors.Add(errorDescriber.PageStatusCodeIsInvalid(status));
+                }
             }
         }
 

@@ -1,22 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { HashRouter, Route, Switch } from 'react-router-dom'
+import { createBrowserHistory } from 'history';
 
-import chaosTheme from './theme/chaosTheme';
+// Containers
+import { Full } from './containers'
 
-import App from './App';
-import './index.css';
+const history = createBrowserHistory();
 
-injectTapEventPlugin();
-
-const muiTheme = getMuiTheme(chaosTheme);
-
-ReactDOM.render(
-  <MuiThemeProvider muiTheme={muiTheme}>
-    <App />
-  </MuiThemeProvider>
-  ,
-  document.getElementById('root')
-);
+ReactDOM.render((
+  <HashRouter history={history}>
+    <Switch>
+      <Route path="/" name="Home" component={Full}/>
+    </Switch>
+  </HashRouter>
+), document.getElementById('root'))

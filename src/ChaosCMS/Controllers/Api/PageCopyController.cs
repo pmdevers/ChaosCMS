@@ -38,7 +38,7 @@ namespace ChaosCMS.Controllers
         /// <param name="id"></param>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpPost("{id}/copy")]
+        [HttpPost("{id}/copy", Name = "copy-page")]
         public async Task<IActionResult> Post(string id, [FromBody] CopyPageModel model)
         {
             if (!this.ModelState.IsValid)

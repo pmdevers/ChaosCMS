@@ -31,12 +31,14 @@ namespace SampleSite
         {
             var builder = services.AddChaos<Page, PageType, AdminPage, AdminPageType, User, Role>();
 
-            builder.AdminBuilder.AddCosmosDBStores(options =>
+            builder.AdminBuilder.AddLiteDBStores();
+                /*
+                .AddCosmosDBStores(options =>
             {
                 options.DatabaseId = "ChaosCMS";
                 options.EndPoint = "https://chaoscms.documents.azure.com:443/";
                 options.Key = "Pu8QH1mw8BADm82DBFJDSp8ZR6wVzrIfx6ohyGD7pSxwaBA8VUqEmHlulc1ve0rqMxka8LESHJoo0i58HszWYw==";
-            });
+            }); */
             builder.FrontBuilder.AddLiteDBStores();
             builder.IdentityBuilder.AddLiteDBStores();
 

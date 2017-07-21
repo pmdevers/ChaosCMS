@@ -111,6 +111,29 @@ namespace ChaosCMS.Managers
                 return this.Store is IPageContentStore<TPage>;
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual bool SupportsHistory
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                return this.Store is IPageHistoryStore<TPage>;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual bool SupportsChildren
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                return this.Store is IPageChildrenStore<TPage>;
+            }
+        }
 
         /// <summary>
         /// 
@@ -134,6 +157,7 @@ namespace ChaosCMS.Managers
             }
 
             await this.FormatUrlAsync(page);
+            await this.SetCreateHistoryAsync(page);
 
             return await this.Store.CreateAsync(page, CancellationToken);
         }
@@ -160,6 +184,7 @@ namespace ChaosCMS.Managers
             }
 
             await this.FormatUrlAsync(page);
+            await this.SetUpdateHistoryAsync(page);
 
             return await this.Store.UpdateAsync(page, CancellationToken);
         }
@@ -256,6 +281,46 @@ namespace ChaosCMS.Managers
         }
 
         /// <summary>
+        /// Gets the page sub pages
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public Task<IList<TPage>> GetChildrenAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            var store = this.GetPageChildrenStore();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return store.GetChildrenAsync(page, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="child"></param>
+        /// <returns></returns>
+        public async Task<ChaosResult> AddChildAsync(TPage page, TPage child)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            var store = this.GetPageChildrenStore();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+            if (child == null)
+            {
+                throw new ArgumentNullException(nameof(child));
+            }
+
+            await store.AddChildAsync(page, child, CancellationToken);
+            return await this.UpdateAsync(page);
+        }
+
+        /// <summary>
         /// Finds a page by a statusCode
         /// </summary>
         /// <param name="statusCode"></param>
@@ -265,6 +330,22 @@ namespace ChaosCMS.Managers
             CancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
             return this.Store.FindByStatusCodeAsync(statusCode, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual Task<TPage> FindRootAsync()
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            return this.Store.FindByRootAsync(context.Request, CancellationToken);
         }
 
         /// <summary>
@@ -570,6 +651,74 @@ namespace ChaosCMS.Managers
             return store.SetContentAsync(page, content, CancellationToken);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public virtual Task<DateTime> GetCreationDateAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var store = this.GetPageHistoryStore();
+            if (page == null)
+            {
+                throw new ArgumentNullException();
+            }
+            return store.GetCreationDateAsync(page, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public virtual Task<string> GetCreatedByAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var store = this.GetPageHistoryStore();
+            if (page == null)
+            {
+                throw new ArgumentNullException();
+            }
+            return store.GetCreatedByAsync(page, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public virtual Task<DateTime?> GetModifiedDateAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var store = this.GetPageHistoryStore();
+            if(page == null)
+            {
+                throw new ArgumentNullException();
+            }
+            return store.GetModifiedDateAsync(page, CancellationToken);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public virtual Task<string> GetModifiedByAsync(TPage page)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var store = this.GetPageHistoryStore();
+            if (page == null)
+            {
+                throw new ArgumentNullException();
+            }
+            return store.GetModifiedByAsync(page, CancellationToken);
+        }
+
         #region IDisposable Support
 
         private bool isDisposed = false; // To detect redundant calls
@@ -598,6 +747,29 @@ namespace ChaosCMS.Managers
 
         #endregion IDisposable Support
 
+        private IPageHistoryStore<TPage> GetPageHistoryStore()
+        {
+            this.ThrowIfDisposed();
+            var store = this.Store as IPageHistoryStore<TPage>;
+            if (store == null)
+            {
+                throw new NotSupportedException(Resources.FormatStoreIsNotOfType(typeof(IPageHistoryStore<TPage>).Name));
+            }
+
+            return store;
+        }
+
+        private IPageChildrenStore<TPage> GetPageChildrenStore()
+        {
+            this.ThrowIfDisposed();
+            var store = this.Store as IPageChildrenStore<TPage>;
+            if (store == null)
+            {
+                throw new NotSupportedException(Resources.FormatStoreIsNotOfType(typeof(IPageChildrenStore<TPage>).Name));
+            }
+
+            return store;
+        }
 
         private IPageContentStore<TPage> GetPageContentStore()
         {
@@ -615,6 +787,32 @@ namespace ChaosCMS.Managers
         {
             var formattedUrl = FormatUrl(await this.GetUrlAsync(page));
             await this.Store.SetUrlAsync(page, formattedUrl, CancellationToken);
+        }
+
+        private async Task SetCreateHistoryAsync(TPage page)
+        {
+            if (!this.SupportsHistory)
+            {
+                return;
+            }
+
+            var store = this.GetPageHistoryStore();
+
+            await store.SetCreatedByAsync(page, this.context.User.Identity.Name, this.CancellationToken);
+            await store.SetCreationDateAsync(page, DateTime.Now, this.CancellationToken);
+        }
+
+        private async Task SetUpdateHistoryAsync(TPage page)
+        {
+            if (!this.SupportsHistory)
+            {
+                return;
+            }
+
+            var store = this.GetPageHistoryStore();
+
+            await store.SetModifiedByAsync(page, this.context.User.Identity.Name, this.CancellationToken);
+            await store.SetModifiedDateAsync(page, DateTime.Now, this.CancellationToken);
         }
 
         /// <summary>

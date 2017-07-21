@@ -1,8 +1,11 @@
 ﻿using ChaosCMS.Extensions;
 using ChaosCMS.Hal;
 using ChaosCMS.Managers;
+using ChaosCMS.Models.Pages;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ChaosCMS.Controllers
@@ -10,7 +13,7 @@ namespace ChaosCMS.Controllers
     /// <summary>
     /// A controller for handling a page
     /// </summary>
-    [Route("api/pages", Name = "pages")]
+    [Route("api/page", Name = "pages")]
     public class PageController<TPage> : Controller 
         where TPage : class
     {
@@ -29,7 +32,7 @@ namespace ChaosCMS.Controllers
         ///
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet(Name = "pages")]
         public IActionResult Get(int page = 1, int itemsPerPage = 25)
         {
             var pages = this.manager.FindPagedAsync(page, itemsPerPage).Result;
@@ -51,13 +54,55 @@ namespace ChaosCMS.Controllers
                 return this.ChaosResults(this.manager.ErrorDescriber.PageIdNotFound(id));
             }
 
-            return this.Hal(page, new[]
+            return this.Hal(page, this.GetPageLinks(manager, page));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}/children", Name = "page-children")]
+        public async Task<IActionResult> GetChildren(string id)
+        {
+            var page = await this.manager.FindByIdAsync(id);
+
+            if (page == null)
             {
-                this.SelfLink(this.manager, page),
-                new Link("content", "/api/page/{id}/content"),
-                new Link("ac:copy", "/api/page/{id}/copy"),
-                new Link("ac:publish", "/api/page/{id}/publish")
-            });
+                return this.ChaosResults(this.manager.ErrorDescriber.PageIdNotFound(id));
+            }
+
+            var children = await this.manager.GetChildrenAsync(page);
+            var list = children.Select(x => new Link("children", Url.RouteUrl("page", new { id = this.manager.GetId(x) })));            
+            return this.Hal(list);
+        }
+
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="child"></param>
+        /// <returns></returns>
+        [HttpPost("{id}/children")]
+        public async Task<IActionResult> GetChildren(string id, [FromBody] ChildModel child)
+        {
+            var page = await this.manager.FindByIdAsync(id);
+
+            if (page == null)
+            {
+                return this.ChaosResults(this.manager.ErrorDescriber.PageIdNotFound(id));
+            }
+
+            var childPage = await this.manager.FindByIdAsync(child.Id);
+            if(childPage == null)
+            {
+                return this.ChaosResults(this.manager.ErrorDescriber.PageIdNotFound(id));
+            }
+
+            var result = await this.manager.AddChildAsync(page, childPage);
+            
+            return this.ChaosResults(result);
         }
 
         /// <summary>

@@ -8,10 +8,12 @@ using Microsoft.Extensions.Options;
 using ChaosCMS.LiteDB.Models;
 using ChaosCMS.Models.Pages;
 using Microsoft.AspNetCore.Http;
+using System.Linq;
+using LiteDB;
 
 namespace ChaosCMS.LiteDB.Stores
 {
-    public class PageStore<TPage> : LiteDBStore<TPage>, IPageStore<TPage>, IPageContentStore<TPage>
+    public class PageStore<TPage> : LiteDBStore<TPage>, IPageStore<TPage>, IPageContentStore<TPage>, IPageHistoryStore<TPage>, IPageChildrenStore<TPage>
         where TPage : LiteDBPage
     {
         public PageStore(ChaosLiteDBFactory factory) : base(factory)
@@ -41,7 +43,7 @@ namespace ChaosCMS.LiteDB.Stores
             cancellationToken.ThrowIfCancellationRequested();
             this.ThrowIfDisposed();
             var total = this.Collection.Count(x => x.Host == request.Host.Host);
-            var results = this.Collection.Find(x => x.Host == request.Host.Host, page * itemsPerPage, itemsPerPage);
+            var results = this.Collection.Find(x => x.Host == request.Host.Host, (page - 1) * itemsPerPage, itemsPerPage);
 
             return Task.FromResult(new ChaosPaged<TPage>
             {
@@ -50,6 +52,14 @@ namespace ChaosCMS.LiteDB.Stores
                 ItemsPerPage = itemsPerPage,
                 Items = results
             });
+        }
+
+        public Task<TPage> FindByRootAsync(HttpRequest request, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            var page = this.Collection.FindOne(x => x.Url.Equals("/") && x.Host == request.Host.Host);
+            return Task.FromResult(page);
         }
 
         public Task<TPage> FindByRequestAsync(HttpRequest request, CancellationToken cancellationToken)
@@ -233,6 +243,133 @@ namespace ChaosCMS.LiteDB.Stores
             return Task.FromResult(0);
         }
 
+        public Task<DateTime> GetCreationDateAsync(TPage page, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return Task.FromResult(page.Id.CreationTime);
+        }
+
+        public Task SetCreationDateAsync(TPage page, DateTime creationDate, CancellationToken cancellationToken)
+        {
+            // Do nothing creation date is part of the objectId
+
+            return Task.FromResult(0);
+        }
+
+        public Task<DateTime?> GetModifiedDateAsync(TPage page, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return Task.FromResult(page.ModifiedDate);
+        }
+
+        public Task SetModifiedDateAsync(TPage page, DateTime modifiedDate, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            page.ModifiedDate = modifiedDate;
+
+            return Task.FromResult(0);
+        }
+
+        public Task<string> GetCreatedByAsync(TPage page, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return Task.FromResult(page.CreatedBy);
+        }
+
+        public Task SetCreatedByAsync(TPage page, string username, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            page.CreatedBy = username;
+
+            return Task.FromResult(0);
+        }
+
+        public Task<string> GetModifiedByAsync(TPage page, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            return Task.FromResult(page.ModifiedBy);
+        }
+
+        public Task SetModifiedByAsync(TPage page, string username, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            page.ModifiedBy = username;
+
+            return Task.FromResult(0);
+        }
+
+        public Task<IList<TPage>> GetChildrenAsync(TPage page, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if(page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            var ids = page.Children.Select(x => new BsonValue(new ObjectId(x.Value)));
+
+            var result = this.Collection.Find(Query.In("_id", ids)).ToList();
+
+            return Task.FromResult<IList<TPage>>(result);
+
+        }
+
+        public Task AddChildAsync(TPage page, TPage child, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            page.Children[child.Name] = ConvertIdToString(child.Id);
+            
+            return Task.FromResult(0);
+        }
 
 
         #endregion

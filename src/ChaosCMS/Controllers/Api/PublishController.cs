@@ -43,7 +43,7 @@ namespace ChaosCMS.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpPost("{id}/publish")]
+        [HttpPost("{id}/publish" , Name = "publish-page")]
         public async Task<IActionResult> Publish(string id)
         {
             var source = await this.sourceManager.FindByIdAsync(id);
@@ -60,7 +60,7 @@ namespace ChaosCMS.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpPost("{id}/unpublish")]
+        [HttpPost("{id}/unpublish", Name = "unpublish-page")]
         public async Task<IActionResult> Unpublish(string id)
         {
             var origin = await this.destinationManager.FindByOriginAsync(id);
