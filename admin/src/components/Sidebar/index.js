@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom'
 import { NavItem, Nav } from 'reactstrap';
-
 import { NavTitle } from '../';
 
 class Sidebar extends Component {

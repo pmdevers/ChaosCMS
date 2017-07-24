@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom'
+import { InputGroup, InputGroupAddon, Input } from 'reactstrap';
 
-
-import { Header, Sidebar, Breadcrumb, Aside, Footer } from '../../components';
+import { Header, Sidebar, Breadcrumb, Aside, Footer, Card, PageTree } from '../../components';
 import { Dashboard, Pages } from '../../views'
 
 class Full extends Component {
+
   render() {
     return (
       <div className="app">
@@ -14,14 +15,14 @@ class Full extends Component {
           <Sidebar {...this.props}/>
           <main className="main">
             <Breadcrumb />
-            
-              <Switch>
-                <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
-                <Route path="/pages" name="Pages" component={Pages}/>
-                <Redirect from="/" to="/dashboard"/>
-              </Switch>
+            <Switch>
+              <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
+              <Route path="/pages" name="Pages" component={Pages}/>
+              <Redirect from="/" to="/dashboard"/>
+            </Switch>
           </main>
-          <Aside />
+          <Aside>
+          </Aside>
         </div>
         <Footer />
       </div>

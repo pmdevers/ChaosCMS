@@ -1,17 +1,12 @@
 .pages{
     margin-top: -25px;
-    height: 93%;
-}
-
-.leftTree {
     height: 100%;
+    width: 100%;
+    position: fixed;
 }
 
-leftTree .col {
+.leftPanel {
     height: 100%;
+    position: fixed;
+    width: 250px;
 }
-
-leftTree .card {
-     height: 100%;
-     margin-bottom: 0;
- }

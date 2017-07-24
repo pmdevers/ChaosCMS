@@ -1,8 +1,36 @@
 // Here you can add other styles
+$panelWidth:        250px;
 
-.leftPanel{
-    height: 100%;
+.app-footer {
+    z-index: 9999;
 }
-.pages{
+
+.panel{
+    background-color: #fff;
     height: 100%;
+    position: fixed;
+    border: 1px solid $border-color;
+}
+
+.panel-open{
+    width: $panelWidth;
+}
+
+.main-panel {
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    border: 1px solid $border-color;
+}
+
+.main-panel-open{
+    margin-left: $panelWidth;
+}
+
+.panel-header{
+    height: 65px;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: #eceff1;
 }

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /**
  * CoreUI - Open Source Bootstrap Admin Template
  * @version v1.0.0-alpha.6
@@ -8920,3 +8921,31 @@ hr.transparent {
     border-right-color: #f86c6b; }
   *[dir="rtl"] .callout-success {
     border-right-color: #4dbd74; }
+
+.app-footer {
+  z-index: 9999; }
+
+.panel {
+  background-color: #fff;
+  height: 100%;
+  position: fixed;
+  border: 1px solid #cfd8dc; }
+
+.panel-open {
+  width: 250px; }
+
+.main-panel {
+  background-color: #fff;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  border: 1px solid #cfd8dc; }
+
+.main-panel-open {
+  margin-left: 250px; }
+
+.panel-header {
+  height: 65px;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: #eceff1; }
