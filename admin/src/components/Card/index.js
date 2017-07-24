@@ -16,7 +16,7 @@ class Card extends Component {
         }
         
         return (
-            <div className="card">
+            <div className="card" style={this.props.style}>
                 <div className="card-header">
                     {icon} {this.props.header} 
                 </div>

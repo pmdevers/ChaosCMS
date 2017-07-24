@@ -16,15 +16,6 @@ export function fetch(path, func){
     });
 }
 
-export function fetchFrom(location, path, func){
-    return traverson
-        .from('http://localhost:17706' + location)
-        .jsonHal()
-        .follow(path)
-        .getResource(function(error, document, traversal) {
-        if (error) {
-            console.error('No luck :-)', error)
-        } 
-        func(document, traversal);
-    });
+export function fetchFrom(location){
+    return traverson.from('http://localhost:17706' + location)
 }

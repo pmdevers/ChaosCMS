@@ -12,39 +12,17 @@ class PageTree extends Component {
     constructor(props){
         super(props);
 
-        this.state = { page : {
-                "id": {},
-                "name": "Home",
-                "statusCode": 200,
-                "url": "/",
-                "pageType": "Default",
-                "template": "Index",
-                "createdBy": null,
-                "modifiedBy": null,
-                "modifiedDate": "2017-07-20T14:22:13.902+02:00",
-                "Children" : [],
-                "_links": {
-                    "self": {
-                        "href": "/api/page/5970a0751fc20703e823eff5"
-                    },
-                    "content": {
-                        "href": "/api/page/5970a0751fc20703e823eff5/content"
-                    },
-                    "ac:copy": {
-                        "href": "/api/page/5970a0751fc20703e823eff5/copy"
-                    },
-                    "ac:publish": {
-                        "href": "/api/page/5970a0751fc20703e823eff5/publish"
-                    }
-                }
-            }
-        }
+        this.state = {};
     }
     componentWillMount(){
         var me = this;
 
-        fetchFrom(me.props.from, "", (err, document, traverson) => {
-            console.log(document);
+        fetchFrom(me.props.from)
+        .jsonHal()
+        .getResource(function(error, document, traversal) {
+            if (error) {
+                console.error('No luck :-)', error)
+            } 
             me.setState({ page : document });
         });
     }

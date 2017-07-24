@@ -1,0 +1,17 @@
+.pages{
+    margin-top: -25px;
+    height: 93%;
+}
+
+.leftTree {
+    height: 100%;
+}
+
+leftTree .col {
+    height: 100%;
+}
+
+leftTree .card {
+     height: 100%;
+     margin-bottom: 0;
+ }
