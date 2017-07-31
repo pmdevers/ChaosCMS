@@ -1,43 +1,16 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import CardHeader from './header';
+import CardBody from './'
+
 
 class Card extends Component {
-    constructor(props){ 
-        super(props);
-
-    }
-
-    render() {
-        let icon = null;
-        
-        if(this.props.showIcon){
-            var iconclass = "fa fa-" + this.props.icon;
-            icon = <i className={iconclass}></i>
-        }
-        
+    render() {        
         return (
             <div className="card" style={this.props.style}>
-                <div className="card-header">
-                    {icon} {this.props.header} 
-                </div>
-                <div className="card-block">
-                    {this.props.children}
-                </div>
+                {this.props.children}
             </div>
         );
     }
 }
 
-Card.propTypes = {
-    showIcon: PropTypes.bool,
-    icon: PropTypes.string,
-    header: PropTypes.string
-}
-
-Card.defaultProps = {
-    showIcon: true,
-    icon: "align-justify",
-    header: ""
-}
-
-export default Card;
+export { Card, CardHeader, CardBody };

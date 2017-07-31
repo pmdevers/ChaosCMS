@@ -37,7 +37,7 @@ namespace ChaosCMS.Converters
         public PageManager<TDestination> DestinationManager { get; }
 
         /// <inherts />
-        public async Task<ConverterResult<TDestination>> Convert(TSource source, Action<ConverterConfig<TDestination>> configAction = null)
+        public async Task<ChaosResult> Convert(TSource source, Action<ConverterConfig<TDestination>> configAction = null)
         {
             if (source == null)
             {
@@ -81,10 +81,12 @@ namespace ChaosCMS.Converters
 
             if (errors.Count > 0)
             {
-                return ConverterResult<TDestination>.Failed(destination, errors.ToArray());
+                result = ChaosResult.Failed(errors.ToArray());
             }
 
-            return ConverterResult<TDestination>.Success(destination);
+            result.Result = destination;
+
+            return result;
         }
 
         private async Task<ChaosResult> Upsert(TDestination destination)

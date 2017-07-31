@@ -5,6 +5,10 @@ $panelWidth:        250px;
     z-index: 9999;
 }
 
+.pages {
+    margin-top: -25px;
+}
+
 .panel{
     background-color: #fff;
     height: 100%;
@@ -12,20 +16,30 @@ $panelWidth:        250px;
     border: 1px solid $border-color;
 }
 
-.panel-open{
-    width: $panelWidth;
+.tree {
+    -webkit-transition: width 0.5s;
+    transition: width 0.5s;
+    &.panel{
+        width: 0px;
+    }
+    
+    &.panel-open{
+        width: $panelWidth;
+        left: $sidebar-width
+    }
 }
 
-.main-panel {
-    background-color: #fff;
-    height: 100%;
-    width: 100%;
-    position: fixed;
-    border: 1px solid $border-color;
-}
+.mainPanel {
+    -webkit-transition: left 0.5s;
+    transition: left 0.5s;
+    &.panel {
+        left: $sidebar-width;
+        right: 0px;
+    }
 
-.main-panel-open{
-    margin-left: $panelWidth;
+    &.panel-open{
+        left:  $sidebar-width + $panelWidth;
+    }
 }
 
 .panel-header{
@@ -33,4 +47,19 @@ $panelWidth:        250px;
     padding: 0.75rem 1.25rem;
     margin-bottom: 0;
     background-color: #eceff1;
+    font-size: 32px;
+
+    /* i.animated{
+        -webkit-transition: -webkit-transform 2s;
+        transition: transform 2s;
+    }
+
+    i.animated:hover{
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    } */
+}
+
+.panel-body{
+    padding: 0.75rem 1.25rem;
 }

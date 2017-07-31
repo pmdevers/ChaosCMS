@@ -20,6 +20,11 @@ namespace ChaosCMS
         public bool Succeeded { get; protected set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public object Result { get; set; }
+
+        /// <summary>
         ///
         /// </summary>
         public IEnumerable<ChaosError> Errors => this.errors;

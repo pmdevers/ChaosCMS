@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import PanelHeader from './Header';
-import MainPanel from './mainpanel';
+import PanelBody from './panelBody';
 
 class Panel extends Component {
-    constructor(props){
-        super(props);
-    }
-
     render() {
-        var open = "panel " + (this.props.isOpen ? "panel-open" : "");
+        var open = this.props.name + " panel " + (this.props.isOpen ? "panel-open" : "");
         return (
             <div className={open}>
                 {this.props.children}
@@ -19,8 +14,9 @@ class Panel extends Component {
     }
 }
 
-MainPanel.propTypes = {
+Panel.propTypes = {
+    name: PropTypes.string,
     isOpen: PropTypes.bool,
 };
 
-export { Panel, PanelHeader, MainPanel };
+export { Panel, PanelHeader, PanelBody };

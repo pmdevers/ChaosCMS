@@ -78,7 +78,17 @@ namespace ChaosCMS.Managers
         /// The <see cref="ILogger"/> used to log messages from the manager.
         /// </value>
         protected internal virtual ILogger Logger { get; set; }
-        
+
+        internal object GetId<TPageType>(TPageType page) where TPageType : class
+        {
+            throw new NotImplementedException();
+        }
+
+        internal object GetName<TPageType>(TPageType page) where TPageType : class
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// The IPageTypeValidator{TPageType} used to validate page types.
         /// </summary>
@@ -117,7 +127,9 @@ namespace ChaosCMS.Managers
                 return result;
             }
 
-            return await this.Store.CreateAsync(pageType, CancellationToken);
+            result = await this.Store.CreateAsync(pageType, CancellationToken);
+            result.Result = pageType;
+            return result;
         }
 
         #region READ
@@ -183,7 +195,9 @@ namespace ChaosCMS.Managers
                 return result;
             }
 
-            return await this.Store.UpdateAsync(pageType, CancellationToken);
+            result = await this.Store.UpdateAsync(pageType, CancellationToken);
+            result.Result = pageType;
+            return result;
         }
 
         /// <summary>

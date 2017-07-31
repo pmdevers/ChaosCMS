@@ -19,6 +19,6 @@ namespace ChaosCMS.Converters
         /// <param name="source"></param>
         /// <param name="configAction"></param>
         /// <returns></returns>
-        Task<ConverterResult<TDestination>> Convert(TSource source, Action<ConverterConfig<TDestination>> configAction = null);
+        Task<ChaosResult> Convert(TSource source, Action<ConverterConfig<TDestination>> configAction = null);
     }
 }

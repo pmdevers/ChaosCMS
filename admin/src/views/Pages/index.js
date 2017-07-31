@@ -1,51 +1,86 @@
 import React, { Component } from 'react';
-import { Row, Col, InputGroup, InputGroupAddon, Button } from 'reactstrap';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import jiff from 'jiff';
+import { Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
-import { PageTree, Card, Panel, MainPanel, PanelHeader } from '../../components';
+import { PageTree, Panel,
+         PanelBody, PanelHeader, Icon } 
+from '../../components';
 
-import './style.css';
+import PageForm from '../../components/Forms/pageForm';
+import * as PageActions from '../../actions/page';
+import * as SidebarActions from '../../actions/sidebar';
+import update from '../../utils/update';
+
 
 class Pages extends Component {
     constructor(props){
         super(props);
 
-        this.state = {
-            isOpen : true
-        }
-
-        this.onToggle = this.onToggle.bind(this)
+         this.onSubmit = this.onSubmit.bind(this);
     }
     
-    componentWillMount() {         
-    };
-
-    getHeader(){
-        return (<span>Test</span>);
-    }
-
-    onToggle(){
-        this.setState(prevState => ({
-            isOpen: !prevState.isOpen
-        }));
+    onSubmit(e){
+        var patch = jiff.diff(this.props.page, e);
+        if(this.props.page.id === undefined){
+            let result = jiff.patch(patch, this.props.page);
+            console.log(result);
+            this.props.actions.createPage(result);
+        } else {
+            this.props.actions.updatePage(this.props.page.id, patch);
+        }
+        //
     }
 
     render(){
+        const { actions } = this.props;
+
         return (
             <div className="pages animated fadeIn">
-                <Panel isOpen={this.state.isOpen}>
+                <Panel name="tree" isOpen={this.props.isOpen}>
                     <PanelHeader>
-                        <Button onClick={this.onToggle} />
+                        <InputGroup>
+                            <Input type="text"/>
+                            <InputGroupAddon>
+                                <Icon icon="search"/>
+                            </InputGroupAddon>
+                        </InputGroup>
                     </PanelHeader>
+                    <PanelBody>
+                        <PageTree from="/api/page/5970a0751fc20703e823eff5" />
+                    </PanelBody>
                 </Panel>
-                <MainPanel isOpen={this.state.isOpen}>
+                <Panel name="mainPanel" isOpen={this.props.isOpen}>
                     <PanelHeader>
-                        <Button onClick={this.onToggle} >open</Button>
-                        <span>Pages</span>
+                        <a onClick={actions.toggleSidebar}>
+                            <Icon icon="bars animated" /> {this.props.page.Name}
+                        </a>                      
                     </PanelHeader>
-                </MainPanel>
+                    <PanelBody>
+                        <PageForm onSubmit={this.onSubmit} />
+                    </PanelBody>
+                </Panel>
             </div>
         );
     }
 }
 
-export default Pages;
+const mapDispatchToProps = (dispatch) => {
+  return { 
+    onToggle: () => {
+        dispatch(SidebarActions.toggleSidebar())
+    } ,
+    onSubmit: (page) => {
+        dispatch(PageActions.createPage(page));
+    } ,
+    actions: bindActionCreators(Object.assign({}, PageActions, SidebarActions), dispatch) };
+  
+};
+
+const mapStateToProps = state => ({
+  page: state.pages.page,
+  isOpen: state.sidebar.isOpen
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Pages);

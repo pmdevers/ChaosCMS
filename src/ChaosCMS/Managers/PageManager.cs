@@ -159,7 +159,9 @@ namespace ChaosCMS.Managers
             await this.FormatUrlAsync(page);
             await this.SetCreateHistoryAsync(page);
 
-            return await this.Store.CreateAsync(page, CancellationToken);
+            result = await this.Store.CreateAsync(page, CancellationToken);
+            result.Result = page;
+            return result;
         }
 
         /// <summary>
@@ -186,7 +188,9 @@ namespace ChaosCMS.Managers
             await this.FormatUrlAsync(page);
             await this.SetUpdateHistoryAsync(page);
 
-            return await this.Store.UpdateAsync(page, CancellationToken);
+            result = await this.Store.UpdateAsync(page, CancellationToken);
+            result.Result = page;
+            return result;
         }
 
         /// <summary>

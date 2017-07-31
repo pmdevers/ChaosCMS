@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom'
-import { InputGroup, InputGroupAddon, Input } from 'reactstrap';
 
-import { Header, Sidebar, Breadcrumb, Aside, Footer, Card, PageTree } from '../../components';
+import { Header, Sidebar, Breadcrumb, Aside, Footer } from '../../components';
 import { Dashboard, Pages } from '../../views'
 
 class Full extends Component {
