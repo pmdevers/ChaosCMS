@@ -73,7 +73,8 @@ namespace ChaosCMS.Controllers
             }
 
             var children = await this.manager.GetChildrenAsync(page);
-            var list = children.Select(x => new Link("children", Url.RouteUrl("page", new { id = this.manager.GetId(x) })));            
+            var list = children.Select(x => new Link("children", Url.RouteUrl("page", new { id = this.manager.GetId(x) }), this.manager.GetName(x)));
+            
             return this.Hal(list);
         }
 

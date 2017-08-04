@@ -16,8 +16,8 @@ class Full extends Component {
             <Breadcrumb />
             <Switch>
               <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
-              <Route path="/pages" name="Pages" component={Pages}/>
-              <Redirect from="/" to="/dashboard"/>
+              <Route path="/pages" name="Pages" component={Pages}/>  
+              <Redirect from='/' to='/dashboard'/>
             </Switch>
           </main>
           <Aside>

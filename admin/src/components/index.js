@@ -14,6 +14,7 @@ export { Aside,
     Footer, Header, Sidebar, 
     NavTitle, 
     Card, CardHeader, CardBody, 
-    Panel, PanelBody, PanelHeader,MainPanel, 
-    PageTree,
-    Icon, StateIcon };
+    Panel, PanelBody, PanelHeader, MainPanel, 
+    Icon, StateIcon,
+    PageTree
+};

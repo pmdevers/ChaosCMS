@@ -13,6 +13,7 @@
     "chart.js": "2.5.0",
     "history": "^4.6.1",
     "jiff": "^0.7.3",
+    "rc-tree": "^1.7.1",
     "react": "^15.5.4",
     "react-addons-css-transition-group": "15.5.2",
     "react-addons-transition-group": "15.5.2",

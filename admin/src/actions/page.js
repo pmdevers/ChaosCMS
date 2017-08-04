@@ -3,13 +3,19 @@ import * as ErrorActions from './errors';
 import traverson from 'traverson';
 import JsonHalAdapter from 'traverson-hal';
 
+import * as Constants from './constants';
+
 traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter);
 
-const API_ROOT = "http://localhost:17706";
+export function selectPage(page){
+    return (dispatch) => {
+        return dispatch({type: FETCH_PAGE, page: page });
+    }
+}
 
 export function createPage(page) {
     return (dispatch) => {
-        return fetch(`${API_ROOT}/api/page`, {
+        return fetch(`${Constants.API_ROOT}page`, {
                 method: 'post',
                 headers: {'content-type': 'application/json'},
                 body: JSON.stringify(page)
@@ -26,9 +32,7 @@ export function createPage(page) {
 
 export function updatePage(pageid, page) {
     return (dispatch) => {
-        console.log(pageid);
-        console.log(page);
-        return fetch(`${API_ROOT}/api/page/${pageid}`, {
+        return fetch(`${Constants.API_ROOT}/api/page/${pageid}`, {
                     method: 'patch',
                     headers: {'content-type': 'application/json'},
                     body: JSON.stringify(page)
@@ -42,7 +46,6 @@ export function updatePage(pageid, page) {
                 );
     }
 }
-
 
 function handleError(dispatch, response){
     const { status, statusText } = response;

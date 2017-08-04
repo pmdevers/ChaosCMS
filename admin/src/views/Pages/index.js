@@ -3,9 +3,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import jiff from 'jiff';
 import { Input, InputGroup, InputGroupAddon } from 'reactstrap';
+import { push } from 'react-router-redux';
 
-import { PageTree, Panel,
-         PanelBody, PanelHeader, Icon } 
+import Tree, { TreeNode } from 'rc-tree';
+
+import 
+    { Panel, PanelBody, PanelHeader, Icon, PageTree } 
 from '../../components';
 
 import PageForm from '../../components/Forms/pageForm';
@@ -13,12 +16,41 @@ import * as PageActions from '../../actions/page';
 import * as SidebarActions from '../../actions/sidebar';
 import update from '../../utils/update';
 
-
 class Pages extends Component {
+    
     constructor(props){
         super(props);
 
          this.onSubmit = this.onSubmit.bind(this);
+         this.onEdit = this.onEdit.bind(this);
+         const keys = [];
+
+         this.state = {
+            defaultExpandedKeys: keys,
+            defaultSelectedKeys: keys,
+            defaultCheckedKeys: keys,
+            selKey: "",
+            switchIt: true
+         }
+    }
+
+    onExpand(expandedKeys) {
+        console.log('onExpand', expandedKeys, arguments);
+    }
+  
+    onCheck(checkedKeys, info) {
+        console.log('onCheck', checkedKeys, info);
+    }
+
+    onEdit() {
+        console.log('current key: ', this.props);
+    }
+  
+    onDel(e) {
+        if (!window.confirm('sure to delete?')) {
+          return;
+        }
+        e.stopPropagation();
     }
     
     onSubmit(e){
@@ -36,6 +68,28 @@ class Pages extends Component {
     render(){
         const { actions } = this.props;
 
+        const loop = data => {
+            return data.map((item) => {
+                if (item.children) {
+                    return (
+                        <TreeNode
+                            key={item.key} title={item.title}
+                            disableCheckbox={item.key === '0-0-0-key'}
+                        >
+                            {loop(item.children)}
+                        </TreeNode>
+                    );
+                }
+                return <TreeNode key={item.key} title={item.title} />;
+            });
+        };
+        //  const customLabel = (<span className="cus-label">
+        //     <span>operations: </span>
+        //     <span style={{ color: 'blue' }} onClick={this.onEdit}>Edit</span>&nbsp;
+        //     <label onClick={(e) => e.stopPropagation()}><input type="checkbox" /> checked</label> &nbsp;
+        //     <span style={{ color: 'red' }} onClick={this.onDel}>Delete</span>
+        //     </span>);
+
         return (
             <div className="pages animated fadeIn">
                 <Panel name="tree" isOpen={this.props.isOpen}>
@@ -48,7 +102,19 @@ class Pages extends Component {
                         </InputGroup>
                     </PanelHeader>
                     <PanelBody>
-                        <PageTree from="/api/page/5970a0751fc20703e823eff5" />
+                        
+                        
+                        <Tree
+                            className="myCls" showLine defaultExpandAll
+                            defaultExpandedKeys={this.state.defaultExpandedKeys}
+                            onExpand={this.onExpand}
+                            defaultSelectedKeys={this.state.defaultSelectedKeys}
+                            defaultCheckedKeys={this.state.defaultCheckedKeys}
+                            onSelect={this.props.onSelect} onCheck={this.onCheck}
+                        >
+                            <PageTree title="Home" href="/api/page/5970a0751fc20703e823eff5" />
+                        </Tree>
+                        
                     </PanelBody>
                 </Panel>
                 <Panel name="mainPanel" isOpen={this.props.isOpen}>
@@ -69,18 +135,24 @@ class Pages extends Component {
 const mapDispatchToProps = (dispatch) => {
   return { 
     onToggle: () => {
-        dispatch(SidebarActions.toggleSidebar())
+        dispatch(SidebarActions.toggleSidebar());
     } ,
     onSubmit: (page) => {
         dispatch(PageActions.createPage(page));
     } ,
+    onSelect: (selectedKeys, info) => {
+        console.log('selected', selectedKeys, info);
+        return PageActions.selectPage(info.node.props.eventKey);
+        //dispatch(push(`/page/${info.node.props.eventKey}`));  
+    },
     actions: bindActionCreators(Object.assign({}, PageActions, SidebarActions), dispatch) };
   
 };
 
 const mapStateToProps = state => ({
   page: state.pages.page,
-  isOpen: state.sidebar.isOpen
+  selKey: state.pages.selKey,
+  isOpen: state.sidebar.isOpen,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Pages);
