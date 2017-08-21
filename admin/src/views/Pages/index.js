@@ -8,7 +8,7 @@ import { push } from 'react-router-redux';
 import Tree, { TreeNode } from 'rc-tree';
 
 import 
-    { Panel, PanelBody, PanelHeader, Icon, PageTree } 
+    { Panel, PanelBody, PanelHeader, Icon } 
 from '../../components';
 
 import PageForm from '../../components/Forms/pageForm';
@@ -23,36 +23,9 @@ class Pages extends Component {
 
          this.onSubmit = this.onSubmit.bind(this);
          this.onEdit = this.onEdit.bind(this);
-         const keys = [];
-
-         this.state = {
-            defaultExpandedKeys: keys,
-            defaultSelectedKeys: keys,
-            defaultCheckedKeys: keys,
-            selKey: "",
-            switchIt: true
-         }
+         
     }
 
-    onExpand(expandedKeys) {
-        console.log('onExpand', expandedKeys, arguments);
-    }
-  
-    onCheck(checkedKeys, info) {
-        console.log('onCheck', checkedKeys, info);
-    }
-
-    onEdit() {
-        console.log('current key: ', this.props);
-    }
-  
-    onDel(e) {
-        if (!window.confirm('sure to delete?')) {
-          return;
-        }
-        e.stopPropagation();
-    }
-    
     onSubmit(e){
         var patch = jiff.diff(this.props.page, e);
         if(this.props.page.id === undefined){
@@ -68,21 +41,7 @@ class Pages extends Component {
     render(){
         const { actions } = this.props;
 
-        const loop = data => {
-            return data.map((item) => {
-                if (item.children) {
-                    return (
-                        <TreeNode
-                            key={item.key} title={item.title}
-                            disableCheckbox={item.key === '0-0-0-key'}
-                        >
-                            {loop(item.children)}
-                        </TreeNode>
-                    );
-                }
-                return <TreeNode key={item.key} title={item.title} />;
-            });
-        };
+        
         //  const customLabel = (<span className="cus-label">
         //     <span>operations: </span>
         //     <span style={{ color: 'blue' }} onClick={this.onEdit}>Edit</span>&nbsp;
@@ -102,19 +61,7 @@ class Pages extends Component {
                         </InputGroup>
                     </PanelHeader>
                     <PanelBody>
-                        
-                        
-                        <Tree
-                            className="myCls" showLine defaultExpandAll
-                            defaultExpandedKeys={this.state.defaultExpandedKeys}
-                            onExpand={this.onExpand}
-                            defaultSelectedKeys={this.state.defaultSelectedKeys}
-                            defaultCheckedKeys={this.state.defaultCheckedKeys}
-                            onSelect={this.props.onSelect} onCheck={this.onCheck}
-                        >
-                            <PageTree title="Home" href="/api/page/5970a0751fc20703e823eff5" />
-                        </Tree>
-                        
+                          
                     </PanelBody>
                 </Panel>
                 <Panel name="mainPanel" isOpen={this.props.isOpen}>

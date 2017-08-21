@@ -47,6 +47,13 @@ export function updatePage(pageid, page) {
     }
 }
 
+export function getChildren(href){
+    return fetch(`${Constants.API_ROOT}${href}`, {
+                    method: 'get',
+                    headers: {'content-type': 'application/json'},
+                }).then( response => response.json());
+}
+
 function handleError(dispatch, response){
     const { status, statusText } = response;
        
