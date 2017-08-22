@@ -7,6 +7,7 @@ using ChaosCMS.Models.Pages;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.IO;
+using System.Text.Encodings.Web;
 
 namespace ChaosCMS.Rendering
 {
@@ -29,43 +30,89 @@ namespace ChaosCMS.Rendering
         public Task<IHtmlContent> RenderAsync(IChaos chaos, Content content)
         {
             var jsonGrid = content.GetValue<JsonGrid>();
-            return jsonGrid.RenderAsync(chaos, content);
+
+
+            var grid = new JsonGrid();
+            grid.CssClass.Add("container");
+            var row = new JsonGridRow();
+            var col = new JsonGridColumn() { Lg = 12, Md = 12, Xs = 12, Content = "test" };
+            row.Columns.Add(col);
+            grid.Rows.Add(row);
+
+            content.SetValue(grid);
+
+            return grid.RenderAsync(chaos, content);
         }
 
-        private class JsonGrid : RenderOptions
+        public class JsonGrid : RenderOptions
         {
-            private List<JsonGridRow> Rows { get; set; }
+            public List<JsonGridRow> Rows { get; set; } = new List<JsonGridRow>();
 
             public async Task<IHtmlContent> RenderAsync(IChaos chaos, Content content)
             {
                 TagBuilder builder = new TagBuilder("div");
-
                 var stringBuilder = new StringBuilder();
                 var textWriter = new StringWriter(stringBuilder);
+
+                this.CssClass.ForEach(builder.AddCssClass);
+                
                 foreach (var row in Rows)
                 {
-                    var rowContent = await row.RenderAsync(chaos, content)
-                    rowContent.WriteTo(textWriter, )
+                    var rowContent = await row.RenderAsync(chaos, content);
+                    rowContent.WriteTo(textWriter, HtmlEncoder.Default);
                     stringBuilder.AppendLine();
                 }
 
-                builder.InnerHtml.SetHtmlContent()
+                builder.InnerHtml.SetHtmlContent(stringBuilder.ToString());
                 builder.TagRenderMode = TagRenderMode.Normal;
                 return builder;
             }
         }
 
-        private class JsonGridRow
+        public class JsonGridRow
         {
-            public List<JsonGridColumn> Columns { get; set; }
+            public List<JsonGridColumn> Columns { get; set; } = new List<JsonGridColumn>();
 
             public async Task<IHtmlContent> RenderAsync(IChaos chaos, Content content)
             {
+                var builder = new TagBuilder("div");
+                var stringBuilder = new StringBuilder();
+                var textWriter = new StringWriter(stringBuilder);
+                builder.AddCssClass("row");
+
+                foreach (var col in Columns)
+                {
+                    var colContent = await col.RenderAsync(chaos, content);
+                    colContent.WriteTo(textWriter, HtmlEncoder.Default);
+                }
+
+                builder.InnerHtml.SetHtmlContent(stringBuilder.ToString());
+                return builder;
             }
-
-        private class JsonGridColumn
+        }
+        public class JsonGridColumn
         {
+            public string Content { get; set; }
+            public int Lg { get; set; }
+            public int Md { get; set; }
+            public int Xs { get; set; }
+            internal async Task<IHtmlContent> RenderAsync(IChaos chaos, Content content)
+            {
+                var builder = new TagBuilder("div");
+                var stringBuilder = new StringBuilder();
+                var textWriter = new StringWriter(stringBuilder);
 
+                builder.AddCssClass($"col-lg-{Lg}");
+                builder.AddCssClass($"col-md-{Md}");
+                builder.AddCssClass($"col-xs-{Xs}");
+
+                var colContent = content.Children.FirstOrDefault(x => x.Name.Equals(Content));
+
+                builder.InnerHtml.AppendHtml(await chaos.RenderAsync(colContent));
+
+                return builder;
+            }
+            
         }
     }
 }

@@ -143,6 +143,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IRenderer, MacroRenderer>();
             services.AddSingleton<IRenderer, CarouselRenderer>();
             services.AddSingleton<IRenderer, LinkContentRenderer>();
+            services.AddSingleton<IRenderer, GridRenderer>();
 
             // Helper Classes
             services.AddSingleton<IUrlFormatter, DefaultUrlFormatter>();
